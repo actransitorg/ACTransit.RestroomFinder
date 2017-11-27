@@ -1,0 +1,128 @@
+﻿.view-switcher {
+    padding: 0.5em; 
+    font-weight: normal;        
+    right:0;
+    position:absolute;
+    z-index:100;
+}
+body {
+    padding: 0 15px 0 10px;
+}
+
+
+header {
+    height: 59px;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+}
+
+header > div {display: table-cell;}
+header > div.title{vertical-align: bottom;}
+
+footer { text-align: center; }
+
+div.conditions {
+    background: none repeat scroll 0 0 #F9F9FA;
+    border: 1px solid #D3D6DA;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    -ms-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    padding: 8px 0 8px 8px;
+    margin-bottom: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    min-height: 50px;
+    padding-right: 10px;
+}
+
+div.content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D3D6DA;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    -ms-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.118) inset;
+    padding: 24px 16px 8px 16px;
+    margin-bottom: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.btn.defaults+.btn.defaults {
+    margin-right: 5px;
+}
+
+label.required-field:after, 
+    p.required-field:after,
+    span.required-field:after {
+    content: " *";
+    color: #b94a48;
+}
+
+@media(max-width:768px) {
+    .view-switcher {
+        padding: 0.5em; 
+        font-weight: normal;        
+        right:60px;
+        position:absolute;
+        z-index:100;
+    }
+    html{
+        font-size:60%;
+    }
+    body{
+        padding-left:5px;
+        padding-right:15px;
+    }
+    header {
+        position:absolute;    
+    }
+    header .title{display:none;}
+    nav .navbar
+    {
+        background-color:transparent !important;
+        height:58px;
+    }
+    nav .navbar-collapse {
+        position: relative;
+        padding-left:5pt;
+        -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        -ms-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        background-color: #F8F8F8;        
+        border: 1px outset #E7E7E7;
+        border-radius:5px;
+        z-index: 99;
+    }
+
+    .navbar {
+        margin-bottom: 0;
+    }
+
+    div.column {
+        display: inline-block;
+    }
+}
+
+.save-button-container {
+    height: 40px;
+}
+
+
+@media (max-width:480px){ 
+    header h3{ font-size: 1.3em;}
+}
+

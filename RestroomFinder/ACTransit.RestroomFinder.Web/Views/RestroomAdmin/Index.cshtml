@@ -1,0 +1,268 @@
+﻿@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+
+@model X.PagedList.IPagedList<RestroomViewModel>
+
+@using X.PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<style>
+    th {
+    width: 350px;
+    white-space: nowrap;
+}
+
+.worktable {
+    height:500px; 
+    display:block; 
+    overflow-y:auto;
+    padding: 0px;
+}
+</style>
+
+@{
+    ViewBag.Title = "View and Search Restrooms";
+
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEdit = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenEditor);
+    var userCanCreate = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenCreator);
+}
+
+<h2>View and Search Restrooms</h2>
+
+<br />
+
+<div id="HeaderOptions">
+    
+    <div id="SearchPanelGroup" class="panel-group col-md-10" style="padding: 0px;">
+        <div class="panel panel-default" style="padding: 0px;">
+            <div id="SearchPanelHeader" class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" class="glyphicon glyphicon-menu-down" style="text-decoration: none;" href="#SearchPanel" id="searchtoggler"></a>
+                    <a data-toggle="collapse" href="#SearchPanel" style="text-decoration: none;">Search Options</a>
+                </h4>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse">
+                <div><br/>
+                </div>
+                @using (Html.BeginForm("Index", "RestroomAdmin", FormMethod.Get, new { id = "SearchForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p>
+                        &nbsp;Name:&nbsp;@Html.TextBox("SearchName", ViewBag.SearchName as string)
+                        &nbsp;Address:&nbsp;@Html.TextBox("SearchAddress", ViewBag.SearchAddress as string)
+                        &nbsp;City:&nbsp;@Html.TextBox("SearchCity", ViewBag.SearchCity as string)
+                        &nbsp;Status:&nbsp;@Html.DropDownList("ShowActive", new SelectList(RestroomViewModel.SearchStatuses, "Value", "Text"))
+                        @Html.Hidden("Page", ViewBag.Page as int?)
+                        @Html.Hidden("SortField", ViewBag.SortField as string)
+                        @Html.Hidden("SortDirection", ViewBag.SortDirection as string)
+                        &nbsp;<input type="submit" value="Search" class="btn btn-primary" onclick="$('#Page').val('');"/>
+                        &nbsp;<input type="submit" value="Reset Search" class="btn btn-primary" onclick="resetForm($('#SearchForm'));" />
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="AddRestroomGroup" class="panel-group col-md-2" style="padding-top: 5px;">
+        @{if (userIsAdmin || userCanCreate)
+          {
+              <input type="button" value="Add Restroom" class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "RestroomAdmin")'"/>
+          }
+        }
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <table class="table table-striped table-bordered worktable">
+            <tr>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="RestroomName" class="sortable">Name</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="RestroomType" class="sortable">Type of Restroom</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="Address" class="sortable">Address</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="City" class="sortable">City</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="Zip" class="sortable">Zip</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="DrinkingWater" class="sortable">Has Drinking Water</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="ACTRoute" class="sortable">Routes</a>
+                </th>
+                <th>
+                    @Html.DisplayName("Restroom Availability")
+                </th>
+                <th>
+                    @Html.DisplayName("Notes")
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RestroomName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RestroomType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DrinkingWater)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SortedRoutes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @{
+                            @Html.ActionLink("Details", "Details", new { id = item.RestroomId });
+
+                            if (userIsAdmin || userCanEdit)
+                            {
+                                @Html.Raw("&nbsp;|&nbsp;");
+
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RestroomId });
+                            }
+
+                            if (userIsAdmin || userCanEdit)
+                            {
+                                @Html.Raw("&nbsp;|&nbsp;");
+
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RestroomId });
+                                }
+
+                            }
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+</div>
+
+<div class="text-center">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+
+<br />
+
+    <div class="text-center">@Html.PagedListPager(Model, page => Url.Action("Index", new { ViewBag.SearchName, ViewBag.SearchAddress, ViewBag.SearchCity, ViewBag.SortField, ViewBag.SortDirection, page, ViewBag.ShowActive }))</div>
+
+    @section Scripts{
+
+        <script>
+
+            //Allows persisting the visibility status of a collapsible panel in bootstrap
+            $(document).ready(function() {
+
+                //Set sorting image to the required cell
+                var sortField = $("#SortField").val();
+                var sortDirection = $("#SortDirection").val();
+
+                var container = $("[data-sortfield='" + sortField + "']").closest("th").find("div");
+                container.removeClass("glyphicon glyphicon-sort");
+                container.addClass((sortDirection === "ascending"
+                    ? "glyphicon glyphicon-sort-by-attributes"
+                    : "glyphicon glyphicon-sort-by-attributes-alt"));
+
+                //Define sorting actions when a header cell is clicked
+                $(".sortable").click(function(e) {
+
+                    var sortfield = $(this).data("sortfield");
+
+                    if (sortField == sortfield) {
+                        if (sortDirection == "ascending")
+                            $("#SortDirection").val("descending");
+                        else
+                            $("#SortDirection").val("ascending");
+                    } else {
+                        $("#SortField").val(sortfield);
+                        $("#SortDirection").val("ascending");
+                    }
+                    e.preventDefault();
+                    $("#SearchForm").submit();
+                });
+
+                //Define action when the search panel is enabled/disabled
+                $("#SearchPanelGroup").on('shown.bs.collapse',
+                    function() {
+                        var toggler = $("#searchtoggler").removeClass("glyphicon glyphicon-menu-down");
+                        toggler.addClass("glyphicon glyphicon-menu-up");
+
+                        var active = $("#SearchPanelGroup .in").attr('id');
+                        $.cookie('SearchPanelState', active);
+                    });
+
+                $("#SearchPanelGroup").on('hidden.bs.collapse',
+                    function() {
+                        var toggler = $("#searchtoggler").removeClass("glyphicon glyphicon-menu-up");
+                        toggler.addClass("glyphicon glyphicon-menu-down");
+
+                        $.removeCookie('SearchPanelState');
+                    });
+
+                var last = $.cookie('SearchPanelState');
+
+                if (last != null) {
+                    //remove default collapse settings
+                    $("#SearchPanelGroup .panel-collapse").removeClass('in');
+                    //show the account_last visible group
+                    $("#" + last).addClass("in");
+                }
+            });
+
+            function resetForm($form) {
+
+                //Reset values and selections on input fields
+                $form.find('input:text, input:password, input:hidden, input:file, select, textarea').val('');
+                $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+                
+                //Set selections to defaults on dropdowns
+                $('#ShowActive').val('All');
+
+                //Set default values for sorting after resetting the form
+                $('#SortField').val('RestroomName');
+                $('#SortDirection').val('ascending');
+            }
+
+        </script>
+    }
+
+

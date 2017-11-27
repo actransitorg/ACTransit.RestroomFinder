@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewBag.Title = "Work Order List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+            <button class="btn btn-default sidebar-toggle" data-toggle="collapse" data-target=".sidebar">Tools ▶</button>
+            <div class="page-container">
+                <div class="page-wrapper">
+                    <div class="sidebar width collapse collapsed hidden" aria-expanded="false">
+                        <div class="sidebar-content">
+                            <ul class="sidebar-content-list">
+                                <li class="hidden-xs"><h4 class="sidebar-content-title">Tools</h4></li>
+                                <li class="sidebar-form">
+                                    <div class="content-search input-group" border="0">
+                                        <input type="text" class="form-control" placeholder="Search"/>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-md" value="Go"><i class="glyphicon glyphicon-search"></i></button>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th-list"></i> Services <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/">Print table</a></li>
+                                        <li><a href="/">Export table</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="/">Print record</a></li>
+                                        <li><a href="/">Export record</a></li>
+                                        <li><a href="/">Copy record</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="/">Annotate</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-tags"></i> Links <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/">Ellipse record</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <main class="content-wrapper">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="content-table">
+                                        <span class="label label-default">Work Orders</span>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        #
+                                                    </th>
+                                                    <th>
+                                                        Restroom
+                                                    </th>
+                                                    <th>
+                                                        Payment Taken
+                                                    </th>
+                                                    <th>
+                                                        Status
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        1
+                                                    </td>
+                                                    <td>
+                                                        TB - Monthly
+                                                    </td>
+                                                    <td>
+                                                        01/04/2012
+                                                    </td>
+                                                    <td>
+                                                        Default
+                                                    </td>
+                                                </tr>
+                                                <tr class="active">
+                                                    <td>
+                                                        1
+                                                    </td>
+                                                    <td>
+                                                        TB - Monthly
+                                                    </td>
+                                                    <td>
+                                                        01/04/2012
+                                                    </td>
+                                                    <td>
+                                                        Approved
+                                                    </td>
+                                                </tr>
+                                                <tr class="success">
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td>
+                                                        TB - Monthly
+                                                    </td>
+                                                    <td>
+                                                        02/04/2012
+                                                    </td>
+                                                    <td>
+                                                        Declined
+                                                    </td>
+                                                </tr>
+                                                <tr class="warning">
+                                                    <td>
+                                                        3
+                                                    </td>
+                                                    <td>
+                                                        TB - Monthly
+                                                    </td>
+                                                    <td>
+                                                        03/04/2012
+                                                    </td>
+                                                    <td>
+                                                        Pending
+                                                    </td>
+                                                </tr>
+                                                <tr class="danger">
+                                                    <td>
+                                                        4
+                                                    </td>
+                                                    <td>
+                                                        TB - Monthly
+                                                    </td>
+                                                    <td>
+                                                        04/04/2012
+                                                    </td>
+                                                    <td>
+                                                        Call in to confirm
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-md-9">&nbsp;</div>
+                                            <div class="col-md-3">
+                                                <ul class="pagination">
+                                                    <li>
+                                                        <a href="#">Prev</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">1</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">2</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">3</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">4</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">5</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>                            
+                                    </div>
+                                    <div class="content-row-details">
+                                        <span class="label label-default">Work Order Details</span>
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">
+                                                    Email address
+                                                </label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">
+                                                    Password
+                                                </label>
+                                                <input type="password" class="form-control" id="exampleInputPassword1" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">
+                                                    File input
+                                                </label>
+                                                <input type="file" id="exampleInputFile" />
+                                                <p class="help-block">
+                                                    Example block-level help text here.
+                                                </p>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" /> Check me out
+                                                </label>
+                                            </div>
+                                            <button type="submit" class="btn btn-default">
+                                                Save
+                                            </button>
+                                        </form>                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+
+
+@section head{
+  <link href="~/Content/app/view.css" media="all" rel="stylesheet" />  
+}
+
+@section scripts
+{
+    <script>
+        //if (typeof Collapse !== undefined)
+        //    Collapse.prototype.dimension = function () {
+        //        var hasWidth = this.$element.hasClass('width');
+        //        return hasWidth ? 'width' : 'height';
+        //    }
+
+        $(document).ready(function () {
+            $('.sidebar').collapse("hide").removeClass("hidden");
+            $(".sidebar-toggle").click(function () {               
+                var tg = $(this).text();
+                var tgNew = tg == "◀ Tools" ? "Tools ▶" : "◀ Tools";
+                $(this).text(tgNew);
+            });
+
+        });
+    </script>
+}
+
+<div id="approot"></div>

@@ -1,0 +1,63 @@
+﻿@using ACTransit.RestroomFinder.Web.Infrastructure
+@using System.Net.Mime
+@{
+    const string baseTitle = "RestroomFinder";
+    var title = string.Format("{0}{1}",baseTitle,ViewBag.Title != null ? " ▶ " + ViewBag.Title : "");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ACTransit RestroomFinder - @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/sass")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("head", required: false)
+</head>
+    <body>
+        <header>
+            <div class="pull-right identity">Hello @User.Identity.Name</div>
+            <div><a href='@Href("~")'><img src='@CDN.ImgPath("act_logo_small.png")' alt="logo" /></a></div>
+            <div class="title"><span style="line-height: 40px; margin-top: 10px;padding: 0 0 5px 5px">@baseTitle@(ViewBag.Title != null ? " ▶ " + ViewBag.Title : "")</span></div>         
+        </header>
+        <nav>
+            @Html.Partial("_Menu")
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - AC Transit. All Rights Reserved.</p>
+            </footer>
+        </div>        
+        
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/common")
+        @Scripts.Render("~/bundles/bootstrap")
+
+        @Html.Partial("_WaitBox")
+        @Html.Partial("_Modal")
+
+        @*
+        //uncomment this area if you need employee search functionality. you may also want to customize it    
+        @Html.Partial("_EmployeeSearch")*@
+        
+        <script>
+
+            $(function (e) {
+                "use strict";
+                @* //uncomment this area if you need employee search functionality. you may also want to customize it
+                EmployeeSearch.initial();
+                EmployeeSearch.url = '@Url.Action("GetContacts", "EmployeeSearch",new {area=""})';*@
+
+                //todo
+            });
+
+       </script>
+
+        @RenderSection("scripts", required: false)
+
+    </body>
+</html>

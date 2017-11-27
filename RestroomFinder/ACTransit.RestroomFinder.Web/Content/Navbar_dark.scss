@@ -1,0 +1,65 @@
+﻿@import "Base/_linear-gradient.scss";
+$BKColor:#28363d;
+$BColor:$BKColor;
+$FColor:#ffffff;
+$FColor_Focus:#d9d9d9;
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus
+{
+    background-color: $BKColor!important;
+    border-color: $BColor!important;
+}
+.navbar-dark {
+    background-color: $BKColor;
+    border-color: $BColor;
+
+    .navbar-text {
+        color: $FColor;
+    }
+    .navbar-nav{
+        > li{
+            > a {color: $FColor;}
+            > a:hover, 
+            > a:focus {color: $FColor_Focus;}
+            > .dropdown-menu {
+                background-color: $BKColor;
+                > li {
+                    > a {color: $FColor}
+                    > a:hover,
+                    > a:focus {
+                        color: $FColor_Focus;background-color: $BKColor;
+                    }
+                    > .divider {background-color: $BKColor;}
+                }
+            }
+        }
+        > .active > a, > .active > a:hover, > .active > a:focus {color: $FColor_Focus;background-color: $BKColor;}
+        > .open > a, > .open > a:hover, > .open > a:focus {color: $FColor_Focus;background-color: $BKColor;}
+    }
+    .navbar-toggle {
+        border-color: $BColor;
+        &:hover, :focus {background-color: $BKColor;}
+        .icon-bar {color: $FColor;background-color: $BKColor;}
+    }
+    .navbar-collapse,
+    .navbar-form {
+        border-color: $BColor;
+    }
+    .navbar-link {
+        color: $FColor;
+        &:hover {color: $FColor_Focus;  }
+    }
+}
+
+
+@media (max-width: 767px) {
+    .navbar-dark .navbar-nav .open .dropdown-menu {
+        > li > a {color: $FColor;}
+        > li > a:hover, > li > a:focus {color: $FColor_Focus;}
+        > .active > a, > .active > a:hover, > .active > a:focus {
+            color: $FColor_Focus;
+            background-color: $BKColor;
+        }
+    }
+}
+
+

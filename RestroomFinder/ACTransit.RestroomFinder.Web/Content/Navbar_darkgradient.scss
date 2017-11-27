@@ -1,0 +1,122 @@
+﻿@import "Base/_linear-gradient.scss";
+$BKColor:#28363d;
+$BColor:#1b2429;
+$FColor:#fff;
+$FColor_Focus:#d9d9d9;
+$BKColor_Focus:#28363d;
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus
+{
+    background-color: $BKColor!important;
+    border-color: $BColor!important;
+}
+
+.navbar-darkgradient {    
+    background-color: $BKColor;
+    border-color: $BColor;
+    min-height: 30px!important;
+    @include linear-gradient("to bottom",#3c515c 0%, #28363d 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c515c', endColorstr='#ff28363d', GradientType=0);    
+
+    .navbar-text {color: $FColor;}
+    .navbar-nav{  
+        .dropdown-menu {
+            background-color: $BKColor;
+            border-color: $BColor;
+            @include linear-gradient("to bottom",#3c515c 0%, #28363d 100%);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c515c', endColorstr='#ff28363d', GradientType=0);
+            > li > a {color: $FColor;}
+            > li > a:hover,
+            > li > a:focus {color: $FColor_Focus;background-color: $BKColor_Focus;}
+            > li > .divider {background-color: $BKColor_Focus;}
+        }              
+        >li{
+            &:last-child > a {border-right: 1px solid $BColor;}
+            > a{color: $FColor;}
+            > a:hover,
+            > a:focus {
+              color: $FColor_Focus;
+              background-color: transparent;
+            }
+        }
+        >li:not(:first-child) > a{border-left: 1px solid $BColor;}
+        .active > a,
+        .active > a:hover,
+        .active > a:focus {
+            color: $FColor_Focus;
+            background-color: $BKColor;
+            background-image: -webkit-gradient(linear, left 0%, left 100%, from($BKColor), to(#2f4048));
+            background-image: -webkit-linear-gradient(top, $BKColor, 0%, #2f4048, 100%);
+            background-image: -moz-linear-gradient(top, $BKColor 0%, #2f4048 100%);
+            background-image: linear-gradient(to bottom, $BKColor 0%, #2f4048 100%);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1b2429', endColorstr='#ff2f4048', GradientType=0);
+        }
+        > .disabled > a,
+        > .disabled > a:hover,
+        > .disabled > a:focus {color: #cccccc;background-color: transparent;}
+        > .dropdown > a:hover .caret,
+        > .dropdown > a:focus .caret {border-top-color: $FColor_Focus;border-bottom-color: $FColor_Focus;}
+        > .dropdown > a .caret {border-top-color: #ffffff;border-bottom-color: #ffffff;}
+        > .open > a,
+        > .open > a:hover,
+        > .open > a:focus {color: $FColor_Focus;}
+        > .open > a .caret,
+        > .open > a:hover .caret,
+        > .open > a:focus .caret {
+            border-top-color: $FColor_Focus;
+            border-bottom-color: $FColor_Focus;
+        }
+        
+    }
+
+    .navbar-toggle {
+        background-color: $BKColor;
+        border-color: #dddddd;
+        &:hover,
+        &:focus {
+            // /* background-color: #dddddd; */    
+        }
+        .icon-bar {        
+            color: $FColor;
+            background-color: $FColor;
+        }
+        &:focus .icon-bar,
+        &:hover .icon-bar{background-color: #cccccc;}
+    }
+
+    .navbar-collapse,.navbar-form {border-color: #1a2327;}
+
+    @media (max-width: 767px) {
+            background-color: transparent;
+            background-image: none!important;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            .navbar-toggle,
+            .navbar-collapse{
+                color: $FColor_Focus;
+                background-color: $BKColor;
+                @include linear-gradient("to bottom",$BKColor 0%, #2f4048 100%);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1b2429', endColorstr='#ff2f4048', GradientType=0);
+            }
+            .navbar-nav .open .dropdown-menu{     
+                > li > a {color: #ffffff;}
+                > li > a:hover,
+                > li > a:focus {color: $FColor_Focus;background-color: transparent;}
+                > .active > a,
+                > .active > a:hover,
+                > .active > a:focus {color: $FColor_Focus;background-color: $BKColor;}
+                > .disabled > a,
+                > .disabled > a:hover,
+                > .disabled > a:focus {color: #cccccc;background-color: transparent;}
+            }
+    }
+
+}
+
+@media (min-width: 768px) {
+    .navbar-collapse {padding-left:0;padding-right:0}
+}

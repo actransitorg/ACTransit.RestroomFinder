@@ -1,0 +1,12 @@
+﻿<div id="divWaitBox" style="z-index: 10000">
+    <div class="first"></div>@*This div causes the page not to be editable/clickable, to remove this feature, simply reemove the dive or rename the class to something else. *@
+    <div class="second"><span>Waiting...</span>@*We could replace this part with a little Icon*@</div>
+</div>
+
+<script>
+    var waitBox;
+    $(function (e) {
+        "use strict";
+        waitBox = $("#divWaitBox").modalBox();
+    });
+</script>

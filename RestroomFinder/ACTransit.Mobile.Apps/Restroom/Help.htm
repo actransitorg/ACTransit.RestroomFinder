@@ -1,0 +1,762 @@
+﻿<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Restroom Finder</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Calibri Light";
+	panose-1:2 15 3 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+h1
+	{mso-style-link:"Heading 1 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	page-break-after:avoid;
+	font-size:28.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#2E74B5;
+	font-weight:normal;}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin-top:2.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	page-break-after:avoid;
+	font-size:26.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#2E74B5;
+	font-weight:normal;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:5.0pt;
+	margin-left:0in;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:5.0pt;
+	margin-left:24pt;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"Header Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"Footer Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoCaption, li.MsoCaption, div.MsoCaption
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	font-size:16pt;
+	font-family:"Calibri",sans-serif;
+	color:#44546A;
+	font-style:italic;}
+a:link, span.MsoHyperlink
+	{font-family:"Times New Roman",serif;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{font-family:"Times New Roman",serif;
+	color:#954F72;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+p.MsoNoSpacing, li.MsoNoSpacing, div.MsoNoSpacing
+	{mso-style-link:"No Spacing Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:24pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoTocHeading, li.MsoTocHeading, div.MsoTocHeading
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:#2E74B5;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Calibri Light",sans-serif;
+	color:#2E74B5;}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Calibri Light",sans-serif;
+	color:#2E74B5;}
+span.NoSpacingChar
+	{mso-style-name:"No Spacing Char";
+	mso-style-link:"No Spacing";
+	font-family:"Times New Roman",serif;}
+span.HeaderChar
+	{mso-style-name:"Header Char";
+	mso-style-link:Header;
+	font-family:"Times New Roman",serif;}
+span.FooterChar
+	{mso-style-name:"Footer Char";
+	mso-style-link:Footer;
+	font-family:"Times New Roman",serif;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma",sans-serif;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:8.5in 24ptin;
+	margin:.5in 1.0in .5in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link="#0563C1" vlink="#954F72">
+
+<div class=WordSection1>
+
+<span style='font-size:32.0pt;line-height:107%;font-family:"Calibri Light",sans-serif;
+color:white;text-transform:uppercase'><br clear=all style='page-break-before:
+always'>
+</span></p>
+
+<h1><a name="_Toc456101448">Restroom Finder</a></h1>
+
+<p class=MsoNormal>Restroom finder is a native mobile application written for
+iPhone and Android, designed to assist AC Transit operators and field employees
+to find the nearest restrooms around them, with comments and ratings by other
+employees.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoTocHeading>Contents</p>
+
+<p class=MsoToc1><a href="#_Toc456101448">Restroom Finder<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>1</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101449">Installing onto iPhone<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>2</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101450">Installing onto Android device<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>4</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101451">Opening for the First Time<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>6</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101452">Filtering<span style='color:windowtext;
+display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>8</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101453">Feedback<span style='color:windowtext;
+display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>9</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101454">Map Tracking/Heading<span
+style='color:windowtext;display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>10</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101455">Map Type/View<span style='color:windowtext;
+display:none;text-decoration:none'>.. </span><span
+style='color:windowtext;display:none;text-decoration:none'>11</span></a></p>
+
+<p class=MsoToc2><a href="#_Toc456101456">Tips<span style='color:windowtext;
+display:none;text-decoration:none'>. </span><span
+style='color:windowtext;display:none;text-decoration:none'>12</span></a></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<span style='font-size:24pt;line-height:107%;font-family:"Calibri",sans-serif'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-size:13.0pt;line-height:107%;font-family:
+"Calibri Light",sans-serif;color:#2E74B5'>&nbsp;</span></p>
+
+<h2><a name="_Toc456101449">Installing onto iPhone</a></h2>
+
+<p class=MsoNormal>To install Restroom finder on your iPhone, please visit <a
+href="https://your.company.dns/path/to/Mobile.Apps Website">https://your.company.dns/path/to/Mobile.Apps Website</a>
+</p>
+
+<p class=MsoNormal><img border=0 width=202 height=315
+src="Restroom%20Finder_files/image005.png"></p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption><a name="OLE_LINK8"></a><a name="OLE_LINK7"></a><a
+  name="OLE_LINK6"></a><a name="OLE_LINK5">Figure </a>1<span style='font-style:
+  normal'>: </span>List of available iPhone applications</p>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;page-break-after:avoid'>&nbsp;</p>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>By pressing the &quot;Restroom Finder&quot; button, you can
+begin to install the application. After installing the application, you should
+be able to see Restroom App icon on your screen.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal'><a name="OLE_LINK13"></a><a name="OLE_LINK12"></a><a name="OLE_LINK11"><img
+  border=0 width=202 height=329 src="Restroom%20Finder_files/image006.png"></a></p>
+  <p class=MsoCaption><br>
+  Figure 2i: asking for permission to install</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=188
+  height=332 id="Picture 10" src="Restroom%20Finder_files/image007.jpg"></p>
+  <p class=MsoCaption style='page-break-after:avoid'>Figure 3i:
+  Restroom App Icon</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<span style='font-size:24pt;line-height:107%;font-family:"Calibri",sans-serif'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>When you open the application for the first time, you may
+see a popup window asking you to trust the application (see Figure 4i). </p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=189
+  height=336 id="Picture 7" src="Restroom%20Finder_files/image008.jpg"></p>
+  <p class=MsoCaption>Figure 4i: asking to trust the application</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'>&nbsp;</p>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>Alternately, in some iOS versions, you may need to go to
+your iPhone setting and trust the application manually. (Settings -&gt; General
+-&gt; Device Management) (See Figure 5i and 6i)</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=189
+  height=336 id="Picture 12" src="Restroom%20Finder_files/image009.jpg"></p>
+  <p class=MsoCaption>Figure 5i: you need to trust the application manually.</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=189
+  height=336 id="Picture 14" src="Restroom%20Finder_files/image010.jpg"></p>
+  <p class=MsoCaption>Figure 6i: Device Management menu</p>
+  </td>
+ </tr>
+</table>
+
+<span style='font-size:13.0pt;line-height:107%;font-family:"Calibri Light",sans-serif;
+color:#2E74B5'><br clear=all style='page-break-before:always'>
+</span>
+
+<h2>&nbsp;</h2>
+
+<h2><a name="_Toc456101450">Installing onto Android device</a></h2>
+
+<p class=MsoNormal>To install Restroom finder on your Android device, you will
+need to allow installation of apps from sources other than the Play Store.
+Open Android Settings then Security, pressing and accepting the Unknown sources
+feature.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=216
+  height=384 id="Picture 17" src="Restroom%20Finder_files/image011.png"></p>
+  <p class=MsoCaption>Figure 1i: Trust the application manually.</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>Once that is done, open Chrome browser and visit <a
+href="https://your.company.dns/path/to/Mobile.Apps Website">https://your.company.dns/path/to/Mobile.Apps Website</a>
+</p>
+
+<p class=MsoNormal><img border=0 width=216 height=384
+src="Restroom%20Finder_files/image012.png"></p>
+
+<p class=MsoNormal><i><span style='font-size:16pt;line-height:107%'>Figure 2a:
+List of available Android applications <br clear=all style='page-break-before:
+always'>
+</span></i></p>
+
+<p class=MsoNormal>By pressing the &quot;Restroom Finder&quot; button, then the
+&quot;Download&quot; button, you can begin to get the application. It will
+ask if you want to save to your phone.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal'><img border=0 width=216 height=384
+  src="Restroom%20Finder_files/image013.png"></p>
+  <p class=MsoCaption><br>
+  Figure 2a: asking for permission to install</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal'><img border=0 width=216 height=384
+  src="Restroom%20Finder_files/image014.png"></p>
+  <p class=MsoCaption><br>
+  Figure 3a: Pull down drawer and double click download to begin install.</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>Once you open the download, installation will begin. Follow
+along by pressing Install then Done.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal'><img border=0 width=216 height=384 id="Picture 6"
+  src="Restroom%20Finder_files/image015.png"></p>
+  <p class=MsoCaption><br>
+  Figure 4a: Press Install to continue</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal'><img border=0 width=216 height=384 id="Picture 8"
+  src="Restroom%20Finder_files/image016.png"></p>
+  <p class=MsoCaption><br>
+  Figure 5a: Press Open to continue</p>
+  </td>
+ </tr>
+</table>
+
+<span style='font-size:13.0pt;line-height:107%;font-family:"Calibri Light",sans-serif;
+color:#2E74B5'><br clear=all style='page-break-before:always'>
+</span>
+
+<h2>&nbsp;</h2>
+
+<h2><a name="_Toc456101451">Opening for the First Time</a></h2>
+
+<p class=MsoListParagraph>&nbsp;</p>
+
+<p class=MsoNormal>When you run the application for the first time, you need to
+follow steps below (see Figure 7 and 8)</p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Enter your badge number.</p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Agree to the application’s disclaimer.</p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-.25in'>-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>If asked, give the application permission to use your location.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK15"></a><a
+  name="OLE_LINK14"><img border=0 width=188 height=336
+  src="Restroom%20Finder_files/image017.png"></a></p>
+  <p class=MsoCaption>Figure 7: Disclaimer</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=185
+  height=333 id="Picture 13" src="Restroom%20Finder_files/image018.png"></p>
+  <p class=MsoCaption>Figure 8: Ask for location permission</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>The application shows a warning to the user once in a day (Figure
+9).</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK17"></a><a
+  name="OLE_LINK16"><img border=0 width=188 height=336 id="Picture 16"
+  src="Restroom%20Finder_files/image019.png"></a></p>
+  <p class=MsoCaption>Figure 9: Warning</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=188
+  height=331 id="Picture 19" src="Restroom%20Finder_files/image020.png"></p>
+  <p class=MsoCaption>Figure 10:Application main screen</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>When the application is opened, you will see Restroom list
+like in Figure 10. </p>
+
+<p class=MsoNormal>You can show/hide the list by tapping on the “Show
+List”/”Hide List”, as in Figure 11.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK20"></a><a
+  name="OLE_LINK19"></a><a name="OLE_LINK18"><img border=0 width=185
+  height=329 id="Picture 22" src="Restroom%20Finder_files/image021.png"></a></p>
+  <p class=MsoCaption>Figure 11</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'>&nbsp;</p>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<span style='font-size:14.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+color:#2F5496'><br clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<h2><a name="_Toc456101452">Filtering</a></h2>
+
+<p class=MsoNormal>You can filter the result based on the route and potable water. 
+To do so, tap on <img border=0 width=13 height=12
+src="Restroom%20Finder_files/image022.png">icon located on the top right of
+your screen. Figure 12 and 13.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK23"></a><a
+  name="OLE_LINK22"></a><a name="OLE_LINK21"><img border=0 width=184
+  height=330 id="Picture 29" src="Restroom%20Finder_files/image023.png"></a></p>
+  <p class=MsoCaption>Figure 12: Filter page</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=183
+  height=328 id="Picture 30" src="Restroom%20Finder_files/image024.png"></p>
+  <p class=MsoCaption>Figure 13: Filtered by Route 11</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<span style='font-size:14.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+color:#2F5496'><br clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<h2><a name="_Toc456101453">Feedback</a></h2>
+
+<p class=MsoNormal>You can post a feedback for a restroom and rate the restroom
+based on your satisfaction. Follow these steps to write a feedback and rate a
+restroom:</p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'>1-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Make
+sure the restroom list is shown (tap on “Show List” if needed)</p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'>2-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Tap
+on <img border=0 width=17 height=15 src="Restroom%20Finder_files/image025.png">icon
+for the restroom you want to write a feedback.</p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-.25in'>3-<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Write
+your feedback, rate the restroom, then tap “OK” </p>
+
+<p class=MsoNormal>You can also see other users’ feedback. Please note: the
+rating you see on the main screen is the average of the most recent feedback,
+which might be different from what you see on the screen. </p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK25"></a><a
+  name="OLE_LINK24"><img border=0 width=184 height=329 id="Picture 32"
+  src="Restroom%20Finder_files/image026.jpg"></a></p>
+  <p class=MsoCaption>Figure 14: Feedback page</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<span style='font-size:14.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+color:#2F5496'><br clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<h2><a name="_Toc456101454">Map Tracking/Heading</a></h2>
+
+<p class=MsoNormal>You can enable the tracking by tapping once on the <img
+border=0 width=13 height=10 src="Restroom%20Finder_files/image027.png"> icon
+and again to enable the heading. When Tracking is enabled, the dot on the map will
+automatically follow your position. When heading is enabled, the phone would
+also become sensitive to the direction and would show you a small compass.
+Figure 15 and 16.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK27"></a><a
+  name="OLE_LINK26"><img border=0 width=184 height=330 id="Picture 25"
+  src="Restroom%20Finder_files/image028.png"></a></p>
+  <p class=MsoCaption>Figure 15: Tracking enabled.</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=186
+  height=329 id="Picture 1" src="Restroom%20Finder_files/image029.jpg"
+  alt="IMG_0591"></p>
+  <p class=MsoCaption>Figure 16: Heading enabled</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<span style='font-size:14.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+color:#2F5496'><br clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<h2><a name="_Toc456101455">Map Type/View</a></h2>
+
+<p class=MsoNormal>You can change the view of the map by tapping on <img
+border=0 width=16 height=14 id=picture
+src="Restroom%20Finder_files/image030.png">icon on the bottom right of the
+page.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK29"></a><a
+  name="OLE_LINK28"><img border=0 width=180 height=328 id="Picture 36"
+  src="Restroom%20Finder_files/image031.png"></a></p>
+  <p class=MsoCaption>Figure 17</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=183
+  height=328 id="Picture 37" src="Restroom%20Finder_files/image032.png"></p>
+  <p class=MsoCaption>Figure 18: Show traffic</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK32"></a><a
+  name="OLE_LINK31"></a><a name="OLE_LINK30"><img border=0 width=189
+  height=336 id="Picture 40" src="Restroom%20Finder_files/image033.png"></a></p>
+  <p class=MsoCaption>Figure 19: 3D view</p>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=184
+  height=330 id="Picture 41" src="Restroom%20Finder_files/image034.jpg"></p>
+  <p class=MsoCaption>Figure 20: Hybrid view</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:14.0pt;line-height:107%;color:#2F5496'>&nbsp;</span></p>
+
+<span style='font-size:13.0pt;line-height:107%;font-family:"Calibri Light",sans-serif;
+color:#2E74B5'><br clear=all style='page-break-before:always'>
+</span>
+
+<h2><a name="_Toc456101456">Tips</a></h2>
+
+<p class=MsoListParagraph style='text-indent:-.25in'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>No GPS reception: you may see a small blue globe on the right side of
+your page when there is no GPS reception, Figure 21 and 22.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><a name="OLE_LINK34"></a><a
+  name="OLE_LINK33"><img border=0 width=186 height=329 id="Picture 2"
+  src="Restroom%20Finder_files/image035.jpg" alt="image18 (1)"></a></p>
+  <p class=MsoCaption>Figure 21: Poor or no GPS reception</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=186
+  height=329 id="Picture 3" src="Restroom%20Finder_files/image036.jpg"
+  alt=image19></p>
+  <p class=MsoCaption>Figure 22</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoListParagraph style='text-indent:-.25in'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Speed Monitor: At speeds over 5 mph, you will receive a message that you
+cannot use this application while moving.  Program feature will resume when phone
+has stopped moving.</p>
+
+<table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption style='page-break-after:avoid'><img border=0 width=185
+  height=328 id="Picture 44" src="Restroom%20Finder_files/image037.png"></p>
+  <p class=MsoCaption>Figure 23</p>
+  </td>
+  <td width=312 valign=top style='width:233.75pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoCaption>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
+

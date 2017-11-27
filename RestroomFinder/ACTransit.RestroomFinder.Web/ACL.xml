@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ACL>
+  <tokens>
+    <token name="Admin">
+      <groups>
+        <group allow="1" silence="1">AD Admin Group</group>
+      </groups>
+    </token>
+    <token name="Creator">
+      <groups>
+        <group allow="1" silence="1">AD RestroomFinder Editor</group>
+      </groups>
+    </token>
+    <token name="Editor">
+      <groups>
+        <group allow="1" silence="1">AD RestroomFinder Editor</group>
+      </groups>
+    </token>
+  </tokens>
+</ACL>
