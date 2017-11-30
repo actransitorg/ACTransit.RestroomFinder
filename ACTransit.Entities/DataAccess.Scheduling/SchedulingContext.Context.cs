@@ -40,8 +40,8 @@ namespace ACTransit.DataAccess.Scheduling
         public virtual DbSet<TripPattern> TripPatterns { get; set; }
         public virtual DbSet<TripStop> TripStops { get; set; }
         public virtual DbSet<TripTimingPoint> TripTimingPoints { get; set; }
-        public virtual DbSet<VehicleDisplayCode> VehicleDisplayCodes { get; set; }
         public virtual DbSet<StopDistrict> StopDistricts { get; set; }
+        public virtual DbSet<VehicleDisplayCode> VehicleDisplayCodes { get; set; }
     
         public virtual ObjectResult<NearestStop_Result> NearestStop(Nullable<decimal> lat, Nullable<decimal> @long, Nullable<int> top, Nullable<bool> isPublic, Nullable<bool> allowAlighting, Nullable<bool> allowBoarding, string corner, Nullable<bool> isBart, Nullable<bool> isTransitCenter, Nullable<bool> isInService, Nullable<bool> isGPSValidated, Nullable<bool> avaStatus)
         {
@@ -124,6 +124,19 @@ namespace ACTransit.DataAccess.Scheduling
         public virtual ObjectResult<GetRoutes_Result> GetRoutes()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoutes_Result>("GetRoutes");
+        }
+    
+        public virtual int AddBooking(string newBookingId, string addUserId)
+        {
+            var newBookingIdParameter = newBookingId != null ?
+                new ObjectParameter("NewBookingId", newBookingId) :
+                new ObjectParameter("NewBookingId", typeof(string));
+    
+            var addUserIdParameter = addUserId != null ?
+                new ObjectParameter("AddUserId", addUserId) :
+                new ObjectParameter("AddUserId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddBooking", newBookingIdParameter, addUserIdParameter);
         }
     }
 }

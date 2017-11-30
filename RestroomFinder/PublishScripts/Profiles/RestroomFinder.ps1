@@ -1,11 +1,11 @@
 ﻿function Get-Profile {
     $sourceCodeRoot = "P:\ACTransit.Projects\trunk\ACTransitToolbelt\"
-    $targetPath = "C:\github\ACTransit.RestroomFinder-merge"
+    $targetPath = "C:\github\ACTransit.RestroomFinder-temp"
     $gitRepositoryName = "ACTransit.RestroomFinder"
     $gitRepositoryUrl = "https://github.com/actransitorg/ACTransit.RestroomFinder.git"
     $scriptPath = $($pwd.Path)
     $scriptName = "RestroomFinder"
-	$repoPath = [System.IO.Path]::GetFullPath("$scriptPath\..")
+	#$repoPath = [System.IO.Path]::GetFullPath("$scriptPath\..")
     $databaseFilesPath = "$scriptPath\Database"
     $solutionPath = [System.IO.Path]::GetFullPath("$scriptPath\..")
     $startupPath = "$solutionPath\ACTransit.RestroomFinder.Web"
@@ -44,7 +44,7 @@
     )
     $targetRemove = 
         @("*.vspscc","*.vssscc", "*.suo", "*.user", ".vs", "obj", "bin", "Debug", "Nuget", "Release", "packages", ".gradle", ".idea", ".vscode",
-            "Training.docx", "Training_DDL_DML.sql", "MaintenanceDW_DDL_DML.sql", "SQlExecute.exe.config", "*.pubxml", "Web.Release.config", "Training")
+            "Training.docx", "SQlExecute.exe.config", "*.pubxml", "Web.Release.config", "Training")
             
     $result = @{ `
         ScriptPath = $scriptPath
@@ -67,8 +67,13 @@
         Databases = @("EmployeeDW","SchedulingDW","Restroom")
         GitRepositoryName = $gitRepositoryName
         GitRepositoryUrl = $gitRepositoryUrl
+        Finalize = $null
     } |  ConvertTo-Json |  ConvertFrom-Json 
     $result.SearchReplace = (Get-Content "profiles\$scriptName.json") -join "`n" | ConvertFrom-Json
+    $result.Finalize = {
+        # Clean unused database files
+        Get-ChildItem | Where-Object { $_.Name -notmatch '^Restroom_DDL_DML.sql|EmployeeDW_DDL_DML.sql|SchedulingDW_DDL_DML.sql$' } | Remove-Item        
+    }
     $result
 }
 

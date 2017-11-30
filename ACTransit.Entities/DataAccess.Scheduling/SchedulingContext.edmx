@@ -55,6 +55,7 @@
           <Property Name="UpdUserId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UpdDateTime" Type="datetime2" Precision="3" Nullable="false" />
           <Property Name="SysRecNo" Type="bigint" Nullable="false" />
+          <Property Name="BlockCode" Type="char" MaxLength="6" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Booking">
           <Key>
@@ -272,10 +273,10 @@
         </EntityType>
         <EntityType Name="VehicleDisplayCode">
           <Key>
-            <PropertyRef Name="BookingID" />
+            <PropertyRef Name="BookingId" />
             <PropertyRef Name="SysRecNo" />
           </Key>
-          <Property Name="BookingID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BookingId" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="SysRecNo" Type="bigint" Nullable="false" />
           <Property Name="VDCId" Type="varchar" MaxLength="56" />
           <Property Name="VDCMessage1" Type="varchar" MaxLength="56" />
@@ -423,8 +424,6 @@ warning 6002: The table/view 'SchedulingDW.HASTUS.StopDistrict' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6037: Foreign key constraint 'FK_Trip_Route' has been omitted from the storage model. Column 'BookingId' of table 'SchedulingContext.Store.Trip' is a foreign key participating in multiple relationships. A one-to-one Entity Model will not validate since data inconsistency is possible.
         <Association Name="FK_Trip_Route">
           <End Role="Route" Type="Self.Route" Multiplicity="1" />
           <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
@@ -438,9 +437,7 @@ warning 6037: Foreign key constraint 'FK_Trip_Route' has been omitted from the s
               <PropertyRef Name="RouteAlpha" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>-->
-        <!--Errors Found During Generation:
-warning 6037: Foreign key constraint 'FK_Trip_TripPattern' has been omitted from the storage model. Column 'BookingId' of table 'SchedulingContext.Store.Trip' is a foreign key participating in multiple relationships. A one-to-one Entity Model will not validate since data inconsistency is possible.
+        </Association>
         <Association Name="FK_Trip_TripPattern">
           <End Role="TripPattern" Type="Self.TripPattern" Multiplicity="1" />
           <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
@@ -456,7 +453,7 @@ warning 6037: Foreign key constraint 'FK_Trip_TripPattern' has been omitted from
               <PropertyRef Name="PatternId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>-->
+        </Association>
         <Association Name="FK_TripPattern_BookingID">
           <End Role="Booking" Type="Self.Booking" Multiplicity="1" />
           <End Role="TripPattern" Type="Self.TripPattern" Multiplicity="*" />
@@ -564,7 +561,7 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
               <PropertyRef Name="BookingId" />
             </Principal>
             <Dependent Role="VehicleDisplayCode">
-              <PropertyRef Name="BookingID" />
+              <PropertyRef Name="BookingId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -574,6 +571,10 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <Parameter Name="ComparisonLatitude" Type="float" Mode="In" />
           <Parameter Name="ComparisonLongitude" Type="float" Mode="In" />
           <Parameter Name="Units" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="AddBooking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="HASTUS">
+          <Parameter Name="NewBookingId" Type="varchar" Mode="In" />
+          <Parameter Name="AddUserId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GetRoutes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="HASTUS" />
         <Function Name="GetStopsWithinProximity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="HASTUS">
@@ -680,6 +681,14 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
             <End Role="Trip" EntitySet="Trip" />
             <End Role="Trip1" EntitySet="Trip" />
           </AssociationSet>
+          <AssociationSet Name="FK_Trip_Route" Association="Self.FK_Trip_Route">
+            <End Role="Route" EntitySet="Route" />
+            <End Role="Trip" EntitySet="Trip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trip_TripPattern" Association="Self.FK_Trip_TripPattern">
+            <End Role="TripPattern" EntitySet="TripPattern" />
+            <End Role="Trip" EntitySet="Trip" />
+          </AssociationSet>
           <AssociationSet Name="FK_TripPattern_BookingID" Association="Self.FK_TripPattern_BookingID">
             <End Role="Booking" EntitySet="Booking" />
             <End Role="TripPattern" EntitySet="TripPattern" />
@@ -734,7 +743,6 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <EntitySet Name="TripPatterns" EntityType="SchedulingContext.TripPattern" />
           <EntitySet Name="TripStops" EntityType="SchedulingContext.TripStop" />
           <EntitySet Name="TripTimingPoints" EntityType="SchedulingContext.TripTimingPoint" />
-          <EntitySet Name="VehicleDisplayCodes" EntityType="SchedulingContext.VehicleDisplayCode" />
           <EntitySet Name="StopDistricts" EntityType="SchedulingContext.StopDistrict" />
           <AssociationSet Name="FK_Block_Booking" Association="SchedulingContext.FK_Block_Booking">
             <End Role="Booking" EntitySet="Bookings" />
@@ -747,10 +755,6 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <AssociationSet Name="FK_TripPattern_BookingID" Association="SchedulingContext.FK_TripPattern_BookingID">
             <End Role="Booking" EntitySet="Bookings" />
             <End Role="TripPattern" EntitySet="TripPatterns" />
-          </AssociationSet>
-          <AssociationSet Name="FK_VehicleDisplayCode_BookingId" Association="SchedulingContext.FK_VehicleDisplayCode_BookingId">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="VehicleDisplayCode" EntitySet="VehicleDisplayCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Place_District" Association="SchedulingContext.FK_Place_District">
             <End Role="District" EntitySet="Districts" />
@@ -830,6 +834,15 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
             <Parameter Name="RouteName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetRoutes" ReturnType="Collection(SchedulingContext.GetRoutes_Result)" />
+          <FunctionImport Name="AddBooking">
+            <Parameter Name="NewBookingId" Mode="In" Type="String" />
+            <Parameter Name="AddUserId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="VehicleDisplayCodes" EntityType="SchedulingContext.VehicleDisplayCode" />
+          <AssociationSet Name="FK_VehicleDisplayCode_BookingId" Association="SchedulingContext.FK_VehicleDisplayCode_BookingId">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="VehicleDisplayCode" EntitySet="VehicleDisplayCodes" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -882,6 +895,7 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <Property Name="UpdDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SysRecNo" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Booking" Relationship="SchedulingContext.FK_Block_Booking" FromRole="Block" ToRole="Booking" />
+          <Property Name="BlockCode" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Booking">
           <Key>
@@ -899,7 +913,7 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <NavigationProperty Name="Trips" Relationship="SchedulingContext.FK_Trip_Booking" FromRole="Booking" ToRole="Trip" />
           <NavigationProperty Name="TripPatterns" Relationship="SchedulingContext.FK_TripPattern_BookingID" FromRole="Booking" ToRole="TripPattern" />
           <NavigationProperty Name="VehicleDisplayCodes" Relationship="SchedulingContext.FK_VehicleDisplayCode_BookingId" FromRole="Booking" ToRole="VehicleDisplayCode" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="DistrictId" />
@@ -1131,25 +1145,6 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <NavigationProperty Name="Place2" Relationship="SchedulingContext.FK_TripTimingPoint_Place_prev" FromRole="TripTimingPoint" ToRole="Place" />
           <NavigationProperty Name="Trip" Relationship="SchedulingContext.FK_TripTimingPoint_Trip" FromRole="TripTimingPoint" ToRole="Trip" />
         </EntityType>
-        <EntityType Name="VehicleDisplayCode">
-          <Key>
-            <PropertyRef Name="BookingID" />
-            <PropertyRef Name="SysRecNo" />
-          </Key>
-          <Property Name="BookingID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="SysRecNo" Type="Int64" Nullable="false" />
-          <Property Name="VDCId" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
-          <Property Name="VDCMessage1" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
-          <Property Name="VDCMessage2" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
-          <Property Name="VDCMessage3" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
-          <Property Name="VDCMessage4" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
-          <Property Name="ValidToDate" Type="DateTime" Precision="0" />
-          <Property Name="AddUserId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AddDateTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdUserId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UpdDateTime" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Booking" Relationship="SchedulingContext.FK_VehicleDisplayCode_BookingId" FromRole="VehicleDisplayCode" ToRole="Booking" />
-        </EntityType>
         <EntityType Name="StopDistrict">
           <Key>
             <PropertyRef Name="StopId" />
@@ -1231,18 +1226,6 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
               <PropertyRef Name="BookingId" />
             </Principal>
             <Dependent Role="TripPattern">
-              <PropertyRef Name="BookingID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_VehicleDisplayCode_BookingId">
-          <End Type="SchedulingContext.Booking" Role="Booking" Multiplicity="1" />
-          <End Type="SchedulingContext.VehicleDisplayCode" Role="VehicleDisplayCode" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="BookingId" />
-            </Principal>
-            <Dependent Role="VehicleDisplayCode">
               <PropertyRef Name="BookingID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1485,6 +1468,37 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <Property Type="String" Name="RouteAlpha" Nullable="false" MaxLength="5" />
           <Property Type="String" Name="RouteDescription" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="VehicleDisplayCode">
+          <Key>
+            <PropertyRef Name="BookingId" />
+            <PropertyRef Name="SysRecNo" />
+          </Key>
+          <Property Name="BookingId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SysRecNo" Type="Int64" Nullable="false" />
+          <Property Name="VDCId" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
+          <Property Name="VDCMessage1" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
+          <Property Name="VDCMessage2" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
+          <Property Name="VDCMessage3" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
+          <Property Name="VDCMessage4" Type="String" MaxLength="56" FixedLength="false" Unicode="false" />
+          <Property Name="ValidToDate" Type="DateTime" Precision="0" />
+          <Property Name="AddUserId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AddDateTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdUserId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdDateTime" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Booking" Relationship="SchedulingContext.FK_VehicleDisplayCode_BookingId" FromRole="VehicleDisplayCode" ToRole="Booking" />
+        </EntityType>
+        <Association Name="FK_VehicleDisplayCode_BookingId">
+          <End Type="SchedulingContext.Booking" Role="Booking" Multiplicity="1" />
+          <End Type="SchedulingContext.VehicleDisplayCode" Role="VehicleDisplayCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="BookingId" />
+            </Principal>
+            <Dependent Role="VehicleDisplayCode">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1494,6 +1508,7 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
           <EntitySetMapping Name="Blocks">
             <EntityTypeMapping TypeName="SchedulingContext.Block">
               <MappingFragment StoreEntitySet="Block">
+                <ScalarProperty Name="BlockCode" ColumnName="BlockCode" />
                 <ScalarProperty Name="SysRecNo" ColumnName="SysRecNo" />
                 <ScalarProperty Name="UpdDateTime" ColumnName="UpdDateTime" />
                 <ScalarProperty Name="UpdUserId" ColumnName="UpdUserId" />
@@ -1754,24 +1769,6 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VehicleDisplayCodes">
-            <EntityTypeMapping TypeName="SchedulingContext.VehicleDisplayCode">
-              <MappingFragment StoreEntitySet="VehicleDisplayCode">
-                <ScalarProperty Name="UpdDateTime" ColumnName="UpdDateTime" />
-                <ScalarProperty Name="UpdUserId" ColumnName="UpdUserId" />
-                <ScalarProperty Name="AddDateTime" ColumnName="AddDateTime" />
-                <ScalarProperty Name="AddUserId" ColumnName="AddUserId" />
-                <ScalarProperty Name="ValidToDate" ColumnName="ValidToDate" />
-                <ScalarProperty Name="VDCMessage4" ColumnName="VDCMessage4" />
-                <ScalarProperty Name="VDCMessage3" ColumnName="VDCMessage3" />
-                <ScalarProperty Name="VDCMessage2" ColumnName="VDCMessage2" />
-                <ScalarProperty Name="VDCMessage1" ColumnName="VDCMessage1" />
-                <ScalarProperty Name="VDCId" ColumnName="VDCId" />
-                <ScalarProperty Name="SysRecNo" ColumnName="SysRecNo" />
-                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="StopDistricts">
             <EntityTypeMapping TypeName="SchedulingContext.StopDistrict">
               <MappingFragment StoreEntitySet="StopDistrict">
@@ -1879,6 +1876,25 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddBooking" FunctionName="SchedulingContext.Store.AddBooking" />
+          <EntitySetMapping Name="VehicleDisplayCodes">
+            <EntityTypeMapping TypeName="SchedulingContext.VehicleDisplayCode">
+              <MappingFragment StoreEntitySet="VehicleDisplayCode">
+                <ScalarProperty Name="UpdDateTime" ColumnName="UpdDateTime" />
+                <ScalarProperty Name="UpdUserId" ColumnName="UpdUserId" />
+                <ScalarProperty Name="AddDateTime" ColumnName="AddDateTime" />
+                <ScalarProperty Name="AddUserId" ColumnName="AddUserId" />
+                <ScalarProperty Name="ValidToDate" ColumnName="ValidToDate" />
+                <ScalarProperty Name="VDCMessage4" ColumnName="VDCMessage4" />
+                <ScalarProperty Name="VDCMessage3" ColumnName="VDCMessage3" />
+                <ScalarProperty Name="VDCMessage2" ColumnName="VDCMessage2" />
+                <ScalarProperty Name="VDCMessage1" ColumnName="VDCMessage1" />
+                <ScalarProperty Name="VDCId" ColumnName="VDCId" />
+                <ScalarProperty Name="SysRecNo" ColumnName="SysRecNo" />
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1893,8 +1909,8 @@ warning 6035: The relationship 'FK_TripStop_Stop_id511' has columns that are not
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

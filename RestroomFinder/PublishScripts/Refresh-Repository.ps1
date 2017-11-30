@@ -1,7 +1,8 @@
 ﻿[CmdletBinding()]
 Param(
     [Parameter(Mandatory=$true)]
-    [string]$Profile
+    [string]$Profile,
+    [switch]$NoPublish
 )
 
 $DebugPreference = "Continue"
@@ -203,7 +204,7 @@ function Create-MergeDir
         foreach ($item in $files) {
             if (Test-Path $item) {
                 Write-Debug "* Removing $item"   
-                Remove-Item $item -r
+                Remove-Item -Recurse $item
             }
         }
     }
@@ -259,6 +260,14 @@ function Create-MergeDir
     $publishScriptProfiles = "$($config.PublishScripts)\Profiles"
     "[ ]" | Out-File "$publishScriptProfiles\*.json"
 
+	# Finalize profile activity
+    $databasePath = "$($config.PublishScripts)\Database"
+    Push-Location 
+    Set-Location $databasePath
+    Write-Debug "* Finalizing $Profile profile" 
+    $config.Finalize.Invoke()
+    Pop-Location
+
     # Stage 4 - Restore dependencies and compile
 
     $solution = $($config.SourceCodeFiles) | Select-String -Pattern ".sln"
@@ -272,6 +281,8 @@ function Create-MergeDir
     Pause
     cd ..
     & $currentPath\Cleanup.bat
+    Write-Debug "DONE"
+    Write-Debug "##################################################################"     
 }
 
 function Merge-GitHub 
@@ -333,7 +344,9 @@ if ([string]::IsNullOrEmpty($config.SearchReplace)) {
 }
 
 Create-MergeDir 
-Merge-GitHub 
+if (!($NoPublish)){
+    Merge-GitHub 
+}
 
 # Stage 6 - DONE
 

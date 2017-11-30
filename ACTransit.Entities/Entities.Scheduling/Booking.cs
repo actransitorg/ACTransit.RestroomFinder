@@ -20,6 +20,7 @@ namespace ACTransit.Entities.Scheduling
             this.Trips = new HashSet<Trip>();
             this.TripPatterns = new HashSet<TripPattern>();
             this.VehicleDisplayCodes = new HashSet<VehicleDisplayCode>();
+            this.VehicleDisplayCode = new HashSet<VehicleDisplayCode>();
         }
     
         public string BookingId { get; set; }
@@ -35,5 +36,6 @@ namespace ACTransit.Entities.Scheduling
         public virtual ICollection<Trip> Trips { get; set; }
         public virtual ICollection<TripPattern> TripPatterns { get; set; }
         public virtual ICollection<VehicleDisplayCode> VehicleDisplayCodes { get; set; }
+        public virtual ICollection<VehicleDisplayCode> VehicleDisplayCode { get; set; }
     }
 }

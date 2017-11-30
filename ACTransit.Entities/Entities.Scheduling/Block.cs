@@ -51,6 +51,7 @@ namespace ACTransit.Entities.Scheduling
         public string UpdUserId { get; set; }
         public System.DateTime UpdDateTime { get; set; }
         public long SysRecNo { get; set; }
+        public string BlockCode { get; set; }
     
         public virtual Booking Booking { get; set; }
     }

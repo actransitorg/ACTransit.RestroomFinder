@@ -1,5 +1,5 @@
+@echo off
 cd ..
-echo off
 del /s /a /f *.vspscc 2>nul
 del /s /a /f *.vssscc 2>nul
 del /s /a /f *.suo 2>nul

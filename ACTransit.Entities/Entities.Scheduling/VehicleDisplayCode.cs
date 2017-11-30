@@ -26,7 +26,9 @@ namespace ACTransit.Entities.Scheduling
         public System.DateTime AddDateTime { get; set; }
         public string UpdUserId { get; set; }
         public System.DateTime UpdDateTime { get; set; }
+        public string BookingId { get; set; }
     
         public virtual Booking Booking { get; set; }
+        public virtual Booking Booking1 { get; set; }
     }
 }

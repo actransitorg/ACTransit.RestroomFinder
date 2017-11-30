@@ -1,3 +1,4 @@
+echo off
 cd %~dp0
 echo * Current Directory: %~dp0
 echo * Parameters: %*
