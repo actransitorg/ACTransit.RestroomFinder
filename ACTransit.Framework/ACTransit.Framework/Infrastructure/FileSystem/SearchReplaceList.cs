@@ -36,7 +36,7 @@ namespace ACTransit.Framework.Infrastructure.FileSystem
                     }
                 }
             }
-            catch (Exception e)
+            catch //(Exception e)
             {
             }
             return searchReplaceList;

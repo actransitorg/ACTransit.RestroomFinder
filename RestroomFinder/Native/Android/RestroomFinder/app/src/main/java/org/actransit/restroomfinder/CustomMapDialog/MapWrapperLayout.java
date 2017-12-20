@@ -113,7 +113,7 @@ public class MapWrapperLayout extends RelativeLayout {
                     ratingBar.setRating(new Float(model.averageRating()));
                     if (model.drinkingWater())
                         waterVisibility=VISIBLE;
-                    if (!model.hours.equals(""))
+                    if (model.hours!=null && !model.hours.equals(""))
                         paddleHoursVisibility = VISIBLE;
                 }
                 imgWater.setVisibility(waterVisibility);

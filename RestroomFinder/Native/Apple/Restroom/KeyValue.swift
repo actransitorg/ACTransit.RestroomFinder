@@ -13,12 +13,12 @@ class KeyValue: KeyValueFileWriter {
     
     static let pathComponent = "Restroom_keyvalue";
     
-    static func Save(keyvalues: [KeyValue]) -> Bool {
+    static func Save(_ keyvalues: [KeyValue]) -> Bool {
         return KeyValueFileWriter.Save(keyvalues, pathComponent: pathComponent)
     }
     
     static func Load() -> [KeyValue]? {
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(KeyValueFileWriter.GetPath(pathComponent)) as? [KeyValue]
+        return NSKeyedUnarchiver.unarchiveObject(withFile: KeyValueFileWriter.GetPath(pathComponent)) as? [KeyValue]
     }
 }
 

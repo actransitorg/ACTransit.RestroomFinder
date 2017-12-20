@@ -9,18 +9,19 @@
 import Foundation
 import SharedFramework
 class BaseModel: SharedFramework.BaseModel{
-    dynamic var deviceId : String = ""
-    dynamic var deviceModel : String = ""
-    dynamic var deviceOS : String = ""
+    @objc dynamic var deviceId : String = ""
+    @objc dynamic var deviceModel : String = ""
+    @objc dynamic var deviceOS : String = ""
     override init(){
         super.init()
         let device = Common.currentDevice
         
-        deviceId = device.identifierForVendor!.UUIDString
+        deviceId = device.identifierForVendor!.uuidString
         deviceModel = device.model
-        deviceOS = "\(NSProcessInfo().operatingSystemVersionString)"
+        deviceOS = "\(ProcessInfo().operatingSystemVersionString)"
     }
-    required init(obj : NSDictionary){
+    
+    required init(obj : [String:AnyObject]){
         super.init(obj: obj)
         
       
@@ -36,35 +37,42 @@ class BaseModel: SharedFramework.BaseModel{
         }
     }
     
-    func toInt64(obj: AnyObject!, defaultValue: Int64) -> Int64{
+    func toInt64(_ obj: AnyObject!, defaultValue: Int64) -> Int64{
         if (obj == nil){
             return defaultValue
         }
-        let value = Int64(String(obj!))
+        let value = Int64(String(describing: obj!))
         if (value == nil){
             return defaultValue
         }
         return value!
     }
-    func toInt(obj: AnyObject!, defaultValue: Int) -> Int{
+    func toInt(_ obj: AnyObject!, defaultValue: Int) -> Int{
         if (obj == nil){
             return defaultValue
         }
-        return isNull(Int(String(obj!)), defaultValue: defaultValue) as! Int
+        return isNull(Int(String(describing: obj!)) as AnyObject, defaultValue: defaultValue as NSObject) as! Int
     }
-    func toDouble(obj: AnyObject!, defaultValue: Double) -> Double{
+    func toDouble(_ obj: AnyObject!, defaultValue: Double) -> Double{
         if (obj == nil){
             return defaultValue
         }
-        return isNull(Double(String(obj!)), defaultValue: defaultValue) as! Double
+        return isNull(Double(String(describing: obj!)) as AnyObject, defaultValue: defaultValue as NSObject) as! Double
     }
-    func toBool(obj: AnyObject!, defaultValue: Bool) -> Bool{
+    func toBool(_ obj: AnyObject!, defaultValue: Bool) -> Bool{
         if (obj == nil){
             return defaultValue
         }
-        return (isNull(obj, defaultValue: defaultValue) as! String).toBool(defaultValue)
+        return (isNull(obj, defaultValue: defaultValue as NSObject) as! String).toBool(defaultValue)
     }
-    func isNull(obj: AnyObject!, defaultValue: NSObject) -> NSObject{
+    func isNull(_ obj: AnyObject!, defaultValue: String) -> String{
+        if (obj == nil || obj is NSNull){
+            return defaultValue
+        }
+        return obj as! String
+    }
+
+    func isNull(_ obj: AnyObject!, defaultValue: NSObject) -> NSObject{
         if (obj == nil || obj is NSNull){
             return defaultValue
         }
@@ -74,11 +82,11 @@ class BaseModel: SharedFramework.BaseModel{
     func toJsonObject() -> [String:AnyObject]
     {
         return [
-            "version": self.version,
-            "apiKey": self.apiKey,
-            "deviceId": self.deviceId,
-            "deviceModel": self.deviceModel,
-            "deviceOS": self.deviceOS,
+            "version": self.version as AnyObject,
+            "apiKey": self.apiKey as AnyObject,
+            "deviceId": self.deviceId as AnyObject,
+            "deviceModel": self.deviceModel as AnyObject,
+            "deviceOS": self.deviceOS as AnyObject,
         ]
     }
 

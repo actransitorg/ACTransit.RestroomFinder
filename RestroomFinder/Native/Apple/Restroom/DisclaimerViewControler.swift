@@ -24,7 +24,7 @@ class DisclaimerViewController : BaseViewController{
         super.viewDidLoad()
         self.lblDisclaimerContent.text = Constants.Messages.onceDisclaimerText
         
-        self.navigationController?.navigationBar.hidden = true;
+        self.navigationController?.navigationBar.isHidden = true;
         
         textFieldDelegate = TextFieldCustomDelegate(limitLen: 6)
         txtBadge.delegate = textFieldDelegate
@@ -32,30 +32,30 @@ class DisclaimerViewController : BaseViewController{
         setBackgroundGradient()
     }
     
-    override func viewDidRotated(landscape: Bool) {
+    override func viewDidRotated(_ landscape: Bool) {
         setBackgroundGradient()
     }
     
-    @IBAction func txtBadge_EditingChanged(sender: UITextField) {
+    @IBAction func txtBadge_EditingChanged(_ sender: UITextField) {
         lblError.text=""
     }
 
-    @IBAction func txtBadge_Changed(sender: UITextField) {
+    @IBAction func txtBadge_Changed(_ sender: UITextField) {
         
     }
     
-    @IBAction func DisagreeClicked(sender: UIButton) {
+    @IBAction func DisagreeClicked(_ sender: UIButton) {
         exit(0)
         //todo
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.txtBadge.resignFirstResponder()
     }
     
     //override viewdidRota
     
-    @IBAction func AgreeClicked(sender: UIButton) {
+    @IBAction func AgreeClicked(_ sender: UIButton) {
         
         let badge: String! = txtBadge.text!
         showWait(activityIndicator){
@@ -75,7 +75,7 @@ class DisclaimerViewController : BaseViewController{
                     
                     let navigationController=self.navigationController
                     let storyboard = navigationController?.storyboard
-                    let controller :MapViewController=storyboard?.instantiateViewControllerWithIdentifier("MapView") as! MapViewController
+                    let controller :MapViewController=storyboard?.instantiateViewController(withIdentifier: "MapView") as! MapViewController
                     self.navigationController?.pushViewController(controller, animated: true)
                 }
             })

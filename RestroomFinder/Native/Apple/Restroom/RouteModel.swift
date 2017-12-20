@@ -9,25 +9,27 @@
 import Foundation
 import SharedFramework
 class RouteModel :BaseModel{
-    dynamic var RouteId : String=""
-    dynamic var Name : String=""
-    dynamic var Description : String=""
+    @objc dynamic var RouteId : String=""
+    @objc dynamic var Name : String=""
+    @objc dynamic var Description : String=""
     
-    required init(obj : NSDictionary){
+    required init(obj : [String : AnyObject]){
         super.init(obj: obj)
         let routeId = obj["RouteId"]
         let name = obj["Name"]
         let description = obj["DescriptionCodeId"]
         
         if routeId != nil {
-            self.RouteId = String(routeId!)
+            self.RouteId = String(describing: routeId!)
         }
         if name != nil {
-            self.Name=String(name!)
+            self.Name=String(describing: name!)
         }
         if description != nil {
-            self.Description=String(description!)
+            self.Description=String(describing: description!)
         }
         
     }
+    
+  
 }

@@ -35,19 +35,31 @@ namespace ACTransit.RestroomFinder.Domain.AccessControl
             }
 
             var groups = GetGroups(token);
+
             if (string.IsNullOrEmpty(ActiveDirectorySettings.Url) || ActiveDirectorySettings.Url.Contains("URL"))
                 return true;
+
             using (var service = new ActiveDirectoryService(ActiveDirectorySettings.Url, ActiveDirectorySettings.Username, ActiveDirectorySettings.Password))
             {
                 var usergroups = service.GetGroupOfUser(user, true);
-                var groupsInCommon = groups.Where(m => usergroups.Any(u => string.Equals(u.SamAccountName, m.Name, StringComparison.OrdinalIgnoreCase))).ToArray();
-                if (groupsInCommon.Any())
+
+                if (usergroups != null)
                 {
-                    if (groupsInCommon.Any(m => (!m.HasAccess && !m.Name.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))))
-                        return false;
-                    return true;
+                    var groupsInCommon = groups
+                        .Where(m => usergroups.Any(u => string.Equals(u.SamAccountName, m.Name,
+                            StringComparison.OrdinalIgnoreCase))).ToArray();
+
+                    if (groupsInCommon.Any())
+                    {
+                        if (groupsInCommon.Any(m => (!m.HasAccess &&
+                                                     !m.Name.Equals("Admin",
+                                                         StringComparison.InvariantCultureIgnoreCase))))
+                            return false;
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 

@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/dc0bcff0f82d1c861e573a2344d43a46382d9d2e/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_e4754d932b726cdc7cc343b5838f16be660fcefb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/a146cf6be002c3411b8e69c1888fb96780923c30/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_25626bdce1b448a27eaf4de9833c1f5f53ca6050/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/43c04ce037e67de708c853cce595a3fbf4b73296/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_ace6b9d824346056dbbc212c0a6a54330e7342ab/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/58ee252746afd6a00e9cba8be4047b09f5a480fd/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bc156efaaee99f1ef6bf471347373a4cbb28e2a1">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_5c50ac428b87f18751b85faa585633dcd5b3839a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/e38fc97254e4dd51e2d08ed63d1c91be315ebd66/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_75d98f41f3582ce1fb6f91c4ba2916946692479c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/6834f096d2c4230b23ab2a473ad1e57549a08d21/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d9ea4cdaafa29ec4651d6e4715788d3fcaa7b913">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_7433f4414b16e50e968652c2156ec8877e630534/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/1d6e28370a83a613fcda6d6639b86444d087c11d/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_c0907b1168963ad2ef98206907286458fae645d4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/a146cf6be002c3411b8e69c1888fb96780923c30/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_1dd5243facad48f67f3bc550d45ba9d88bcace0e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/88d9e8f38e37ccab9512e472ae2c6df3aa81ae1b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_68ecace7bc5b7ebe66e8a91156ff63f76ddcfd6f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/41e65cabf470dea31fc5170d0ac644a052230b02/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b6af089f583d547bcffc0689b2e80bc7aaa54b15">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_35356936132ec80a9b6a8d3f22dafdef3a611ac4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/45d0b2fedd4f662333fa5cf78cd98918a27267c1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e6970f0554f9508c041f1f6960af15cc888c9f35">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_2f557be5b687300e6b40b90f67bb20a84a68951d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/d1acf421808074714cd5192532c65bbe2c96f136/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a498fab72f8663c26fbf3d4496eb6b673b17bcae">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_3f14e573e787f8c88f1987c5409188c56e3ef100/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/b1a7feec9f7a8c48cd29b910b00785e6d3013b12/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f2774b1e02e5fbc524590311a744263c3b152d63">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_9bd51e95a88c9f61ddb279de938938b0f5d4c26b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/dc0bcff0f82d1c861e573a2344d43a46382d9d2e/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_1679ca622df79d21331a53532c207194c4b5bb97/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/559d916c872a969cef0470dda753fc6e7d746b66/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f4fb6981392ca7680d02fd57d26d6124c141d9d9">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_6c41ba014c16f1862731d6e13c25fe8fbfdc1ace/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/33dff4df45c6a7dd9064559ddf480b43fb81c7fa/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a511c684ea4c2cf31a3377d51e7677cb76696e07">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a754b7d2420e976957bc22b861206e2dc9640598/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/e503cbab834b1783ab623f0f86c1027de91bff9b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a45bc1ed812137b21dddd1cedaa3712b308f0b3f">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_67cbddc77a3fb8bda3b8b065bc9072a84b554090/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/a97535d10e7162058c4d6254af1fa98ba5b82c81/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="79e298d7fed2fcada58da7032d07d34ee198a545">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_f420ccc87946d683273adad5fd1ccadfaaadf79a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/fb3f65a9b23b983df97b995ac828fd3ad55ea834/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_ba5d45ba32b3d0b121da2b4213f3621a37951e3e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/95cf6062751b6a3e3546b385d9e8f8aa28353fd9/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="672cceae26e9a8fcbd8e0eefe5fc351c50d2488a">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_f602eb7f007a51b88fdb668d3e3373b68131d10f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/666f73e9226f62ebd01a1e09a0d3f1f4f96d703a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="51a11c41a08f099a204e1b8dcc04f27217de50ec">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_0ae48131181f2a22d5532e121bf9debfb6b22575/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/aaff5ade68ce785c34ffc13314fa3d4c72ecae70/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7e52b440a26498c56b4f263e215223b5451c955e">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a7be254e7cd28e75ead40592d43809f5cab3fd96/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/d2fb9f94ba237acc6b43733391cc97852f7a6684/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8752d155094b457ad69c51b0d610cf0d0f63a892">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a7c4c7272d809127bd49d74859a6c45e67770ab9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/9ea3f6ad3d20b6e806878b6b36bbe6c517d37f81/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_0451c1086f6423788f44d5604380ac76e8854bc8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/474937de76f1b51107746e290f4ef6b556205de4/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6ff48ef26bc539c78af4aa061cb9bad6abcbf5e8">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_366fe0a1dbacdf77d28f8254e0e31b69cb298338/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/2a03716a47d978754f5692ad29ba214da82f4c32/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="829c6e46cb221c2102801221c648b77113743e81">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_88891a455ad6e2f3d58c9a786ff4597839fb8931/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/5c5f62ea45cf3e8c81e962595da43833aebb2747/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fa472b7cbd3897bf6bed6068ac0b00e494987688">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_6310a90e0fb33d6f5d15d6fde49ffaad5d5eed37/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/ad1061fd3ec0ebd442b37c1c1b03ad92ecb42625/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="20e1a0f0de6276a5f36062b655f8b20f8cc00cc4">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_cadad4035b13b5f1ec128de4c962aae743d76807/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/7d88830f18699a1aa64742a19823ef0382a1a4c0/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="922c24fbfc4247947fcfaf2b95f295a16a8c3d17">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_6ae06e54c112b21bd0470f96d8f92d0789bf0827/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/5b9dd90c614614c6ca355f395ba7f7ec0b7346ab/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="143813b18381b28de1e04aae1d92fcb374a0add9">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_cf0d35931255061997670b7491bebd00516a5d2e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/9ee1680c74b4a85bcd5355d507b61fb0da1af3b6/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_8e97566a6584f1f0ad9d123010826b11bc5a276a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/1b3093e0fe6f30eb2ffb3ec860fb4d1010c9c256/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_c78ac575b4d33ec0f6683a177b16eb2d9de3ae16/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/1b3093e0fe6f30eb2ffb3ec860fb4d1010c9c256/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_591bdeb40bd5d72616a2ebfb345a17ca4329a032/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/dbcb5afa710d93efa0bb96f6d3279c29f6ae3967/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_b8519cadbba9b8a02123d236a4f88c2c426f99e3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/e60974fd0fab43d358971383e6f987127e926c92/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_536010ef676be41e9c32cc19592ba5be74b17c88/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/0b8bb81002361f4da4a8466c66f8d97e8162609d/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fe5b47e764869f1076cb9cfe12801ed2ef4e9117">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a1dd97f31c61f485cdbe833e3d115687221dcda9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/d2fb9f94ba237acc6b43733391cc97852f7a6684/output/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="19686ca598062e7a7dffc47b32dab3ac7a6319b3">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/internal_impl-25.0.0_f954ee731ecf8aaf7142e8c4df904d23394a24db/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/915bf49508fc42ddf014389a3172719fc0effcec/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2ab5be19bbd34bae74662ea6b2d4451314d92d97">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_80006be60ecc205929d782923ed5e6d479ef75de/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/b4e47b08661a70b645448743f5c2be91f890c62f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_ac7f73bf4b61d445b5d1a055419bfaa0850a659c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/fb3f65a9b23b983df97b995ac828fd3ad55ea834/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_15ce9bcba1be24017d928c0b7e9d966a0887edba/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/fad8afff5bc3950133558502c99c0dc762804074/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0c835e9f3875cf245877c9b17d1c69bc98f16057">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_5fff2cc0442e642c3833a6bcc6aadefc41598a7f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/df0136c34aeba69fd7daebf3f781ebae402e0660/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4ec890171a97b5ab98292f131aa784e0f3792c73">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_0f1af57ee0400f92b7b0da9196d6633d2297001a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/ca9e4cb0dc79c6131c94f8602f93dc6e80511136/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e11da70cff6a544a45cdc21f419802d9bb9043ac">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_84435d23a075db43233bcd985154313cb8f00868/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/5a7de9a87e9467d483606caabe9c42aacf5c81e3/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f399a2fde7888450cadcaec4974bfd169d8cce43">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a974a3e35f93ec8a9996a0c7beb4909a3ad826fc/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/d3cb9adce848addc379b28d1058793cbc78b2ba3/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="53f10fcd322a3931495d6ca2078a81f4957cdbce">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_0e197ef481c11a75d8b1c82b2e9ff3ed697f1274/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/44147419fc71eb885e23a5f75affb633eb3e8f51/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="568d5bda0b4d51f90d978ace369bb9ad024d2057">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_dbbe94238a87786515d628a0462439c7dc914e76/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/incremental-runtime-classes/flavorProd/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10000/instant-run_bdd896078319ac74e47409dd7e8939b12ae0ddc9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/f1397feaa928b6fd4a9df30f505ae2bf949c7e15/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6c58c14d15602fea2c50138c73bb107e8b832b62">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_d6d7e24e4a3e402143ddaac4a9a72b70bc2e1d32/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/464077e1939e908bab186871479ca5c51384e738/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8c0fc9b1ea0bac0cb31d60c8b1bf2feb0518e3a9">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_3700950d9499727680a3313cfeb220a692e26b1f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/support-annotations-25.0.0_05820bc5e64af900f99e7cdb297f06a4da1bc76e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/f4d3fd79a1ceb4fb4b80aa3d4244e6b5ca957c28/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c96952c162c9f6076f44c5939982cb35491442ea">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_2b46a2bf18d9f809e76e4e297e39b741bb9e6630/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/93e9151b4a8f351bd2273cee3cf9685d4a7c4db8/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b8e0372ca6dc89ac4fe22b76eeea4f68ece435b8">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_afd1f4bf6f5bdabd2fbd1ff0b6af66ce435e5c3b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/605b278e083cb619d2e8d97386c66aa96a0e86e7/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d900f2a1ff098cac8befe6c023d723e9afb154be">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_c45ac254717a7d332b85d1cda2e91153192214f9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/4e9f8b38f3600fc5bec0327ce68121dc696c9761/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="92a1d5f71b0fc8938f1d3f2e6ef984b52b894b4d">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_7795f8e9274c1f516b73108630f512d468212c09/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/5d1fc68812256f94f5f819acad4fe7b81d6923b1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="060a7157438a0b1b0706b99c430fb3ecbc5a79a4">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_3dadd06769e711657334eea7155379826257194b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/fe5eecbf940edc8585695d4ad736fbf184a301b7/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="cf16220db9128d91a215aedc739584181d5ca6a4">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_a17c6cd078372ce38e3213a6e0bb843f5f2d18db/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/994cf148c8fc5f1331536f42be83f2969a7515b0/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6666dd525c3da197e7d07f4f23ef5fc7881a697b">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_3c6072b53cefb78169a0135ecfce6c91a6f7b576/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/incremental-classes/flavorProd/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b2ce4e88c598f134ece7c89b1bfa91092e743a97">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10000/instant-run-bootstrap_c1fafefcc33d41e338ec8bf8b3f34b7aecc1d0dd/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/126ed84323731c2fbecd23ba3fcafe231a9b9737/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9819419ce8d79f3f81a0fc70f9345ac8c843af9c">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_79feca70089fba32832ecaf1826e58f837b0b02d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/9bdcf5843077ece3ec59f0398c6720d0361993a2/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="764d32faf85bc6f7bd2cdcb3a70a482c1884fdd2">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_547ea7a7f9207b225ac287090c4a5eb4216d8039/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/86a4a150a11649c2d80c94a4280179bbecf489bd/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="604ecf403feb0084dc6d0c12f1677a490cf45e4c">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_f98a179c7269b308dbc054a7427f790680ae75d2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/e60974fd0fab43d358971383e6f987127e926c92/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_6427e21689fe845b20848effc9bf23913f19e1d1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/06fb92d1fc10deb1badcf44bdd37b24a9595ffef/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_06752471f8e41f21cf171fba356362de3939f825/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/034d6ec8a7add0dd521e53d0309d5f33b4f154b7/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b3d0809a742c5f768c6aa9efc6decd5c1d6cd227">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_c87380cd75b19d335d2ca12c63fcdf1544d1dd36/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/DevTeam/.android/build-cache/077efdb95778752f98fa6ab25630401ff3222611/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="cd4c7c54e15d9ccbc448384fa2c4684d69ca73f0">
+        <dex dex="/Users/DevTeam/code/tfs/trunk/ACTransitToolBelt/Android/RestroomFinder/app/build/intermediates/transforms/dex/flavorProd/debug/folders/1000/10/classes_79febfa4f98f674b6fc2b9c357d41c7b0700fd60/classes.dex" />
+    </item>
+
+</items>

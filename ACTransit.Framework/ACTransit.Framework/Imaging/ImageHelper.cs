@@ -116,7 +116,7 @@ namespace ACTransit.Framework.Imaging
                                     res.Add(BitConverter.ToInt16(item.Value, (loopNumber * 2)));
                                 value = res;
                             }
-                            catch (Exception ex)
+                            catch // (Exception ex)
                             {
                                 //Console.Write(Enum.GetName(typeof(ImagePropertyIdEnum), item.Id) + ", type:" +
                                 //              (ImagePropertyTypeEnum) item.Type + ", len:" + item.Len + ", Error:" +
@@ -135,7 +135,7 @@ namespace ACTransit.Framework.Imaging
                                     res.Add(BitConverter.ToInt32(item.Value, (loopNumber * 4)));
                                 value = res;
                             }
-                            catch (Exception ex)
+                            catch //(Exception ex)
                             {
                                 //Console.Write(Enum.GetName(typeof(ImagePropertyIdEnum), item.Id) + ", type:" +
                                 //              (ImagePropertyTypeEnum) item.Type + ", len:" + item.Len + ", Error:" +

@@ -1,7 +1,11 @@
 ﻿package org.actransit.restroomfinder.Infrastructure;
 
+import android.app.Application;
 import android.content.pm.PackageInfo;
+import android.content.res.Resources;
 import android.view.View;
+
+import org.actransit.restroomfinder.R;
 
 /**
  * Created by atajadod on 5/17/2016.
@@ -19,13 +23,20 @@ public class Constants {
     }
     public static String apiKey = "";
     public static class Server {
-        private static String baseURL = "http://your.company.dns/path/to/restroom-finder-api/";
+        private static String baseTestURL = "https://your.company.dns/path/to/test-api-root/";
+        private static String baseURL = "http://api.actransit.org/";
+        private static String baseRestroomURL=(Constants.Variables.testMode ? Constants.Server.baseTestURL : Constants.Server.baseURL) + "restroom-finder/api/";
+
         
-        public static String restroomsUrl = baseURL + "Restrooms";
-        public static String operationUrl = baseURL + "Operator";
-        public static String feedbackUrl = baseURL + "Feedback";
-        public static String versionUrl = baseURL + "Version/Android/Restroom";
-        public static String transitApiUrl = "http://your.company.dns/path/to/transit-api";
+        public static String restroomsUrl = baseRestroomURL + "Restrooms";
+        public static String operationUrl = baseRestroomURL + "Operator";
+        public static String feedbackUrl = baseRestroomURL + "Feedback";
+        public static String versionUrl = baseRestroomURL + "Version/Android/Restroom";
+
+        public static String transitBaseApiUrl = "http://your.company.dns/path/to/prod-api-root/";
+        public static String transitBaseTestApiUrl = "http://your.company.dns/path/to/test-api-root/";
+        public static String transitApiUrl = (Constants.Variables.testMode ? Constants.Server.transitBaseTestApiUrl : Constants.Server.transitBaseApiUrl) + "transit";
+
         public static String transitApiToken = "Enter demo transit API token here";
     }
 
@@ -71,6 +82,7 @@ public class Constants {
         public static Integer maxAgeToIgnoreBadgeValidation = 600000 ; //1000 * 60 * 10  or 10 minutes
         public static Integer mapPaddingTop = 40; // in DP
         public static Integer mapPaddingBottom = 40; // in DP
+        public static Boolean testMode = true;
     }
 }
 

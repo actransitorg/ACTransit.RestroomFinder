@@ -4,7 +4,7 @@
 
 @{
     var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
-    var userCanEdit = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenEditor);
+    var userCanEdit = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenEditor);
 
     ViewBag.Title = "View Restroom";
 }

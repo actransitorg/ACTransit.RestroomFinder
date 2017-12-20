@@ -7,55 +7,55 @@
 //
 import Foundation
 
-public class ServerBaseAPI: NSObject{
+open class ServerBaseAPI: NSObject{
         
-    var syncGroup: dispatch_group_t
-    required public init(syncGroup: dispatch_group_t){
+    var syncGroup: DispatchGroup
+    required public init(syncGroup: DispatchGroup){
         self.syncGroup = syncGroup
     }
     
-    public func get<T : BaseModel>(url: String) -> AjaxPromise<[T]>{
+    open func get<T : BaseModel>(_ url: String) -> AjaxPromise<[T]>{
         let res = AjaxPromise<[T]>()
-        let request = createRequest(url, httpMethod: "GET")
-        let session = NSURLSession.sharedSession()
+        let request = createRequest(url, httpMethod: "GET") as URLRequest
+        let session = URLSession.shared
         
-        dispatch_group_enter(self.syncGroup)
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        self.syncGroup.enter()
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             defer{
-                dispatch_group_leave(self.syncGroup)
+                self.syncGroup.leave()
             }
             var err = error
             var values = [T]()
             defer{
-                res.always.raise(AjaxResult<[T]>(data: values, err: err))
+                res.always.raise(AjaxResult<[T]>(data: values, err: err as NSError!))
             }
             do{
                 if (err != nil){
                     if (res.fail == nil){
                         res.fail = Event<NSError>()
                     }
-                    res.fail?.raise(error!)
+                    res.fail?.raise(error! as NSError)
                 }
                 else{
                     if (data != nil)
                     {
-                        let d = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableLeaves)
+                        let d = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves)
                         let dm = Mirror(reflecting: d)
                         print ("Get-> d:\(dm.subjectType), \(d)")
                         if let jsonResult = d as? NSMutableArray {
                             for obj in jsonResult
                             {
-                                let dic=obj as! NSDictionary
-                                values.append(T(obj: dic))
+                                let dic=obj as! [String:AnyObject]
+                                values.append(T(obj: dic ))
                             }
                         }
                         else if let jsonResult = d as? NSDictionary {
-                            values.append(T(obj: jsonResult))
+                            values.append(T(obj: jsonResult as! [String : AnyObject]))
                         }
                         else if let jsonResult = d as? NSArray {
                             for obj in jsonResult
                             {
-                                let dic=obj as! NSDictionary
+                                let dic=obj as! [String:AnyObject]
                                 values.append(T(obj: dic))
                             }
                         }
@@ -69,7 +69,7 @@ public class ServerBaseAPI: NSObject{
                 if (res.fail == nil){
                     res.fail = Event<NSError>()
                 }
-                res.fail?.raise(err!)
+                res.fail?.raise(err! as NSError)
             }
             
         })
@@ -77,21 +77,21 @@ public class ServerBaseAPI: NSObject{
         return res;
     }
 
-    public func post<T : BaseModel>(url: String, jsonObject: AnyObject) -> AjaxPromise<T>{
+    open func post<T : BaseModel>(_ url: String, jsonObject: AnyObject) -> AjaxPromise<T>{
         let res = AjaxPromise<T>()
-        let request = createRequest(url, httpMethod: "POST")
-        let session = NSURLSession.sharedSession()
+        var request = createRequest(url, httpMethod: "POST") as URLRequest
+        let session = URLSession.shared
         let jsonStr = ServerBaseAPI.JSONStringify(jsonObject)
-        request.HTTPBody = jsonStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        request.httpBody =  jsonStr.data(using: String.Encoding.utf8, allowLossyConversion: true)
         
-        dispatch_group_enter(self.syncGroup)
+        self.syncGroup.enter()
         
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             var value : T!
-            var err = self.getError(error, response: response)
+            var err = self.getError(error as NSError!, response: response)
             
             defer{
-                dispatch_group_leave(self.syncGroup)
+                self.syncGroup.leave()
                 res.always.raise(AjaxResult<T>(data: value, err: err))
             }
             
@@ -104,10 +104,10 @@ public class ServerBaseAPI: NSObject{
                 }
                 else{
                     if (data != nil){
-                        let d = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableLeaves)
-                        if let jsonResult = d as? NSObject {
-                            let dic = jsonResult as! NSDictionary
-                            value = T(obj: dic)
+                        let d = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves)
+                        if let jsonResult = d as? [String:AnyObject] {
+                            let dic = jsonResult as NSDictionary
+                            value = T(obj: dic as! [String : AnyObject])
                         }
                     }
                     res.done.raise(value)
@@ -128,24 +128,24 @@ public class ServerBaseAPI: NSObject{
     }
     
     
-    private func createRequest(url: String, httpMethod: String) -> NSMutableURLRequest{
-        let request = NSMutableURLRequest(URL: NSURL(string:url)!)
-        request.HTTPMethod = httpMethod
+    fileprivate func createRequest(_ url: String, httpMethod: String) -> NSMutableURLRequest{
+        let request = NSMutableURLRequest(url: URL(string:url)!)
+        request.httpMethod = httpMethod
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         return request
     }
     
-    public static func JSONStringify(value: AnyObject,prettyPrinted:Bool = false) -> String{
+    open static func JSONStringify(_ value: AnyObject,prettyPrinted:Bool = false) -> String{
         
-        let options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions(rawValue: 0)
+        let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : JSONSerialization.WritingOptions(rawValue: 0)
         
         
-        if NSJSONSerialization.isValidJSONObject(value) {
+        if JSONSerialization.isValidJSONObject(value) {
             
             do{
-                let data = try NSJSONSerialization.dataWithJSONObject(value, options: options)
-                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                let data = try JSONSerialization.data(withJSONObject: value, options: options)
+                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
             }catch {
@@ -158,10 +158,10 @@ public class ServerBaseAPI: NSObject{
         return ""
     }
     
-    private func getError(error: NSError!, response: NSURLResponse!)->NSError! {
+    fileprivate func getError(_ error:NSError!, response: URLResponse!)->NSError! {
         var err = error
-        let httpResponse = response as? NSHTTPURLResponse
-        print (httpResponse?.statusCode)
+        let httpResponse = response as? HTTPURLResponse
+        //print (httpResponse?.statusCode)
         if (err == nil && httpResponse != nil && httpResponse?.statusCode != 200){
             err = NSError(domain: "Http error", code: (httpResponse?.statusCode)!, userInfo: nil)
         }
@@ -170,17 +170,17 @@ public class ServerBaseAPI: NSObject{
     
 }
 
-public class AjaxPromise<T>{
-    public var done: Event<T> = Event<T>()
-    public var fail: Event<NSError>?
-    public var always: Event<AjaxResult<T>> = Event<AjaxResult<T>>()
+open class AjaxPromise<T>{
+    open var done: Event<T> = Event<T>()
+    open var fail: Event<NSError>?
+    open var always: Event<AjaxResult<T>> = Event<AjaxResult<T>>()
 }
 
-public class AjaxResult<T>{
+open class AjaxResult<T>{
     public init(data: T!, err: NSError!){
         self.data = data
         self.error = err
     }
-    public var data: T!
-    public var error: NSError!
+    open var data: T!
+    open var error: NSError!
 }

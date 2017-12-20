@@ -220,14 +220,14 @@
 		1D02E2051C594BB500EFB0EC /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				1D02E2061C594D3400EFB0EC /* KeyValue.swift */,
-				1D38AC291C28CF600017EC9E /* Extensions.swift */,
-				1D02E2081C59764700EFB0EC /* UITextFieldCustomDelegate.swift */,
-				1D4D95DA1C65115D00C80B90 /* Threading.swift */,
-				1D32C3591C6CF934001117B3 /* Common.swift */,
-				1D21FCF01C7388A700EC9620 /* TextViewCustomDelegate.swift */,
 				1DB008791C7B8B5400AE4AD1 /* AppStorage.swift */,
+				1D32C3591C6CF934001117B3 /* Common.swift */,
 				1DFF38701CDBC3850021DC07 /* Constants.swift */,
+				1D38AC291C28CF600017EC9E /* Extensions.swift */,
+				1D02E2061C594D3400EFB0EC /* KeyValue.swift */,
+				1D21FCF01C7388A700EC9620 /* TextViewCustomDelegate.swift */,
+				1D4D95DA1C65115D00C80B90 /* Threading.swift */,
+				1D02E2081C59764700EFB0EC /* UITextFieldCustomDelegate.swift */,
 				1D2CE21B1D2F02390066944F /* VersionHelper.swift */,
 			);
 			name = Infrastructure;
@@ -438,24 +438,25 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = DevTeam;
 				TargetAttributes = {
 					1D38ABEB1C230F290017EC9E = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = Y7EDXDN93M;
-						ProvisioningStyle = Manual;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
 					};
 					1D38ABFF1C230F290017EC9E = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = N8USS2SL8T;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0920;
 						TestTargetID = 1D38ABEB1C230F290017EC9E;
 					};
 					1D38AC0A1C230F290017EC9E = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = N8USS2SL8T;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0920;
 						TestTargetID = 1D38ABEB1C230F290017EC9E;
 					};
 				};
@@ -751,25 +752,32 @@
 /* Begin XCBuildConfiguration section */
 		1D38AC121C230F290017EC9E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 023BFD67CF56AFD61E42C50B /* Pods-Restroom.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -791,7 +799,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4e031e3f-9289-43a4-b3d8-579b4e7cfb03";
+				PROVISIONING_PROFILE = "6d84f194-9584-4832-a4ce-9c49631fb1eb";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -806,14 +814,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -833,7 +847,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "4e031e3f-9289-43a4-b3d8-579b4e7cfb03";
+				PROVISIONING_PROFILE = "6d84f194-9584-4832-a4ce-9c49631fb1eb";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -849,8 +863,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 01.01.08;
-				DEVELOPMENT_TEAM = Y7EDXDN93M;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 01.01.10;
+				DEVELOPMENT_TEAM = "";
 				EXECUTABLE_EXTENSION = "";
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -863,11 +878,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ACTransit.RestroomFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8dea2664-6285-4c6e-b38a-99336a187502";
-				PROVISIONING_PROFILE_SPECIFIER = AtajadodRestroomFinder;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Restroom/Restroom-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";
 			};
@@ -881,8 +898,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 01.01.08;
-				DEVELOPMENT_TEAM = Y7EDXDN93M;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 01.01.10;
+				DEVELOPMENT_TEAM = "";
 				EXECUTABLE_EXTENSION = "";
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -895,11 +913,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ACTransit.RestroomFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8dea2664-6285-4c6e-b38a-99336a187502";
-				PROVISIONING_PROFILE_SPECIFIER = AtajadodRestroomFinder;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Restroom/Restroom-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";
 			};
@@ -914,7 +933,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = act.RestroomTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Restroom.app/Restroom";
 			};
 			name = Debug;
@@ -928,7 +948,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = act.RestroomTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Restroom.app/Restroom";
 			};
 			name = Release;
@@ -942,7 +963,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_BUNDLE_IDENTIFIER = act.RestroomUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Restroom;
 				USES_XCTRUNNER = YES;
 			};
@@ -957,7 +979,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_BUNDLE_IDENTIFIER = act.RestroomUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Restroom;
 				USES_XCTRUNNER = YES;
 			};

@@ -17,22 +17,22 @@ class VersionModel: BaseModel
     var fileName = ""
     
 
-    required init(obj : NSDictionary){
+    required init(obj : [String:AnyObject]){
         super.init(obj: obj)
-        appVersion = VersionHelper(version: isNull(obj["version"], defaultValue: Constants.defaultVersion) as! String)
-        internalDate = isNull(obj["date"], defaultValue: "") as! String
-        url = isNull(obj["url"], defaultValue: "") as! String
-        applicationType = isNull(obj["applicationType"], defaultValue: "") as! String
-        fileName = isNull(obj["fileName"], defaultValue: "") as! String
+        appVersion = VersionHelper(version: isNull(obj["version"], defaultValue: Constants.defaultVersion) )
+        internalDate = isNull(obj["date"], defaultValue: "") 
+        url = isNull(obj["url"], defaultValue: "") 
+        applicationType = isNull(obj["applicationType"], defaultValue: "") 
+        fileName = isNull(obj["fileName"], defaultValue: "") 
     }
     
     func toJsonObject() -> AnyObject{
         var obj = super.toJsonObject()
         obj["version"] = self.appVersion
-        obj["date"] = internalDate
-        obj["url"] = self.url
-        obj["applicationType"] = self.applicationType
-        obj["fileName"] = self.fileName
+        obj["date"] = internalDate as AnyObject
+        obj["url"] = self.url as AnyObject
+        obj["applicationType"] = self.applicationType as AnyObject
+        obj["fileName"] = self.fileName as AnyObject
         return obj as AnyObject
     }
     

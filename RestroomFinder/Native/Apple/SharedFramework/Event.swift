@@ -8,19 +8,19 @@
 
 import Foundation
 
-public class Event<T> {
+open class Event<T> {
     
     public init(){}
     
-    public typealias EventHandler = T -> ()
+    public typealias EventHandler = (T) -> ()
     
-    private var eventHandlers = [EventHandler]()
+    fileprivate var eventHandlers = [EventHandler]()
     
-    public func addHandler(handler: EventHandler) {
+    open func addHandler(_ handler: @escaping EventHandler) {
         eventHandlers.append(handler)
     }
     
-    public func raise(data: T) {
+    open func raise(_ data: T) {
         for handler in eventHandlers {
             handler(data)
         }

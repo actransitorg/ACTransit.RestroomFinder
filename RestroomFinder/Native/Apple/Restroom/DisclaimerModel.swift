@@ -20,14 +20,14 @@ class DisclaimerModel: BaseModel
         self.badge = badge
     }
     
-    required init(obj : NSDictionary){
-        super.init(obj: obj)
-        badge = isNull(obj["badge"], defaultValue: "") as! String
+    required init(obj : [String:AnyObject]){
+        super.init(obj: obj )
+        badge = isNull(obj["badge"], defaultValue: "") 
     }
     
     func toJsonObject() -> AnyObject{
         var obj = super.toJsonObject()
-        obj["badge"] = self.badge
+        obj["badge"] = self.badge as AnyObject
         return obj as AnyObject
     }
 

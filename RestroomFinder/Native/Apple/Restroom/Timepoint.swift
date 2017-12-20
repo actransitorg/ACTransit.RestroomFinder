@@ -10,12 +10,12 @@
 import Foundation
 import SharedFramework
 class Timepoint:BaseModel {
-    dynamic var TripId : Int = 0
-    dynamic var Sequence : Int = 0
-    dynamic var Latitude : Double = 0
-    dynamic var Longitude : Double = 0
+    @objc dynamic var TripId : Int = 0
+    @objc dynamic var Sequence : Int = 0
+    @objc dynamic var Latitude : Double = 0
+    @objc dynamic var Longitude : Double = 0
     
-    required init(obj: NSDictionary) {
+    required init(obj: [String:AnyObject]) {
         super.init(obj: obj)
         let tripId = obj["TripId"]
         let sequence = obj["Sequence"]
@@ -23,21 +23,22 @@ class Timepoint:BaseModel {
         let longitude = obj["Longitude"]
         
         if(tripId != nil) {
-            self.TripId = Int(String(tripId!))!
+            self.TripId = Int(String(describing: tripId!))!
         }
 
         if(sequence != nil) {
-            self.Sequence = Int(String(sequence!))!
+            self.Sequence = Int(String(describing: sequence!))!
         }
         
         if(latitude != nil) {
-            let latitudeString:String! = String(latitude!)
+            let latitudeString:String! = String(describing: latitude!)
             self.Latitude = Double(latitudeString)!
         }
         
         if(longitude != nil) {
-            let longitudeString:String! = String(longitude!)
+            let longitudeString:String! = String(describing: longitude!)
             self.Longitude = Double(longitudeString)!
         }
     }
 }
+

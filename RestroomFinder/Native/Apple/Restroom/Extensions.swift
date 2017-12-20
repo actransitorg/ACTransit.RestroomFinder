@@ -8,8 +8,8 @@
 
 import Foundation
 extension String{
-    func toBool(defaultValue: Bool) -> Bool {
-        let value=self.lowercaseString
+    func toBool(_ defaultValue: Bool) -> Bool {
+        let value=self.lowercased()
         switch value {
         case "true","1","y" :
             return true
@@ -20,11 +20,11 @@ extension String{
         }
     }
 }
-extension _ArrayType where Generator.Element == KeyValue {
-    func containsKey(key: String) -> Bool{
+extension Array where Iterator.Element == KeyValue {
+    func containsKey(_ key: String) -> Bool{
         return self.filter({KeyValue in return KeyValue.key==key }).first != nil
     }
-    func tryGetValue(key: String) -> KeyValue?{
+    func tryGetValue(_ key: String) -> KeyValue?{
         return self.filter({KeyValue in return KeyValue.key==key }).first
     }
 }

@@ -1,15 +1,23 @@
-﻿using ACTransit.Framework.Web.Attributes;
-using System.Web.Mvc;
-using ACTransit.RestroomFinder.Web.Infrastructure;
+﻿using System.Web.Mvc;
+using ACTransit.Framework.Logging;
+using ACTransit.Framework.Web.Attributes;
 
 namespace ACTransit.RestroomFinder.Web.Controllers.Base
 {
     [CustomError]
     public abstract class BaseController : Controller
     {
-        private readonly Log<BaseController> log = new Log<BaseController>();
+        protected readonly Logger Logger;
 
-        protected BaseController() { }
+        protected BaseController()
+        {
+            Logger = new Logger(GetType().Name);
+        }
+
+        protected BaseController(string loggerPrefixName)
+        {
+            Logger = new Logger(loggerPrefixName + GetType().Name);
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -256,8 +256,10 @@ function Create-MergeDir
         }
     }    
 
-    # Delete profiles
+    # Delete profiles - still needed by publish.ps1
+    $scriptName = "$($config.ScriptName)"
     $publishScriptProfiles = "$($config.PublishScripts)\Profiles"
+    Remove-Item $publishScriptProfiles -Exclude *$scriptName* -Force -Recurse
     "[ ]" | Out-File "$publishScriptProfiles\*.json"
 
 	# Finalize profile activity
@@ -267,6 +269,9 @@ function Create-MergeDir
     Write-Debug "* Finalizing $Profile profile" 
     $config.Finalize.Invoke()
     Pop-Location
+
+    Write-Debug "* Check directory contents before compiling."
+    Pause
 
     # Stage 4 - Restore dependencies and compile
 

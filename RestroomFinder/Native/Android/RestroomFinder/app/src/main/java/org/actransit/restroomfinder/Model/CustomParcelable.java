@@ -53,10 +53,14 @@ public abstract class CustomParcelable<T> implements Parcelable {
                 String name = in.readString();
                 Object v=in.readValue(null);
                 for (Field f : fields) {
-                    if (f.toString().startsWith("public") && f.getName().equals(name)){
+                    int mod=f.getModifiers();
+                    if((mod & java.lang.reflect.Modifier.FINAL) != java.lang.reflect.Modifier.FINAL &&
+                            java.lang.reflect.Modifier.isPublic(mod) && f.getName().equals(name))
+                    {
                         Type t=f.getGenericType().getClass();
                         f.set(value, v);
                         break;
+                        //this is final field
                     }
                 }
             }

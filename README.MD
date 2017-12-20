@@ -72,6 +72,8 @@ Since the databases reference each other, we included a custom SQLExecute tool, 
 * RestroomFinder\RestroomFinderAPI\Controllers\VersionController.cs
 * RestroomFinder\RestroomFinderAPI\Web.config
 * RestroomFinder\RestroomFinderApi.Test\Settings.cs
+* RestroomFinder\Native\Android\RestroomFinder\app\src\flavorProd\res\values\strings.xml
+* RestroomFinder\Native\Android\RestroomFinder\app\src\flavorTest\res\values\strings.xml
 
 ## Contact Us
 

@@ -11,12 +11,12 @@ import Foundation
 
 struct Constants{
     static var defaultVersion = "00.00.00"
-    internal static var version : VersionHelper = VersionHelper(version: NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]!.debugDescription!)
+    internal static var version : VersionHelper = VersionHelper(version: (Bundle.main.infoDictionary!["CFBundleShortVersionString"]! as AnyObject).debugDescription!)
     static let apiKey : String = ""
 
     struct Server {
-        static let baseTestURL      :String="https://your.company.dns/path/to/restroom-finder-api/"
-        static let baseURL      :String="https://your.company.dns/path/to/restroom-finder-api/"
+        static let baseTestURL      :String="https://your.company.dns/path/to/test-restroom-finder-api/"
+        static let baseURL      :String="https://your.company.dns/path/to/prod-restroom-finder-api/"
         static let baseRestroomURL      :String="\(Constants.Variables.testMode ? Constants.Server.baseTestURL : Constants.Server.baseURL)restroom-finder/api/"
         
         static let restUrl      : String = "\(Constants.Server.baseRestroomURL)Restrooms"
@@ -24,7 +24,7 @@ struct Constants{
         static let versionUrl   : String = "\(Constants.Server.baseRestroomURL)Version/iOS/Restroom";
         
         //NOTE: These were added to retrieve Trip Pattern
-        static let transitApiUrl:String="http://your.company.dns/path/to/transit-api"
+        static let transitApiUrl:String="\(Constants.Variables.testMode ? Constants.Server.baseTestURL : Constants.Server.baseURL)transit"
         static let transitApiToken:String="Enter demo transit API token here"
         
     }
@@ -56,7 +56,7 @@ struct Constants{
         static let actionAlert_Cancel="Cancel"
         static let actionAlert_OpenSettings="Open Settings"
         static let hideSpeedIndicator = true
-        static let testMode = false
+        static let testMode = true
     }
     
 }

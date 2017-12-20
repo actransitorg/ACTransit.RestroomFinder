@@ -31,7 +31,7 @@ class StartupViewController: BaseViewController {
         lblVersion.text = version
         let sec:Int64 = Constants.Variables.testMode ? 5 : 1
         let triggerTime = (Int64(NSEC_PER_SEC) * sec)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
             self.check();
         })
        
@@ -47,23 +47,23 @@ class StartupViewController: BaseViewController {
         }
         
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "Startup")
+        tracker?.set(kGAIScreenName, value: "Startup")
         
         let builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
+        tracker?.send(builder?.build() as! [AnyHashable: Any])
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewDidRotated(landscape: Bool) {
+    override func viewDidRotated(_ landscape: Bool) {
         setBackgroundGradient()
     }
     
     //NOTE: Travis added this:  This allows us to dismiss the keyboard when a user clicks on the background, outside of the textbox.
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
@@ -76,23 +76,26 @@ class StartupViewController: BaseViewController {
             server.getOperationAsync(badge, agreed: true, validating: true, callBack: {(operationInfo, error) in
                 Threading.runInMainThread{
                     let viewName = (error != nil) ? "Disclaimer" : "MapView"
-                    super.NavigateTo(viewName, asModal: false, captureBackgroundImage: false, modalCompletion: nil)
+                    let _=super.NavigateTo(viewName, asModal: false, captureBackgroundImage: false, modalCompletion: nil)
                 }
             })
         }
         else{
-            let viewName = isFirstTime ? "Disclaimer" : "MapView"
-            NavigateTo(viewName, asModal: false, captureBackgroundImage: false, modalCompletion: nil)
+            Threading.runInMainThread{
+                let viewName = isFirstTime ? "Disclaimer" : "MapView"
+                let _=self.NavigateTo(viewName, asModal: false, captureBackgroundImage: false, modalCompletion: nil)
+            }
+           
         }
 
     }
     
-    func checkForUpdate(callBack: (updateAvailable: Bool, version: VersionModel?) -> Void){
+    func checkForUpdate(_ callBack: @escaping (_ updateAvailable: Bool, _ version: VersionModel?) -> Void){
 //        callBack(updateAvailable: true, version: VersionHelper(version: "00.00.05"));
         server.getVersion { (versions, error) in
             if (error != nil){
-                print (error)
-                callBack(updateAvailable: false, version: nil);
+                print (error!)
+                callBack(false, nil);
                 return;
             }
             print ("version: \(Constants.version)")
@@ -101,18 +104,18 @@ class StartupViewController: BaseViewController {
             if(versions.count == 1){
                 version=versions[0];
             }
-            callBack(updateAvailable: updateAvailable, version: version);
+            callBack(updateAvailable, version);
         }
         
     }
-    func update(version: VersionModel){
+    func update(_ version: VersionModel){
         var message = Constants.Messages.newVersionAvaiable;
         //message += "\r\n" + "Current Version: \(Constants.version.toString()), Available: \(version.toString())"
         message += "\r\n Current Version: \(Constants.version.toString())\r\n Available: \(version.appVersion.toString())"
-        self.messageBox("Update", message: message, prefferedStyle: UIAlertControllerStyle.Alert, cancelButton: true, oKButton: true, openSettingButton: false, done: { (action) in
+        _=self.messageBox("Update", message: message, prefferedStyle: UIAlertControllerStyle.alert, cancelButton: true, oKButton: true, openSettingButton: false, done: { (action) in
             if (action.title==Constants.Variables.actionAlert_OK){
-                let url=NSURL(string: version.url);
-                if (UIApplication.sharedApplication().openURL(url!)){
+                let url=URL(string: version.url);
+                if (UIApplication.shared.openURL(url!)){
                     exit(0)
                 }
             }

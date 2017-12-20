@@ -1,5 +1,5 @@
 ﻿@using ACTransit.RestroomFinder.Web.Infrastructure
-@using System.Net.Mime
+
 @{
     const string baseTitle = "RestroomFinder";
     var title = string.Format("{0}{1}",baseTitle,ViewBag.Title != null ? " ▶ " + ViewBag.Title : "");
@@ -17,11 +17,25 @@
     @RenderSection("head", required: false)
 </head>
     <body>
-        <header>
-            <div class="pull-right identity">Hello @User.Identity.Name</div>
-            <div><a href='@Href("~")'><img src='@CDN.ImgPath("act_logo_small.png")' alt="logo" /></a></div>
-            <div class="title"><span style="line-height: 40px; margin-top: 10px;padding: 0 0 5px 5px">@baseTitle@(ViewBag.Title != null ? " ▶ " + ViewBag.Title : "")</span></div>         
-        </header>
+    <header>
+        <div class="identity pull-right">
+            <div class="pull-left">Hello @User.Identity.Name</div>
+            @if (!string.IsNullOrEmpty(FormsAuthentication.FormsCookieName.Replace(".ASPXAUTH","")) && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", style="display:inline;"}))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="pull-right">&nbsp;&#124;&nbsp;
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        </div>
+                    }
+            }
+        </div>
+        <div><a href='@Href("~")'><img src='@CDN.ImgPath("act_logo_small.png")' alt="logo"/></a>
+        </div>
+        <div class="title"><span style="line-height: 40px; margin-top: 10px; padding: 0 0 5px 5px">@baseTitle@(ViewBag.Title != null ? " ▶ " + ViewBag.Title : "")</span>
+        </div>
+    </header>
         <nav>
             @Html.Partial("_Menu")
         </nav>
@@ -39,23 +53,6 @@
 
         @Html.Partial("_WaitBox")
         @Html.Partial("_Modal")
-
-        @*
-        //uncomment this area if you need employee search functionality. you may also want to customize it    
-        @Html.Partial("_EmployeeSearch")*@
-        
-        <script>
-
-            $(function (e) {
-                "use strict";
-                @* //uncomment this area if you need employee search functionality. you may also want to customize it
-                EmployeeSearch.initial();
-                EmployeeSearch.url = '@Url.Action("GetContacts", "EmployeeSearch",new {area=""})';*@
-
-                //todo
-            });
-
-       </script>
 
         @RenderSection("scripts", required: false)
 

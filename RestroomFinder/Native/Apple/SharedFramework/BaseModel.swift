@@ -8,8 +8,8 @@
 
 import Foundation
 
-
-public class BaseModel{
+open class BaseModel{
     public init(){}
-    required public init(obj : NSDictionary){}
+    //required public init(obj : NSDictionary){}
+    required public init(obj:[String:AnyObject]){}
 }

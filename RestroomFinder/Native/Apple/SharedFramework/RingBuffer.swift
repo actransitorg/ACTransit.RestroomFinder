@@ -9,23 +9,23 @@
 import Foundation
 
 // A fixed sized array that discards old values as new values are added.
-public class RingBuffer {
+open class RingBuffer {
     var values: [Double]
     var index: Int      // points to the newest value
     var rollOvered: Bool = false
-    private var repeatedValue: Double
+    fileprivate var repeatedValue: Double
     public init(count: Int, repeatedValue: Double) {
         self.repeatedValue = repeatedValue
-        values = Array<Double>(count: count, repeatedValue: repeatedValue)
+        values = Array<Double>(repeating: repeatedValue, count: count)
         index = 0
     }
     
-    public var count: Int {
+    open var count: Int {
         return values.count
     }
     
     
-    public var average: Double {
+    open var average: Double {
         get{
             var a: Double = 0
             for i in 0 ..< values.count {
@@ -40,13 +40,13 @@ public class RingBuffer {
         return values[(index - (i % values.count) + values.count) % values.count]
     }
     
-    public func clear(){
-        values = Array<Double>(count: count, repeatedValue: repeatedValue)
+    open func clear(){
+        values = Array<Double>(repeating: repeatedValue, count: count)
         index = 0
         rollOvered = false
     }
     
-    public func add(newValue: Double) {
+    open func add(_ newValue: Double) {
         index = (index + 1) % values.count
         values[index] = newValue
         if (index == 0){
@@ -54,16 +54,16 @@ public class RingBuffer {
         }
     }
     
-    public var oldest: Double {
+    open var oldest: Double {
         return values[(index + 1) % values.count]
     }
     
-    public var newest: Double {
+    open var newest: Double {
         return values[index]
     }
     
     // This makes no guarantees about the order the values are iterated.
-    public func reduce(initial: Double, combine: (accumulator: Double, newValue: Double) -> Double) -> Double {
-        return values.reduce(initial, combine: combine)
+    open func reduce(_ initial: Double, combine: (_ accumulator: Double, _ newValue: Double) -> Double) -> Double {
+        return values.reduce(initial, combine)
     }
 }

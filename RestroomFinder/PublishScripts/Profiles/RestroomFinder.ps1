@@ -47,6 +47,7 @@
             "Training.docx", "SQlExecute.exe.config", "*.pubxml", "Web.Release.config", "Training")
             
     $result = @{ `
+        ScriptName = $scriptName
         ScriptPath = $scriptPath
         #SqlExecutePath = $sqlExecutePath
         DatabaseFilesPath = $databaseFilesPath

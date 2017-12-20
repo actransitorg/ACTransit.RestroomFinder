@@ -8,7 +8,7 @@ class TextFieldCustomDelegate: NSObject, UITextFieldDelegate {
     init(limitLen:Int=10) {
         self.limitLength = limitLen
     }
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return true }
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= limitLength

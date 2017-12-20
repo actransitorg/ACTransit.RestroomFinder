@@ -17,38 +17,38 @@ class MapDelegate: NSObject, MKMapViewDelegate {
     
     let dID = "DriverPinID"
     let rID = "RestroomPinID"
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var res: MKPinAnnotationView!
         if (annotation is MKUserLocation){
             return nil
         }
         if annotation is LocationAnnotation
         {
-           var pin=mapView.dequeueReusableAnnotationViewWithIdentifier(dID) as? MKPinAnnotationView
+           var pin=mapView.dequeueReusableAnnotationView(withIdentifier: dID) as? MKPinAnnotationView
             if pin == nil
             {
                 pin=MKPinAnnotationView(annotation: annotation, reuseIdentifier: dID)
             }
-            pin?.pinColor=MKPinAnnotationColor.Red
+            pin?.pinColor=MKPinAnnotationColor.red
             res=pin
         }
         else
         {
             let ann = annotation as? RestroomAnnotation
-            var pin=mapView.dequeueReusableAnnotationViewWithIdentifier(rID) as? MKPinAnnotationView
+            var pin=mapView.dequeueReusableAnnotationView(withIdentifier: rID) as? MKPinAnnotationView
             if pin == nil
             {
                 pin=MKPinAnnotationView(annotation: annotation, reuseIdentifier: rID)
-                let btnRight = UIButton(type: .System)
-                btnRight.frame = CGRectMake(29,29, 29, 29)
+                let btnRight = UIButton(type: .system)
+                btnRight.frame = CGRect(x: 29,y: 29, width: 29, height: 29)
                 btnRight.tintColor = mapView.tintColor
-                btnRight.setImage(UIImage(named: "Edit"), forState: .Normal)
+                btnRight.setImage(UIImage(named: "Edit"), for: UIControlState())
                 
                 pin?.rightCalloutAccessoryView = btnRight
                 
             }
             if (ann?.hours != nil && ann?.hours != ""){
-                let btnLeft = UIButton(type: UIButtonType.DetailDisclosure)
+                let btnLeft = UIButton(type: UIButtonType.detailDisclosure)
                 pin?.leftCalloutAccessoryView = btnLeft
             }
             else {
@@ -57,10 +57,10 @@ class MapDelegate: NSObject, MKMapViewDelegate {
             
             
             if ann != nil && ann!.drinkingWater{
-                pin?.pinColor = MKPinAnnotationColor.Green
+                pin?.pinColor = MKPinAnnotationColor.green
                 //pin?.pinTintColor=UIColor.blueColor()
             }else{
-                pin?.pinColor = MKPinAnnotationColor.Purple
+                pin?.pinColor = MKPinAnnotationColor.purple
                 //pin?.pinTintColor=UIColor.greenColor()
             }
             
@@ -101,10 +101,10 @@ class MapDelegate: NSObject, MKMapViewDelegate {
     }*/
     
     //NOTE: New method added to drawing the route on the map.
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.purpleColor()
+            polylineRenderer.strokeColor = UIColor.purple
             polylineRenderer.lineWidth = 1
             return polylineRenderer
         }
@@ -112,10 +112,10 @@ class MapDelegate: NSObject, MKMapViewDelegate {
         return MKOverlayRenderer()
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
-        if control.isKindOfClass(UIButton){
-            if (control as! UIButton).buttonType == .DetailDisclosure {
+        if control.isKind(of: UIButton.self){
+            if (control as! UIButton).buttonType == .detailDisclosure {
                 infoClicked?.raise(view)
             }
             else{

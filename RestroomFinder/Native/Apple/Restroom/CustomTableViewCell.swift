@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CustomTableViewCellDelegate: class {
-    func CustomTableViewCellEditClicked(cell: CustomTableViewCell)
+    func CustomTableViewCellEditClicked(_ cell: CustomTableViewCell)
 }
 class CustomTableViewCell: UITableViewCell, RankViewDelegate {
 
@@ -27,7 +27,7 @@ class CustomTableViewCell: UITableViewCell, RankViewDelegate {
     
     var onTapped : (() -> Void)? = nil
     
-    override func didAddSubview(subview: UIView) {
+    override func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CustomTableViewCell.clicked(_:)))
         self.addGestureRecognizer(tap)
@@ -35,12 +35,12 @@ class CustomTableViewCell: UITableViewCell, RankViewDelegate {
         //btnRank.delegate = self
     }
     
-    func load (title: String, rate :Double, extraInfo: String? = "", potableWater: Bool=false){
+    func load (_ title: String, rate :Double, extraInfo: String? = "", potableWater: Bool=false){
         self.lblTitle.text = title
         btnRank.readOnly = true
         self.rate = rate
         self.lblExtraInfo.text = extraInfo ?? ""
-        self.imgWater.hidden = !potableWater
+        self.imgWater.isHidden = !potableWater
     }
     
     override func awakeFromNib() {
@@ -48,27 +48,27 @@ class CustomTableViewCell: UITableViewCell, RankViewDelegate {
         // Initialization code
     }
 
-    func clicked(sender: UITableViewCell){
+    @objc func clicked(_ sender: UITableViewCell){
         if let onCellTapped = self.onTapped {
             onCellTapped()
         }
     }
     
-    @IBAction func editClicked(sender: UIButton) {
+    @IBAction func editClicked(_ sender: UIButton) {
         self.customDelegate?.CustomTableViewCellEditClicked(self)
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
     
     var editEnabled: Bool{
         get{
-            return !btnEdit.hidden
+            return !btnEdit.isHidden
         }
         set(value){
-            btnEdit.hidden = !value
+            btnEdit.isHidden = !value
         }
     }
     
@@ -90,7 +90,7 @@ class CustomTableViewCell: UITableViewCell, RankViewDelegate {
     }
     
     
-    func RankViewChanged(rate: Double) {
+    func RankViewChanged(_ rate: Double) {
         
     }
     

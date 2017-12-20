@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 protocol MapInfoHelperViewDelegate: class{
-    func mapInfoHelperView(configuration: MapInfoData)
+    func mapInfoHelperView(_ configuration: MapInfoData)
 }
 
 class MapInfoHelperView: UIView {
@@ -33,39 +33,39 @@ class MapInfoHelperView: UIView {
         _init()
     }
     
-    override func didAddSubview(subview: UIView) {
+    override func didAddSubview(_ subview: UIView) {
         self.myView.frame = self.frame
         if #available(iOS 9.0, *) {
-            btnTraffic.enabled = true
+            btnTraffic.isEnabled = true
         }
         else{
             showTraffic = false
-            btnTraffic.enabled = false
+            btnTraffic.isEnabled = false
         }
         
     }
     
     func _init(){
-        NSBundle.mainBundle().loadNibNamed("MapInfoHelperView", owner: self, options: nil)
+        Bundle.main.loadNibNamed("MapInfoHelperView", owner: self, options: nil)
         self.addSubview(myView)
         
-        let bottomBorder : UIView = UIView(frame: CGRectMake(btnTraffic.frame.origin.x, btnTraffic.frame.origin.y + btnTraffic.frame.size.height - 1.0, btnTraffic.frame.size.width, 0.4))
-        bottomBorder.backgroundColor = UIColor.grayColor()
+        let bottomBorder : UIView = UIView(frame: CGRect(x: btnTraffic.frame.origin.x, y: btnTraffic.frame.origin.y + btnTraffic.frame.size.height - 1.0, width: btnTraffic.frame.size.width, height: 0.4))
+        bottomBorder.backgroundColor = UIColor.gray
         self.myView.addSubview(bottomBorder)
     }
     
-    @IBAction func btnTrafficClicked(sender: UIButton) {
+    @IBAction func btnTrafficClicked(_ sender: UIButton) {
         showTraffic = !showTraffic
         let data = getMapInfoData()
         self.delegate?.mapInfoHelperView(data)
     }
     
-    @IBAction func btnMapTypeClicked(sender: UIButton) {
+    @IBAction func btnMapTypeClicked(_ sender: UIButton) {
         is2d = !is2d
         let data = getMapInfoData()
         self.delegate?.mapInfoHelperView(data)
     }
-    @IBAction func btnSegmentValueChanged(sender: UISegmentedControl) {
+    @IBAction func btnSegmentValueChanged(_ sender: UISegmentedControl) {
         let data = getMapInfoData()
         self.delegate?.mapInfoHelperView(data)
     }
@@ -78,7 +78,7 @@ class MapInfoHelperView: UIView {
         set(value){
             _is2d = value
             let title = _is2d ? "3D Map": "2D Map"
-            btnMapType.setTitle(title, forState: .Normal)
+            btnMapType.setTitle(title, for: UIControlState())
         }
     }
     
@@ -90,7 +90,7 @@ class MapInfoHelperView: UIView {
         set(value){
             _showTraffic = value
             let title = _showTraffic ? "Hide Traffic": "Show Traffic"
-            btnTraffic.setTitle(title, forState: .Normal)
+            btnTraffic.setTitle(title, for: UIControlState())
         }
     }
     
@@ -98,11 +98,11 @@ class MapInfoHelperView: UIView {
         let res = MapInfoData()
         switch btnSegment.selectedSegmentIndex{
         case 1:
-            res.MapType = .Hybrid
+            res.MapType = .hybrid
         case 2:
-            res.MapType = .Satellite
+            res.MapType = .satellite
         default:
-            res.MapType = .Standard
+            res.MapType = .standard
         }
         
         res.showTraffic = showTraffic
@@ -114,7 +114,7 @@ class MapInfoHelperView: UIView {
 }
 
 class MapInfoData{
-    var MapType: MKMapType = .Standard
+    var MapType: MKMapType = .standard
     var Is2D: Bool = true
     var showTraffic: Bool = true
 }

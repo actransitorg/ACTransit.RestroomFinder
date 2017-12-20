@@ -25,8 +25,8 @@
     ViewBag.Title = "View and Search Restrooms";
 
     var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
-    var userCanEdit = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenEditor);
-    var userCanCreate = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenCreator);
+    var userCanEdit = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenEditor);
+    var userCanCreate = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenCreator);
 }
 
 <h2>View and Search Restrooms</h2>
@@ -66,7 +66,7 @@
     </div>
 
     <div id="AddRestroomGroup" class="panel-group col-md-2" style="padding-top: 5px;">
-        @{if (userIsAdmin || userCanCreate)
+        @{if (userCanCreate)
           {
               <input type="button" value="Add Restroom" class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "RestroomAdmin")'"/>
           }
@@ -155,14 +155,14 @@
                         @{
                             @Html.ActionLink("Details", "Details", new { id = item.RestroomId });
 
-                            if (userIsAdmin || userCanEdit)
+                            if (userCanEdit)
                             {
                                 @Html.Raw("&nbsp;|&nbsp;");
 
                                 @Html.ActionLink("Edit", "Edit", new { id = item.RestroomId });
                             }
 
-                            if (userIsAdmin || userCanEdit)
+                            if (userCanEdit)
                             {
                                 @Html.Raw("&nbsp;|&nbsp;");
 

@@ -25,7 +25,7 @@ class FilterViewController: BaseViewController, ComboViewDelegate {
         showWait(activityIndicator){
             self.cboRoute.layer.cornerRadius = 5
 
-            super.setNavigationBar(true, backgroundColor: UIColor.clearColor())
+            super.setNavigationBar(true, backgroundColor: UIColor.clear)
             if (super.backgroundImage != nil){
                 self.imgBackground.image = super.backgroundImage!
             }
@@ -42,18 +42,18 @@ class FilterViewController: BaseViewController, ComboViewDelegate {
     }
     
     
-    @IBAction func oKClicked(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func oKClicked(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         if (self.onClose != nil){
-            self.onClose?.raise(.OK)
+            self.onClose?.raise(.ok)
         }
         
     }
     
-    @IBAction func cancelClicked(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelClicked(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         if (self.onClose != nil){
-            self.onClose?.raise(.Cancel)
+            self.onClose?.raise(.cancel)
         }
         
     }
@@ -66,20 +66,20 @@ class FilterViewController: BaseViewController, ComboViewDelegate {
             return;
         }
         
-        dispatch_group_enter(self.syncGroup)
+        self.syncGroup.enter()
         server.getRoutes({(routes:[RouteModel], error:NSError!) -> Void in
             print(error?.description)
             defer{
-                dispatch_group_leave(self.syncGroup)
+                self.syncGroup.leave()
             }
             Threading.runInMainThread{
                 print("Received Timepoints...")
                 var dataSource : [ComboViewItem] = [ComboViewItem]()
-                dataSource.append(ComboViewItem(title: "All", value: "-1"))
+                dataSource.append(ComboViewItem(title: "All", value: "-1" as NSObject))
                 for route in routes {
-                    dataSource.append(ComboViewItem(title: route.Name, value: route.RouteId))
+                    dataSource.append(ComboViewItem(title: route.Name, value: route.RouteId as NSObject))
                 }
-                Cache.add(cacheKey,value: dataSource)
+                Cache.add(cacheKey,value: dataSource as NSObject)
                 self.cboRoute?.dataSource = dataSource
                 self.cboRoute?.selectedIndex = 0
             }
@@ -93,11 +93,11 @@ class FilterViewController: BaseViewController, ComboViewDelegate {
         return nil
     }
     var _selectedItem: ComboViewItem?
-    func comboViewChanged(selectedIndex: Int,item: ComboViewItem!) {
+    func comboViewChanged(_ selectedIndex: Int,item: ComboViewItem!) {
         _selectedItem=item
     }
     
-    dynamic var selectedIndex : Int{
+    @objc dynamic var selectedIndex : Int{
         get{
             return cboRoute.selectedIndex
         }
@@ -106,12 +106,12 @@ class FilterViewController: BaseViewController, ComboViewDelegate {
         }
     }
     
-    dynamic var portableWaterOnly : Bool {
+    @objc dynamic var portableWaterOnly : Bool {
         get{
-            return portableWater.on
+            return portableWater.isOn
         }
         set(value){
-            portableWater.on = value
+            portableWater.isOn = value
         }
     }
     

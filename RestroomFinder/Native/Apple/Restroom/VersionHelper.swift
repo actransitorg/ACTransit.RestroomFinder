@@ -7,33 +7,33 @@
 //
 
 import Foundation
-public class VersionHelper{
-    private var appVersion = Constants.defaultVersion
+open class VersionHelper{
+    fileprivate var appVersion = Constants.defaultVersion
     public init(version : String){
         self.appVersion=version
     }
     
     var majorVersion : Double {
         get{
-            return Double(appVersion.componentsSeparatedByString(".")[0])!
+            return Double(appVersion.components(separatedBy: ".")[0])!
         }
     }
     var minorVersion : Double {
         get{
-            return Double(appVersion.componentsSeparatedByString(".")[1])!
+            return Double(appVersion.components(separatedBy: ".")[1])!
         }
     }
     var buildVersion : Double {
         get{
-            return Double(appVersion.componentsSeparatedByString(".")[2])!
+            return Double(appVersion.components(separatedBy: ".")[2])!
         }
     }
-    public func toString()->String{
+    open func toString()->String{
         return appVersion
     }
     
     
-    public func isBigger(v: VersionHelper)-> Bool{
+    open func isBigger(_ v: VersionHelper)-> Bool{
         return (appVersion > v.toString())
     }
 }

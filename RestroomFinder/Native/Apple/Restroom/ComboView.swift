@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ComboViewDelegate: class{
-    func comboViewChanged(selectedIndex: Int, item:ComboViewItem!)
+    func comboViewChanged(_ selectedIndex: Int, item:ComboViewItem!)
 }
 
 class ComboViewItem{
@@ -18,8 +18,8 @@ class ComboViewItem{
         self.Value = value
     }
     
-    dynamic var Title : String!
-    dynamic var Value : NSObject!
+    @objc dynamic var Title : String!
+    @objc dynamic var Value : NSObject!
 }
 
 class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -36,7 +36,7 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet var btnDone: UIBarButtonItem!
     @IBOutlet var btnCancel: UIBarButtonItem!
     
-    dynamic var defaultText : String = ""
+    @objc dynamic var defaultText : String = ""
     
     var delegate: ComboViewDelegate?
     
@@ -65,20 +65,20 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        NSBundle.mainBundle().loadNibNamed("ComboView", owner: self, options: nil)
+        Bundle.main.loadNibNamed("ComboView", owner: self, options: nil)
 
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
 
-        self.toolbar=UIToolbar(frame: CGRectMake(0,0,320,44))
-        self.toolbar.barStyle=UIBarStyle.BlackOpaque
-        self.txtTest=UITextField(frame: CGRectMake(0,0,0,0))
+        self.toolbar=UIToolbar(frame: CGRect(x: 0,y: 0,width: 320,height: 44))
+        self.toolbar.barStyle=UIBarStyle.blackOpaque
+        self.txtTest=UITextField(frame: CGRect(x: 0,y: 0,width: 0,height: 0))
 
-        self.pickerView=UIPickerView(frame: CGRectMake(0,0,0,0))
+        self.pickerView=UIPickerView(frame: CGRect(x: 0,y: 0,width: 0,height: 0))
         //self.pickerViewHelper = self.pickerView
-        self.btnDone = UIBarButtonItem(title: "Done", style:UIBarButtonItemStyle.Plain, target: self, action: #selector(ComboView.doneClicked))
-        self.btnCancel = UIBarButtonItem(title: "Cancel", style:UIBarButtonItemStyle.Plain, target: self, action: #selector(ComboView.cancelClicked))
-        let btnSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        self.btnDone = UIBarButtonItem(title: "Done", style:UIBarButtonItemStyle.plain, target: self, action: #selector(ComboView.doneClicked))
+        self.btnCancel = UIBarButtonItem(title: "Cancel", style:UIBarButtonItemStyle.plain, target: self, action: #selector(ComboView.cancelClicked))
+        let btnSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         
         self.toolbar.setItems([self.btnCancel, btnSpace, self.btnDone], animated: true)
         
@@ -89,7 +89,7 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
 
     }
     
-    override func didAddSubview(subview: UIView) {
+    override func didAddSubview(_ subview: UIView) {
         
         self.pickerView!.showsSelectionIndicator=true
         
@@ -97,11 +97,11 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
         self.pickerView!.delegate = self
         
         self.txtTest.inputView=self.pickerView
-        btnMain.setTitle(self.defaultText, forState: .Normal)
+        btnMain.setTitle(self.defaultText, for: UIControlState())
     }
     
-    func doneClicked(){
-        selectedIndex = pickerView!.selectedRowInComponent(0)
+    @objc func doneClicked(){
+        selectedIndex = pickerView!.selectedRow(inComponent: 0)
         if (selectedIndex >= 0){
             self.delegate?.comboViewChanged(selectedIndex, item: dataSource[selectedIndex])
         }
@@ -110,19 +110,19 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
         }
         self.txtTest.resignFirstResponder()
     }
-    func cancelClicked(){
+    @objc func cancelClicked(){
         self.txtTest.resignFirstResponder()
     }
     
-    @IBAction func comboToggle(sender: UIButton) {
+    @IBAction func comboToggle(_ sender: UIButton) {
         self.btnMain.resignFirstResponder()
         self.txtTest.becomeFirstResponder()
         let frame=self.pickerView!.frame;
-        self.toolbar.frame=CGRectMake(0,0,frame.width,44)
+        self.toolbar.frame=CGRect(x: 0,y: 0,width: frame.width,height: 44)
     }
     
     var _selectedIndex: Int = -1
-    dynamic var selectedIndex: Int {
+    @objc dynamic var selectedIndex: Int {
         get{
             return _selectedIndex
         }
@@ -144,20 +144,20 @@ class ComboView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
                 }
             }
             defer{
-                btnMain.setTitle(text, forState: .Normal)
+                btnMain.setTitle(text, for: UIControlState())
             }
         }
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return self.dataSource.count;
     }
 
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return dataSource[row].Title
     }
     

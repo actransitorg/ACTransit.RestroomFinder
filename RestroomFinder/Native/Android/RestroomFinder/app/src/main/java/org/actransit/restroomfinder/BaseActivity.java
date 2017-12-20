@@ -164,31 +164,66 @@ public abstract class BaseActivity extends AppCompatActivity//FragmentActivity  
             view.setTextAppearance(resId);
         }
     }
+    static ProgressDialog mDialog;
+    static Integer waitCount=0;
+    public void showWait(){
+        waitCount++;
+        if (mDialog==null || !mDialog.isShowing())
+            showWaitDialog();
+    }
+    public void hideWait(){
+        //Log.d("hideWait","---------------------------------------------" + waitCount.toString());
+        waitCount--;
+        if (waitCount<0)
+            waitCount=0;
+        if (mDialog!=null && waitCount==0)
+            mDialog.dismiss();
+    }
 
-    public ProgressDialog showWait(){
-        ProgressDialog mDialog = new ProgressDialog(this);
+    private ProgressDialog showWaitDialog(){
+        //Context context=MyApplication.getAppContext();
+        //ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        //ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+
+        mDialog = new ProgressDialog(this);
         mDialog.setMessage("Please wait...");
         mDialog.setCancelable(false);
         mDialog.show();
         return mDialog;
+//        return null;
     }
 
-    public void showDialog(String title, String message){
-        showDialog(title,message,true);
+//    public ProgressDialog showWait(){
+//        ProgressDialog mDialog = new ProgressDialog(this);
+//        mDialog.setMessage("Please wait...");
+//        mDialog.setCancelable(false);
+//        mDialog.show();
+//        return mDialog;
+//    }
+
+    public AlertDialog showDialog(String title, String message){
+        return showDialog(title,message,true,null);
     }
-    public void showDialog(String title, String message, boolean cancelable){
+    public AlertDialog showDialog(String title, String message,DialogInterface.OnClickListener okCallback){
+        return showDialog(title,message,true,okCallback);
+    }
+    public AlertDialog showDialog(String title, String message, boolean cancelable, DialogInterface.OnClickListener okCallback){
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         if (!cancelable)
             alertDialog.setCancelable(false);
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+        if (okCallback==null){
+            okCallback=new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            };
+        }
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",okCallback);
+
         alertDialog.show();
+        return alertDialog;
     }
 
 

@@ -14,7 +14,7 @@ import SharedFramework
 class ServerAPI: ServerBaseAPI {
     //let url:String="http://10.1.200.244/ToolBeltAPI/api/RestStops"
         
-    func getRestStops(route: String, location: CLLocation, callBack: ([RestStopModel], NSError!) -> Void){
+    func getRestStops(_ route: String, location: CLLocation, callBack: @escaping ([RestStopModel], NSError?) -> Void){
         let lat=location.coordinate.latitude
         let long=location.coordinate.longitude
         var r = route
@@ -29,7 +29,7 @@ class ServerAPI: ServerBaseAPI {
         })
     }
     
-    func getRestStop(restStopId: Int, callBack: (RestStopModel, NSError!) -> Void){
+    func getRestStop(_ restStopId: Int, callBack: @escaping (RestStopModel, NSError?) -> Void){
         let surl=getRestURL(restStopId)
         let res = super.get(surl) as AjaxPromise<[RestStopModel]>
         res.always.addHandler({p in
@@ -44,7 +44,7 @@ class ServerAPI: ServerBaseAPI {
     }
  
     //NOTE: New method to retrieve demo-hard-coded data for the General Office and Route 1 restrooms.
-    func getRestroomsAroundGeneralOffice(callBack: ([RestStopModel], NSError!) -> Void) {
+    func getRestroomsAroundGeneralOffice(_ callBack: @escaping ([RestStopModel], NSError?) -> Void) {
         let surl = getRestURL("1", lat: "37.805413", long: "-122.268528", distance: nil)
         let res = super.get(surl) as AjaxPromise<[RestStopModel]>
         res.always.addHandler({p in
@@ -53,7 +53,7 @@ class ServerAPI: ServerBaseAPI {
         
     }
     
-    func getOperationAsync(badge: String, agreed: Bool, validating: Bool, callBack: (OperationModel!, NSError!) -> Void){
+    func getOperationAsync(_ badge: String, agreed: Bool, validating: Bool, callBack: @escaping (OperationModel?, NSError?) -> Void){
         let surl = Constants.Server.operationUrl
         let obj = OperationModel()
         obj.badge = badge
@@ -66,7 +66,7 @@ class ServerAPI: ServerBaseAPI {
         })
     }
     
-    func getTripPattern(route: String, tripId: Int, callBack: ([Timepoint], NSError!) -> Void) {
+    func getTripPattern(_ route: String, tripId: Int, callBack: @escaping ([Timepoint], NSError?) -> Void) {
         let surl = getTripPatternURL(route, tripId: tripId)
         let res = super.get(surl) as AjaxPromise<[Timepoint]>
         res.always.addHandler({p in
@@ -76,14 +76,14 @@ class ServerAPI: ServerBaseAPI {
     }
     
     
-    func getRoutes(callBack: ([RouteModel], NSError!) -> Void) {
+    func getRoutes(_ callBack: @escaping ([RouteModel], NSError?) -> Void) {
         let surl = getRoutesURL()
         let res = super.get(surl) as AjaxPromise<[RouteModel]>
         res.always.addHandler({p in
             callBack(p.data,p.error)
         })
     }
-    func getVersion(callBack: ([VersionModel], NSError!) -> Void) {
+    func getVersion(_ callBack: @escaping ([VersionModel], NSError?) -> Void) {
         let surl = Constants.Server.versionUrl
         let res = super.get(surl) as AjaxPromise<[VersionModel]>
         res.always.addHandler({p in
@@ -91,7 +91,7 @@ class ServerAPI: ServerBaseAPI {
         })
     }
     
-    func getFeedbacks(restStopId: Int, callBack: ([FeedbackModel], NSError!) -> Void) {
+    func getFeedbacks(_ restStopId: Int, callBack: @escaping ([FeedbackModel], NSError?) -> Void) {
         let surl = getFeedbacksURL(restStopId)
         let res = super.get(surl) as AjaxPromise<[FeedbackModel]>
         res.always.addHandler({p in
@@ -99,7 +99,7 @@ class ServerAPI: ServerBaseAPI {
         })
     }
 
-    func saveFeedback(feedback: FeedbackModel, callBack: (FeedbackModel!, NSError!) -> Void) {
+    func saveFeedback(_ feedback: FeedbackModel, callBack: @escaping (FeedbackModel?, NSError?) -> Void) {
         let surl = getFeedbacksURL(nil)
         let res = post(surl, jsonObject: feedback.toJsonObject()) as AjaxPromise<FeedbackModel>
         res.always.addHandler({p in
@@ -107,14 +107,14 @@ class ServerAPI: ServerBaseAPI {
         })
     }
 
-    func getTripPatternURL(route:String, tripId:Int) -> String{
+    func getTripPatternURL(_ route:String, tripId:Int) -> String{
         let tripPatternURL = "\(Constants.Server.transitApiUrl)/route/\(route)/trip/\(tripId)/pattern?token=\(Constants.Server.transitApiToken)"
         print(tripPatternURL)
         return tripPatternURL
     }
     
     //NOTE: Made distance nullable
-    func getRestURL(route:String, lat:String, long:String, distance:Int?)-> String{
+    func getRestURL(_ route:String, lat:String, long:String, distance:Int?)-> String{
         let returnUrl = "\(Constants.Server.restUrl)?routeAlpha=\(route)&direction=&lat=\(lat)&longt=\(long)"
 
         if(distance != nil) {
@@ -123,19 +123,19 @@ class ServerAPI: ServerBaseAPI {
             return returnUrl;
         }
     }
-    func getRestURL(restStopId: Int)-> String{
+    func getRestURL(_ restStopId: Int)-> String{
         return  "\(Constants.Server.restUrl)/\(restStopId)"
     }
-    func getOperationURL(badge:String)-> String{
+    func getOperationURL(_ badge:String)-> String{
         return "\(Constants.Server.operationUrl)?badgeNumber=\(badge)"
     }
     
     func getRoutesURL() -> String{
         return "\(Constants.Server.transitApiUrl)/routes/?token=\(Constants.Server.transitApiToken)"
     }
-    func getFeedbacksURL(restStopId : Int?) -> String{
+    func getFeedbacksURL(_ restStopId : Int?) -> String{
         if (restStopId != nil){
-            return "\(Constants.Server.baseRestroomURL)/Feedbasck?restStopId=\(restStopId!)"
+            return "\(Constants.Server.baseRestroomURL)/Feedback?restStopId=\(restStopId!)"
         }
         return "\(Constants.Server.baseRestroomURL)/Feedback/"
     }

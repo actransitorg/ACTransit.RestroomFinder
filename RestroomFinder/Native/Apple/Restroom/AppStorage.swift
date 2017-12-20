@@ -43,7 +43,7 @@ class AppStorage{
             keyvalue?.updateDate = DateTime.now()
         }
         invalidateCache()
-        KeyValue.Save(res!)
+        _=KeyValue.Save(res!)
     }
     
     
@@ -55,7 +55,7 @@ class AppStorage{
         return false
     }
     
-    static func setFirstTimeRunningApplication(badge: String) {
+    static func setFirstTimeRunningApplication(_ badge: String) {
         var res = keyValues
         if (res == nil){
             res = [KeyValue]()
@@ -69,7 +69,7 @@ class AppStorage{
             keyvalue?.value = badge
         }
         invalidateCache()
-        KeyValue.Save(res!)
+        _=KeyValue.Save(res!)
     }
     
     static var badge : String? {
@@ -80,7 +80,7 @@ class AppStorage{
 
 
     
-    private static var keyValues: [KeyValue]? {
+    fileprivate static var keyValues: [KeyValue]? {
         get{
             if (_keyValues == nil){
                 _keyValues = KeyValue.Load()
@@ -88,7 +88,7 @@ class AppStorage{
             return _keyValues
         }
     }
-    private static func invalidateCache(){
+    fileprivate static func invalidateCache(){
         _keyValues = nil;
     }
 }

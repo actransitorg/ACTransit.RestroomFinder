@@ -2,12 +2,14 @@ package org.actransit.restroomfinder;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,7 +73,8 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
 
     private DataState dataContainer=new DataState();
     private RetainedFragment<DataState> dataFragment;
-    private boolean disclaimerIsBeingShown = false;
+    //private boolean disclaimerIsBeingShown = false;
+    private AlertDialog disclaimerDialog;
 
     private DoubleRingBuffer speedBuffer=new DoubleRingBuffer(3);
 
@@ -89,14 +92,12 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
                 MapviewActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (disclaimerIsBeingShown)
+                        if (disclaimerDialog!=null && disclaimerDialog.isShowing())
                             return;
                         try{
-                            disclaimerIsBeingShown=true;
                             showDisclaimer();
                         }
                         finally {
-                            disclaimerIsBeingShown=false;
                         }
                     }
                 });
@@ -139,6 +140,7 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
         lstRestrooms.addHeaderView(lblListHeader);
 
         Context context = MyApplication.getAppContext();
+
 
         FragmentManager fm = getFragmentManager();
         dataFragment = (RetainedFragment<DataState>) fm.findFragmentByTag("data");
@@ -185,27 +187,36 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                Intent activity= new Intent(this, FilterActivity.class);
+                showWait();
 
-                ArrayList<RouteParcelable> t= new ArrayList();
+                try{
+                    Intent activity= new Intent(this, FilterActivity.class);
 
-                for(Integer i=0;i<dataContainer.Routes.size();i++){
-                    //t[i].value=Routes.get(i);
+                    ArrayList<RouteParcelable> t= new ArrayList();
+
+                    for(Integer i=0;i<dataContainer.Routes.size();i++){
+                        //t[i].value=Routes.get(i);
+                        RouteParcelable p= new RouteParcelable();
+                        p.value = dataContainer.Routes.get(i);
+                        t.add(p);
+                    }
                     RouteParcelable p= new RouteParcelable();
-                    p.value = dataContainer.Routes.get(i);
-                    t.add(p);
-                }
-                RouteParcelable p= new RouteParcelable();
-                p.value = new RouteModel();
-                p.value.routeId="-1";
-                p.value.name="All";
-                t.add(0,p);
+                    p.value = new RouteModel();
+                    p.value.routeId="-1";
+                    p.value.name="All";
+                    t.add(0,p);
 
-                activity.putParcelableArrayListExtra(FilterActivity.SharedExtras.Routes,t);
-                activity.putExtra(FilterActivity.SharedExtras.SelectedRoute,dataContainer.selectedRoute);
-                activity.putExtra(FilterActivity.SharedExtras.PortableWaterOnly,dataContainer.portableWaterOnly);
-                startActivityForResult(activity,ActivityRequestCode.PICK_FILTER_CONDITION);
-                return true;
+                    activity.putParcelableArrayListExtra(FilterActivity.SharedExtras.Routes,t);
+                    activity.putExtra(FilterActivity.SharedExtras.SelectedRoute,dataContainer.selectedRoute);
+                    activity.putExtra(FilterActivity.SharedExtras.PortableWaterOnly,dataContainer.portableWaterOnly);
+                    startActivityForResult(activity,ActivityRequestCode.PICK_FILTER_CONDITION);
+
+                    return true;
+
+                }
+                finally {
+                    //dialog.hide();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -272,7 +283,7 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
     @Override
     public void onInfoWindowClick(Marker marker) {
         RestroomModel restroom=getRestroom(marker);
-        if (restroom != null && !restroom.hours.equals("")){
+        if (restroom != null && restroom.hours!=null && !restroom.hours.equals("")){
             AlertBottom("Info", restroom.hours);
         }
     }
@@ -499,8 +510,17 @@ public class MapviewActivity extends BaseFusionMapActivity implements GoogleMap.
 
     private void showDisclaimer(){
         if (AppStorage.Current(this).shouldPopupDisclaimer() ){
-            showDialog("Warning", Constants.Messages.drivingDisclaimerText,false);
-            AppStorage.Current(this).setPopupDisclaimer();
+            try{
+                disclaimerDialog=showDialog("Warning", Constants.Messages.drivingDisclaimerText, false, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AppStorage.Current(MapviewActivity.this).setPopupDisclaimer();
+                        dialogInterface.dismiss();
+                    }
+                });
+            }
+            finally {
+            }
         }
     }
 

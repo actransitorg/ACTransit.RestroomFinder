@@ -9,10 +9,34 @@
 import Foundation
 import MapKit
 import SharedFramework
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
     
-    private var map: MKMapView!
+    fileprivate var map: MKMapView!
     var locationManager: CLLocationManager!
     var lastGoodLocation: Location?
     var currentLocation: Location?
@@ -23,7 +47,8 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
     internal var _compassState = 0 // 0: Normal, 1: Tracking, 2: TrackingShowHeaded
     let mapDelegate = MapDelegate()
     
-    func initialLocationManager(map: MKMapView)
+
+    func initialLocationManager(_ map: MKMapView)
     {
         self.map = map
         self.map.delegate = mapDelegate
@@ -44,7 +69,7 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
     func startUpdatingLocation(){
         if CLLocationManager.locationServicesEnabled() && updatingLocation == false {
             locationManager.distanceFilter = 1
-            locationManager.activityType = .Fitness
+            locationManager.activityType = .fitness
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
             updatingLocation = true
@@ -57,50 +82,50 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
     }
 
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
             startUpdatingLocation()
         }
-        else if (status == .Denied || status == .Restricted){
-            messageBox(Constants.Messages.locationDisabled,
+        else if (status == .denied || status == .restricted){
+            _=messageBox(Constants.Messages.locationDisabled,
                 message: Constants.Messages.setLocationAccess,
-                prefferedStyle: .Alert,
+                prefferedStyle: .alert,
                 cancelButton: true, oKButton: false, openSettingButton: true, done:nil)
         }
-        else if (status == .NotDetermined){
+        else if (status == .notDetermined){
             manager.requestWhenInUseAuthorization()          
         }
     }
     
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         var bestLoc: Location?
-        var ss : SignalStrengthEnum = SignalStrengthEnum.NoSignal
+        var ss : SignalStrengthEnum = SignalStrengthEnum.noSignal
         
         for location in locations{
             let accuracy = location.horizontalAccuracy
             if (accuracy < 0)
             {
-                ss = .NoSignal
+                ss = .noSignal
             }
             else if (accuracy > Constants.Variables.poorBestHorizontalAccuracy) //163
             {
-                ss = .Poor
+                ss = .poor
             }
             else if (accuracy > Constants.Variables.averageBestHorizontalAccuracy)  //40
             {
-                ss = .Average
+                ss = .average
             }
             else if (accuracy > Constants.Variables.goodBestHorizontalAccuracy)  //15
             {
-                ss = .Good
+                ss = .good
             }
             else
             {
-                ss = .Full
+                ss = .full
             }
-            if (ss != .NoSignal){
+            if (ss != .noSignal){
                 if (bestLoc == nil || bestLoc?.accuracy > accuracy){
                     bestLoc = Location(location: location,recievedTime: DateTime.now(), accuracy: accuracy, signalStrength: ss)
                 }
@@ -122,7 +147,7 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
             }
             prevLocation = currentLocation!
             currentLocation = bestLoc!
-            if (bestLoc?.signalStrength != .Poor && bestLoc?.signalStrength != .NoSignal && bestLoc?.signalStrength != .Average){
+            if (bestLoc?.signalStrength != .poor && bestLoc?.signalStrength != .noSignal && bestLoc?.signalStrength != .average){
                 speedBuffer.add((currentLocation?.location.speed)!)
                 lastGoodLocation = bestLoc
             }            
@@ -130,21 +155,21 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print ("didFailWithError: \(CLError(rawValue: error.code))")
-        if error.code == CLError.Denied.rawValue {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print ("didFailWithError: \(String(describing: CLError.Code(rawValue: error._code)))")
+        if error._code == CLError.Code.denied.rawValue {
             stopUpdatingLocation()
         }
         
     }
-    func locationChanged(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){    }
+    @nonobjc func locationChanged(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){    }
 
-    func annotationDetailsClicked(annotation: MKAnnotationView){}
-    func annotationInfoClicked(annotation: MKAnnotationView){}
+    func annotationDetailsClicked(_ annotation: MKAnnotationView){}
+    func annotationInfoClicked(_ annotation: MKAnnotationView){}
     
-    private let regionRadius: CLLocationDistance = 800
-    private var centerMapOnLocationWorking: Bool = false
-    func centerMapOnLocation(location: CLLocation, zoom: Bool = false) {
+    fileprivate let regionRadius: CLLocationDistance = 800
+    fileprivate var centerMapOnLocationWorking: Bool = false
+    func centerMapOnLocation(_ location: CLLocation, zoom: Bool = false) {
         if !centerMapOnLocationWorking {
             centerMapOnLocationWorking = true
             defer{
@@ -155,15 +180,15 @@ class MapBaseViewController: BaseViewController, CLLocationManagerDelegate{
         }
     }
     
-    func turnonNavigation(locationName: String, coordinate: CLLocationCoordinate2D){
+    func turnonNavigation(_ locationName: String, coordinate: CLLocationCoordinate2D){
         
         let place = MKPlacemark(coordinate: coordinate, addressDictionary: nil)
         let mapItem = MKMapItem (placemark: place)
         
         mapItem.name = locationName
         
-        let options = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving, MKLaunchOptionsShowsTrafficKey: true]
-        MKMapItem.openMapsWithItems([mapItem], launchOptions: options as? [String : AnyObject])
+        let options = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving, MKLaunchOptionsShowsTrafficKey: true] as [String : Any]
+        MKMapItem.openMaps(with: [mapItem], launchOptions: options as? [String : AnyObject])
         
     }
 

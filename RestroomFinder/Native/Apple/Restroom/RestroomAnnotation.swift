@@ -21,7 +21,7 @@ class RestroomAnnotation: NSObject, MKAnnotation{
     let drinkingWater: Bool
     
     init(title: String, locationName: String, discipline: String, coordinate: CLLocationCoordinate2D, drinkingWater:Bool, hours:String) {
-        self.uuId = NSUUID().UUIDString
+        self.uuId = UUID().uuidString
         self.title = title
         self.locationName = locationName
         self.discipline = discipline

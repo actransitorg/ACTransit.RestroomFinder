@@ -7,21 +7,21 @@
 //
 
 enum ActionEnum{
-    case OK
-    case Cancel
-    case Done
-    case Filter
+    case ok
+    case cancel
+    case done
+    case filter
 }
 enum MapTypeEnum{
-    case Map
-    case Transit
-    case Satellite
+    case map
+    case transit
+    case satellite
 }
 
 enum SignalStrengthEnum{
-    case NoSignal
-    case Poor
-    case Average
-    case Good
-    case Full
+    case noSignal
+    case poor
+    case average
+    case good
+    case full
 }

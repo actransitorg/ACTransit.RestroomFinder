@@ -8,110 +8,110 @@
 
 import Foundation
 
-public class DateTime{
-    public static let DateTimeFormat : String="MM/dd/yyyy HH:mm:ss"
-    private var _dateTime: NSDate
+open class DateTime{
+    open static let DateTimeFormat : String="MM/dd/yyyy HH:mm:ss"
+    fileprivate var _dateTime: Date
     public init(){
-        _dateTime = NSDate()
+        _dateTime = Date()
     }
-    public init(datetime: NSDate){
+    public init(datetime: Date){
         _dateTime = datetime
     }
     
-    public static func now() -> DateTime{
+    open static func now() -> DateTime{
         return DateTime()
     }
     
-    public static func parse(dateStr: String, dateTimeFormat: String=DateTimeFormat) -> DateTime? {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
+    open static func parse(_ dateStr: String, dateTimeFormat: String=DateTimeFormat) -> DateTime? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = dateTimeFormat
-        let d = dateFormatter.dateFromString(dateStr)
+        let d = dateFormatter.date(from: dateStr)
         if (d != nil){
             return DateTime(datetime: d!)
         }
         return nil
     }
     
-    public func subtract(fromDate: DateTime, calendarUnit: NSCalendarUnit=[.Hour]) -> NSDateComponents{
-        let calendar = NSCalendar.currentCalendar()
-        let stPatricksValentinesDayDifference = calendar.components(
+    open func subtract(_ fromDate: DateTime, calendarUnit: NSCalendar.Unit=[.hour]) -> DateComponents{
+        let calendar = Calendar.current
+        let stPatricksValentinesDayDifference = (calendar as NSCalendar).components(
             calendarUnit,
-            fromDate: dateTime,
-            toDate: fromDate.dateTime,
+            from: dateTime,
+            to: fromDate.dateTime,
             options: [])
         // The result should be 31
         return stPatricksValentinesDayDifference
     }
     
-    public var year: Int{
+    open var year: Int{
         get{
-            let components = calendar.components([.Year], fromDate: dateTime)
-            return components.year
+            let components = (calendar as NSCalendar).components([.year], from: dateTime)
+            return components.year!
         }
     }
-    public var month: Int{
+    open var month: Int{
         get{
-            let components = calendar.components([.Month], fromDate: dateTime)
-            return components.month
+            let components = (calendar as NSCalendar).components([.month], from: dateTime)
+            return components.month!
         }
     }
-    public var day: Int{
+    open var day: Int{
         get{
-            let components = calendar.components([.Day], fromDate: dateTime)
-            return components.day
+            let components = (calendar as NSCalendar).components([.day], from: dateTime)
+            return components.day!
         }
     }
-    public var hour: Int{
+    open var hour: Int{
         get{
-            let components = calendar.components([.Hour], fromDate: dateTime)
-            return components.hour
+            let components = (calendar as NSCalendar).components([.hour], from: dateTime)
+            return components.hour!
         }
     }
-    public var minute: Int{
+    open var minute: Int{
         get{
-            let components = calendar.components([.Minute], fromDate: dateTime)
-            return components.minute
+            let components = (calendar as NSCalendar).components([.minute], from: dateTime)
+            return components.minute!
         }
     }
-    public var second: Int{
+    open var second: Int{
         get{
-            let components = calendar.components([.Second], fromDate: dateTime)
-            return components.second
+            let components = (calendar as NSCalendar).components([.second], from: dateTime)
+            return components.second!
         }
     }
-    public var nanosecond: Int{
+    open var nanosecond: Int{
         get{
-            let components = calendar.components([.Nanosecond], fromDate: dateTime)
-            return components.nanosecond
+            let components = (calendar as NSCalendar).components([.nanosecond], from: dateTime)
+            return components.nanosecond!
         }
     }
     
     
-    public func toString(style: NSDateFormatterStyle)-> String{
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
+    open func toString(_ style: DateFormatter.Style)-> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = style
-        return dateFormatter.stringFromDate(self._dateTime)
+        return dateFormatter.string(from: self._dateTime)
     }
-    public func toString(dateTimeFormat: String="MM/dd/yyyy HH:mm:ss")-> String{
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
+    open func toString(_ dateTimeFormat: String="MM/dd/yyyy HH:mm:ss")-> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = dateTimeFormat
-        return dateFormatter.stringFromDate(self._dateTime)
+        return dateFormatter.string(from: self._dateTime)
     }
     
-    public var dateTime: NSDate{
+    open var dateTime: Date{
         get{
             return _dateTime
         }
     }
     
-    var _calendar: NSCalendar?
-    public var calendar: NSCalendar{
+    var _calendar: Calendar?
+    open var calendar: Calendar{
         get{
             if (_calendar == nil){
-                _calendar = NSCalendar.currentCalendar()
+                _calendar = Calendar.current
             }
             return _calendar!
         }

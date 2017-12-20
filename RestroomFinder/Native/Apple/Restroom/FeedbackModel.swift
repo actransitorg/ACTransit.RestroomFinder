@@ -28,14 +28,14 @@ class FeedbackModel: BaseModel{
         self.badge = badge
     }
     
-    required init(obj : NSDictionary){
+    required init(obj : [String : AnyObject]){
         super.init(obj: obj)
         
-        feedbackID = NSNumber( longLong: toInt64(["feedbackId"], defaultValue: 0) )
+        feedbackID = NSNumber(value: toInt64(obj["feedbackId"], defaultValue: 0))
         restStopID = toInt(obj["restroomId"], defaultValue: 0)
-        badge = isNull(obj["badge"], defaultValue: "") as! String
-        needAttention = Bool(toInt(obj["needAttention"], defaultValue: 0))
-        feedbackText = isNull(obj["feedbackText"], defaultValue: "") as! String
+        badge = isNull(obj["badge"], defaultValue: "") 
+        needAttention = Bool(toInt(obj["needAttention"], defaultValue: 0) as NSNumber)
+        feedbackText = isNull(obj["feedbackText"], defaultValue: "") 
         rate = toDouble(obj["rate"], defaultValue: 0)
         
     }
@@ -43,11 +43,11 @@ class FeedbackModel: BaseModel{
     func toJsonObject() -> AnyObject{
         var obj = super.toJsonObject()
         obj["feedbackId"] = self.feedbackID
-        obj["restroomId"] = self.restStopID
-        obj["badge"] = self.badge
-        obj["needAttention"] = self.needAttention
-        obj["feedbackText"] = self.feedbackText
-        obj["rate"] = self.rate
+        obj["restroomId"] = self.restStopID as AnyObject
+        obj["badge"] = self.badge as AnyObject
+        obj["needAttention"] = self.needAttention as AnyObject
+        obj["feedbackText"] = self.feedbackText as AnyObject
+        obj["rate"] = self.rate as AnyObject
         return obj as AnyObject
     }
     

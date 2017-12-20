@@ -41,7 +41,7 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
         tblFeedbacks.dataSource=self
         tblFeedbacks.delegate=self
         let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
-        tblFeedbacks.registerNib(nib, forCellReuseIdentifier: "customCell")
+        tblFeedbacks.register(nib, forCellReuseIdentifier: "customCell")
         lblTitle.text = _currentRestroom.name
         
         showWait(activityIndicator){
@@ -58,53 +58,53 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
 
 
     //Calls this function when the tap is recognized.
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
 
 
-    @IBAction func oKClicked(sender: UIButton) {
+    @IBAction func oKClicked(_ sender: UIButton) {
         let feedback = self.feedback
         if (feedback.needAttention == false && feedback.feedbackText == "" && feedback.rate <= 0 ){
             Toast(Constants.Messages.feedbackEmptySumbit)
             return;
         }
         showWait(activityIndicator){
-            self.btnSubmit.enabled = false
-            dispatch_group_enter(self.syncGroup)
+            self.btnSubmit.isEnabled = false
+            self.syncGroup.enter()
             self.server.saveFeedback(feedback, callBack: { (feedback, error) in
                 print ("Feedback: \(feedback)")
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
                 if (self.onClose != nil){
-                    self.onClose?.raise(.OK)
+                    self.onClose?.raise(.ok)
                 }
                 else{
-                    self.btnSubmit.enabled = true
+                    self.btnSubmit.isEnabled = true
                 }
                 defer{
-                    dispatch_group_leave(self.syncGroup)
+                    self.syncGroup.leave()
                 }
             })
         }
     }
     
-    @IBAction func cancelClicked(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelClicked(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         if (self.onClose != nil){
-            self.onClose?.raise(.Cancel)
+            self.onClose?.raise(.cancel)
         }
         
     }
     
-    @IBAction func btnFeedbackClicked(sender: AnyObject) {
+    @IBAction func btnFeedbackClicked(_ sender: AnyObject) {
         let frame=self.view.frame
         
         if (listOpen){
             listOpen = false
             self.tblFeedbacks.frame.origin.y = self.btnFeedback.frame.origin.y + 30
-            self.tblFeedbacks.hidden = true
-            self.btnFeedback.selected = false
+            self.tblFeedbacks.isHidden = true
+            self.btnFeedback.isSelected = false
             
         }else{
             listOpen = true
@@ -112,21 +112,21 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
             if (h < 100){
                 h = 100
             }
-            self.tblFeedbacks.hidden = false
+            self.tblFeedbacks.isHidden = false
             
             self.tblFeedbacks.frame.size.height = h
             self.tblFeedbacks.frame.origin.y = self.btnFeedback.frame.origin.y  - h
-            self.btnFeedback.selected = true
+            self.btnFeedback.isSelected = true
             
         }
     }
     
     var feedback: FeedbackModel {
         get{
-            return FeedbackModel(restStopId: currentRestroom.id , needAttention: swNeedAttention.on, feedback: txtFeedback.text, rate: Double(btnRank.rate), badge: AppStorage.badge!)
+            return FeedbackModel(restStopId: currentRestroom.id , needAttention: swNeedAttention.isOn, feedback: txtFeedback.text, rate: Double(btnRank.rate), badge: AppStorage.badge!)
         }
         set(value){
-            swNeedAttention.on = value.needAttention
+            swNeedAttention.isOn = value.needAttention
             txtFeedback.text = value.feedbackText
             btnRank.rate = value.rate
             
@@ -137,7 +137,7 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
         }
     }
     
-    private var _currentRestroom: RestStopModel!
+    fileprivate var _currentRestroom: RestStopModel!
     var currentRestroom: RestStopModel! {
         get{
             return _currentRestroom
@@ -149,33 +149,33 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
     
     func loadFeedbacks(){
         server.getFeedbacks(currentRestroom.id, callBack:{ (feedbacks: [FeedbackModel], error: NSError!) in
-            Threading.sync(self.dataSource){
+            Threading.sync(self.dataSource as AnyObject){
                 self.dataSource.removeAll()
             }
-            self.dataSource.appendContentsOf(feedbacks)
-            dispatch_async(dispatch_get_main_queue(), {
+            self.dataSource.append(contentsOf: feedbacks)
+            DispatchQueue.main.async(execute: {
                 self.tblFeedbacks.reloadData()
             })
         } )
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:CustomTableViewCell = self.tblFeedbacks.dequeueReusableCellWithIdentifier("customCell") as! CustomTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:CustomTableViewCell = self.tblFeedbacks.dequeueReusableCell(withIdentifier: "customCell") as! CustomTableViewCell
         cell.customDelegate = self
         let feedback=dataSource[indexPath.row] as FeedbackModel
         cell.customTag = feedback
         cell.editEnabled = false
         cell.onTapped = {
-            super.messageBox("Feedback", message: feedback.feedbackText, prefferedStyle: .Alert, cancelButton: false, oKButton: true, openSettingButton: false, done: nil)
+            super.messageBox("Feedback", message: feedback.feedbackText, prefferedStyle: .alert, cancelButton: false, oKButton: true, openSettingButton: false, done: nil)
         }
         let needAttention = feedback.needAttention ? "Yes" : "No"
         let feedbackText = feedback.feedbackText == "" ? "" : ", \(feedback.feedbackText!)"
@@ -185,17 +185,17 @@ class FeedbackViewController: BaseViewController, UITableViewDataSource, UITable
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let ann=self.restrooms[indexPath.row] as RestroomAnnotation
 //        map.selectAnnotation(ann, animated: true)
     }
     
     //NOTE: Updated title to display route info.
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Last Feedback"
     }
     
-    func CustomTableViewCellEditClicked(cell: CustomTableViewCell) {
+    func CustomTableViewCellEditClicked(_ cell: CustomTableViewCell) {
         
     }
 

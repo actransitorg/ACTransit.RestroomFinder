@@ -63,7 +63,11 @@ public class StartupActivity extends BaseActivity{ //AppCompatActivity {
         updateProgressDialog.setCancelable(false);
         findViewById(R.id.startupLayout).setBackground(Gradients.getColorScala());
         TextView lblVersion= (TextView) findViewById(R.id.lblVersion);
-        lblVersion.setText("Version " + Constants.getVersion());
+        String version="Version " + Constants.getVersion();
+        if (Constants.Variables.testMode)
+            version += " !!!Test!!!";
+
+        lblVersion.setText(version);
 
         checkingUpdate= true;
         Server.getVersion(new ServerBaseAPI.ServerResult<VersionModel>() {
@@ -77,8 +81,20 @@ public class StartupActivity extends BaseActivity{ //AppCompatActivity {
                     requestPermission();
                     Log.d("version","----------------------------version:" + data.version);
                 }
-                else
-                    Navigate();
+                else{
+                    if (Constants.Variables.testMode)
+                    {
+                        setTimeout(new Runnable() {
+                            @Override
+                            public void run() {
+                                Navigate();
+                            }
+                        },5000);
+                    }
+                    else
+                        Navigate();
+                }
+
             }
         });
     }

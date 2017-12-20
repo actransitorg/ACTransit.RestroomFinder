@@ -13,7 +13,7 @@ class Common{
     static var currentLocation: CLLocation?
     static var currentDevice : UIDevice {
         get{
-            return UIDevice.currentDevice()
+            return UIDevice.current
         }
     }
 }

@@ -59,7 +59,7 @@ namespace ACTransit.Framework.Security
                         RegistryRights.ReadKey | RegistryRights.SetValue);
                 //setupRegKeyRights(currentUser, baseKey);
             }
-            catch (Exception e)
+            catch // (Exception e)
             {
 
             }
@@ -69,7 +69,7 @@ namespace ACTransit.Framework.Security
             {
                 rk.SetValue(null, encryptString);
             }
-            catch (Exception e)
+            catch //(Exception e)
             {
                 return false;
             }
@@ -135,7 +135,7 @@ namespace ACTransit.Framework.Security
                 rs.SetOwner(new NTAccount(currentUser));// Set the securits owner to be current user.
                 rk.SetAccessControl(rs);// Set the key with the changed permission so current user is now owner.
             }
-            catch (Exception e)
+            catch //(Exception e)
             {
                 return false;
             }

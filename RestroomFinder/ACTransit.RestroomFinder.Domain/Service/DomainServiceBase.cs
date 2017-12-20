@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
 using ACTransit.DataAccess.RestroomFinder;
+using ACTransit.Framework.Logging;
 using ACTransit.RestroomFinder.Domain.Repository;
 
 namespace ACTransit.RestroomFinder.Domain.Service
 {
-    public abstract class DomainServiceBase<T> where T: class, IModel, new()
+    public abstract class DomainServiceBase<T>: IDisposable where T: class, IModel, new()
     {
+        private bool _disposed;
+
         protected RequestContext RequestContext { get; private set; }
         protected DomainRepositoryBase<T> Repository; // default repository
+        protected readonly Logger Logger;
 
-        protected DomainServiceBase() { }
+        protected DomainServiceBase(): this(new RequestContext()) { }
 
         protected DomainServiceBase(RequestContext requestContext)
         {
+            Logger = new Logger();
             SetContext(requestContext);
         }
 
@@ -60,5 +67,53 @@ namespace ACTransit.RestroomFinder.Domain.Service
         {
             Repository.Delete(id);
         }
+
+        #region Logging
+
+        protected void LogDebug(string methodName, string message)
+        {
+            Logger.WriteDebug(message);
+        }
+
+        protected void LogInfo(string methodName, string message)
+        {
+            Logger.Write(message);
+        }
+
+        protected void LogError(string methodName, string message)
+        {
+            Logger.WriteError(message);
+        }
+
+        protected void LogFatal(string methodName, string message)
+        {
+            Logger.WriteFatal(message);
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        public void Dispose()
+        {
+            LogDebug("Dispose", "Called.");
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                //TODO: Anything to dispose?
+            }
+
+            _disposed = true;
+        }
+
+        #endregion
     }
 }

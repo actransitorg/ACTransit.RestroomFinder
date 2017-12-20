@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Collections.Generic;
 using ACTransit.Framework.Web.Exceptions;
 
 namespace ACTransit.RestroomFinder.Web.Infrastructure
@@ -6,6 +7,7 @@ namespace ACTransit.RestroomFinder.Web.Infrastructure
     public class TokenAuthorizationAttribute : AuthorizeAttribute
     {
         public string Token { get; set; }
+        public string[] Tokens { get; set; }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -17,6 +19,18 @@ namespace ACTransit.RestroomFinder.Web.Infrastructure
             if (!string.IsNullOrEmpty(Token))
             {
                 hasAccess = TokenAuthorizationHelper.HasAccess(Token);
+
+                if (hasAccess)
+                    return;
+            }
+            else if (Tokens != null && Tokens.Length > 0)
+            {
+                foreach (var token in Tokens)
+                {
+                    hasAccess = TokenAuthorizationHelper.HasAccess(token);
+                    break;
+                }
+
                 if (hasAccess)
                     return;
             }

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using X.PagedList;
-using Newtonsoft.Json;
 
 using ACTransit.Framework.Extensions;
 
@@ -19,6 +18,7 @@ using System.Collections.Generic;
 
 namespace ACTransit.RestroomFinder.Web.Controllers
 {
+    [Authorize]
     public class RestroomAdminController : Controller
     {
         //TODO: Make this configurable
@@ -125,7 +125,7 @@ namespace ACTransit.RestroomFinder.Web.Controllers
         }
 
         // GET: RestroomAdmin/Create
-        [TokenAuthorization(Token = TokenAuthorizationHelper.TokenCreator)]
+        [TokenAuthorization(Tokens = new[] { TokenAuthorizationHelper.TokenAdmin, TokenAuthorizationHelper.TokenCreator })]
         public ActionResult Create()
         {
             RestroomViewModel restroomModel = new RestroomViewModel();
@@ -167,7 +167,7 @@ namespace ACTransit.RestroomFinder.Web.Controllers
         }
 
         // GET: RestroomAdmin/Edit/5
-        [TokenAuthorization(Token = TokenAuthorizationHelper.TokenEditor)]
+        [TokenAuthorization(Tokens = new []{TokenAuthorizationHelper.TokenAdmin, TokenAuthorizationHelper.TokenEditor})]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -217,7 +217,7 @@ namespace ACTransit.RestroomFinder.Web.Controllers
         }
 
         // GET: RestroomAdmin/Delete/5
-        [TokenAuthorization(Token = TokenAuthorizationHelper.TokenEditor)]
+        [TokenAuthorization(Tokens = new[] { TokenAuthorizationHelper.TokenAdmin, TokenAuthorizationHelper.TokenEditor })]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)

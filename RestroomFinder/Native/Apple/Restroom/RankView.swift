@@ -9,7 +9,7 @@
 import UIKit
 
 protocol RankViewDelegate: class{
-    func RankViewChanged(rate: Double)
+    func RankViewChanged(_ rate: Double)
 }
 //@IBDesignable
 class RankView: UIView{
@@ -34,18 +34,18 @@ class RankView: UIView{
         _init()
     }
 
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
     }
     
     func _init(){
-        NSBundle.mainBundle().loadNibNamed("RankView", owner: self, options: nil)
+        Bundle.main.loadNibNamed("RankView", owner: self, options: nil)
         self.addSubview(myView)
         for _ in 0 ..< 5{
             
-            let button = UIButton(type: .Custom)
-            button.setImage(UIImage(imageLiteral: "StarEmpty"), forState: .Normal)
-            button.addTarget(self, action: #selector(RankView.starClicked(_:)), forControlEvents: .TouchUpInside)
+            let button = UIButton(type: .custom)
+            button.setImage(UIImage(imageLiteralResourceName: "StarEmpty"), for: UIControlState())
+            button.addTarget(self, action: #selector(RankView.starClicked(_:)), for: .touchUpInside)
             self.addSubview(button)
             //self.myView.addSubview(button)
             self.btnStars.append(button)
@@ -59,12 +59,12 @@ class RankView: UIView{
     }
 
 
-    func starClicked(sender: UIButton){
+    @objc func starClicked(_ sender: UIButton){
         if (readOnly){
             return
         }
         
-        let rank = btnStars.indexOf(sender) ?? -1
+        let rank = btnStars.index(of: sender) ?? -1
         self.rate = Double(rank + 1)
     }
     
@@ -73,8 +73,9 @@ class RankView: UIView{
         for i in 0 ..< 5 {
             let button = self.btnStars[i]
             let left = (width * CGFloat(i)) //+ CGFloat(i * 1)
-            button.frame = CGRectMake(left, 0, width,width)
-            button.frame.standardizeInPlace()
+            button.frame = CGRect(x: left, y: 0, width: width,height: width)
+            //button.frame.standardizeInPlace()
+            button.frame=button.frame.standardized
         }
         
     }
@@ -89,10 +90,10 @@ class RankView: UIView{
             for i in 0 ..< 5 {
                 let button=btnStars[Int(i)]
                 if (Double(i) < _rate){
-                    button.setImage(UIImage(imageLiteral: "StarFilled"), forState: .Normal)
+                    button.setImage(UIImage(imageLiteralResourceName: "StarFilled"), for: UIControlState())
                 }
                 else{
-                    button.setImage(UIImage(imageLiteral: "StarEmpty"), forState: .Normal)
+                    button.setImage(UIImage(imageLiteralResourceName: "StarEmpty"), for: UIControlState())
                 }
             }
             self.delegate?.RankViewChanged(_rate)

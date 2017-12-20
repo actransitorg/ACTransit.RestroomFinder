@@ -9,14 +9,14 @@
 import Foundation
 
 class Threading{
-    static func sync(lock: AnyObject, closure: () -> Void) {
+    static func sync(_ lock: AnyObject, closure: () -> Void) {
         objc_sync_enter(lock)
         closure()
         objc_sync_exit(lock)
     }
     
-    static func runInMainThread(closure: () -> Void){
-        dispatch_async(dispatch_get_main_queue(), {
+    static func runInMainThread(_ closure: @escaping () -> Void){
+        DispatchQueue.main.async(execute: {
             closure()
         })
     }

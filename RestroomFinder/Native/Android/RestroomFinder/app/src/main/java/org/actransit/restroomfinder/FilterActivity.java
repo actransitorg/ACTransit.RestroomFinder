@@ -54,6 +54,7 @@ public class FilterActivity extends BaseActivity {
 
         selectedRoute=activity.getStringExtra(SharedExtras.SelectedRoute);
         waterOnly = activity.getBooleanExtra(SharedExtras.PortableWaterOnly,false);
+        hideWait();
     }
     private void setDefaultUI(){
         chkPortableWater.setChecked(waterOnly);
