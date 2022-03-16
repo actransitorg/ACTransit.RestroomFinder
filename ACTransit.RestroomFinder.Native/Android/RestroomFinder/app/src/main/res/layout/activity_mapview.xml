@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.actransit.restroomfinder.MapviewActivity">
+
+
+
+    <org.actransit.restroomfinder.CustomMapDialog.MapWrapperLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" >
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="org.actransit.restroomfinder.MapviewActivity" />
+
+    </org.actransit.restroomfinder.CustomMapDialog.MapWrapperLayout>
+
+<!--    <LinearLayout android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentEnd="false"-->
+<!--        android:background="#AABBBBBB"-->
+<!--        android:layout_margin="0px">-->
+
+<!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="false"
+        android:layout_margin="0px">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="55">
+
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/round_layout"
+                android:visibility="gone"
+                android:id="@+id/frameLayout">
+<!--                <ImageButton-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:id="@+id/imgBtnCurrentLocation"-->
+<!--                    android:layout_alignParentTop="true"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    android:background="@drawable/currentlocation"-->
+<!--                    android:focusableInTouchMode="true" />-->
+
+            </FrameLayout>
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/btnCurrentSpeed"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/round_layout"
+                android:focusableInTouchMode="true" />
+
+        </RelativeLayout>
+
+        <org.actransit.restroomfinder.Infrastructure.CustomListView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="45"
+            android:id="@+id/lstRestrooms"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="0dp"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:background="@drawable/gradient_background1" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="@string/showhide_list"
+            android:id="@+id/btnShowHide"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentEnd="false"
+            android:padding="0px"
+            android:layout_marginBottom="-6dp"
+            android:layout_marginRight="-5dp"
+            android:layout_marginLeft="-5dp"
+            android:onClick="btnShowHideList_onClick"
+            android:background="@drawable/gradient_background2" />
+    </LinearLayout >
+
+</RelativeLayout>

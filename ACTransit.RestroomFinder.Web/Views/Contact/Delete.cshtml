@@ -1,0 +1,82 @@
+﻿@using ACTransit.RestroomFinder.Web.Models
+
+@model ContactViewModel
+
+@{
+    ViewBag.Title = "Delete Contact";
+
+}
+
+<h2>Delete Contact</h2>
+
+<h3>Are you sure you want to delete this record?</h3>
+
+<div class="row">
+    <hr />
+    <div class="col-md-5">
+        <dl class="dl-horizontal">
+
+            <dt>
+                Service Provider
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.ServiceProvider", Model.CurrentContact.ServiceProvider, new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Contact Name
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Name", Model.CurrentContact.Name, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Title
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Title", Model.CurrentContact.Title, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Email
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Email", Model.CurrentContact.Email, new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Phone
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Phone", Model.CurrentContact.Phone, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Address
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Address", Model.CurrentContact.Address, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Notes
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentContact.Notes", Model.CurrentContact.Notes, new { @class = "form-control", disabled = "true" })
+            </dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-primary" /> |
+                @Html.ActionLink("Back to List", "Index", new
+           {
+               searchContactName = Session["SearchContactName"],
+               searchServiceProvider = Session["SearchServiceProvider"],
+               sorField = Session["SortField"],
+               sortDirection = Session["SortDirection"],
+               page = Session["page"]
+           })
+            </div>
+        }
+    </div>
+</div>

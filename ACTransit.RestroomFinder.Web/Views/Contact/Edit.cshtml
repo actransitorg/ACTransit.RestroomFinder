@@ -1,0 +1,195 @@
+﻿@using ACTransit.RestroomFinder.Domain.Enums
+@using ACTransit.RestroomFinder.Web.Models
+
+@model ContactViewModel
+
+@section Head {
+    @Styles.Render("~/Content/magicsuggestcss")
+}
+
+<style>
+    .version-table {
+        overflow: scroll;
+        vertical-align: top;
+        min-height: 200px;
+    }
+
+        .version-table thead {
+            word-wrap: normal;
+            white-space: nowrap;
+        }
+
+            .version-table thead tr {
+                height: 20px;
+            }
+
+                .version-table thead tr td {
+                    word-break: keep-all;
+                }
+
+        .version-table table tr td p {
+            margin-bottom: 0;
+        }
+
+    td div {
+        height: auto;
+        overflow: visible;
+    }
+
+    .ms-sel-ctn input[type="text"] {
+        border: 0 !important;
+    }
+
+    td input[type=text]:disabled {
+        cursor: text;
+    }
+
+    .sticky {
+        position: sticky;
+        position: -webkit-sticky;
+        position: -moz-sticky;
+        position: -ms-sticky;
+        position: -o-sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .ms-sel-add {
+        color: #6ace4f;
+        font-weight: bolder;
+    }
+
+    .ms-sel-remove {
+        color: #ff6a00;
+        font-weight: bolder;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Edit Contact";
+}
+
+<div class="row">
+    <h2 class="col-md-4">@ViewBag.Title</h2>
+
+    <div class="col-md-1" style="margin-top:30px;">
+        @Html.ActionLink("Back to List", "Index", new
+   {
+       searchContactName = Session["SearchContactName"],
+       searchServiceProvider = Session["SearchServiceProvider"],
+       sorField = Session["SortField"],
+       sortDirection = Session["SortDirection"],
+       page = Session["page"]
+   })
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { id = "editContactForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CurrentContact.ContactId)
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Service Provider", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.ServiceProvider, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.ServiceProvider, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Contact Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Phone", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CurrentContact.Notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-primary btnEdit">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/magicsuggest")
+    @Scripts.Render("~/bundles/mapviewer")
+
+    <script src="~/Scripts/site.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            //Hack so it enables text selection with IE on disabled fields
+            $('#CurrentContact_ServiceProvider').focus();
+            $('#CurrentContact_ServiceProvider').blur();
+
+            if (!("url" in window) && ("webkitURL" in window)) {
+                window.URL = window.webkitURL;
+            }
+
+
+
+            //Any actions needed on submit?
+            $('.btnEdit').click(function () {
+                $('form#editContactForm').submit();
+            });
+
+
+        });
+
+    </script>
+}

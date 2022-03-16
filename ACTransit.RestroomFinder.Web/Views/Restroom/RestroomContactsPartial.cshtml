@@ -1,0 +1,68 @@
+﻿@model ACTransit.RestroomFinder.Web.Models.RestroomViewModel
+
+
+
+<table class="contacttable" style="max-height: 500px;">
+    <thead>
+        <tr>
+            <th style="width:70px;"></th>
+            <th>
+                @Html.DisplayName("Service Provider")
+            </th>
+            <th>
+                @Html.DisplayName("Contact Name")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Phone")
+            </th>
+            <th>
+                @Html.DisplayName("Address")
+            </th>
+            <th style="width: 70px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model.RestroomContacts)
+        {
+            <tr>
+                <td>
+                    @Html.RadioButtonFor(modelItem => Model.CurrentRestroom.ContactId, contact.ContactId, new { id = "" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.ServiceProvider)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Address)
+                </td>
+                <td style="text-align: center;">
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        setRestroomTableStyle($(".contacttable"));
+
+        // Hack to make the responsive table work correctly with desired styling
+        $(window).resize(function () {
+            setRestroomTableStyle($(".contacttable"));
+        });
+    });
+</script>

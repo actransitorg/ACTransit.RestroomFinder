@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in ServerAPI.getRoutes(_:):ServerAPI.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ServerBaseAPI.get&lt;A&gt;(_:headers:):ServerBaseAPI.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in closure #1 in closure #1 in DisclaimerViewController.AgreeClicked(_:):DisclaimerViewControler.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "controller">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in ServerAPI.getRestStops(_:location:callBack:):ServerAPI.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

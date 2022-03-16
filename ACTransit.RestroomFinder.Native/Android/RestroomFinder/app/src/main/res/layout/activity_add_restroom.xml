@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addRestroomLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.actransit.restroomfinder.AddRestroomActivity">
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:enabled="true"
+        android:onClick="btnNext_Clicked"
+        android:text="Done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblAddRestroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:text="Suggest a Restroom"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:enabled="true"
+        android:onClick="btnCancel_Clicked"
+        android:text="Cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="#c0c0c0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCancel" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude:" />
+                <EditText
+                    android:id="@+id/txtLatitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:inputType="numberDecimal"
+                    android:text="Latitude" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblLongitude"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="Longitude:" />
+                <EditText
+                    android:id="@+id/txtLongitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:inputType="numberDecimal"
+                    android:text="Longitude" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblServiceProvider"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Service Provider" />
+
+                <EditText
+                    android:id="@+id/txtServiceProvider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:inputType="text"
+                    android:hint="Service Provider" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblLabelId"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="ID No." />
+
+                <EditText
+                    android:id="@+id/txtLabelId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:maxLength="7"
+                    android:inputType="text"
+                    android:hint="ID No." />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblName"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Location Name" />
+
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:inputType="text"
+                    android:hint="Location Name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblAddress"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Address" />
+                <EditText
+                    android:id="@+id/lblAddressContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="50"
+                    android:inputType="text"
+                    android:hint="Location Address" />
+<!--                <TextView-->
+<!--                    android:id="@+id/lblAddressContent"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Address"-->
+<!--                    />-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblContactName"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Name" />
+                <EditText
+                    android:id="@+id/txtContactName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:inputType="text"
+                    android:hint="Contact Name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblTitle"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Title" />
+                <EditText
+                    android:id="@+id/txtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:inputType="text"
+                    android:hint="Title" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblPhone"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone No." />
+                <EditText
+                    android:id="@+id/txtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="14"
+                    android:inputType="text"
+                    android:hint="Phone Number" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblEmail"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Email" />
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:hint="Email" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblType"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Type" />
+
+                <Spinner
+                    android:id="@+id/spnType"
+                    android:minHeight="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restroom "
+                android:id="@+id/chkRestroom"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:background="@drawable/border1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Men "
+                    android:id="@+id/chkRestroomMen"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp" />
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Women "
+                    android:id="@+id/chkRestroomWomen"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="8dp" />
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender Neutral "
+                    android:id="@+id/chkRestroomNeutral"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="8dp" />
+
+
+            </LinearLayout>
+
+
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Water "
+                android:id="@+id/chkPortableWater"
+                android:layout_marginTop="10dp"
+            />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblWeekdayHours"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Weekday Hours" />
+                <EditText
+                    android:id="@+id/txtWeekdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:hint="Weekday Hours" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblSaturdayHours"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Saturday Hours" />
+                <EditText
+                    android:id="@+id/txtSaturdayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:hint="Saturday Hours" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblSundayHours"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sunday Hours" />
+                <EditText
+                    android:id="@+id/txtSundayHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:hint="Sunday Hours" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblNote"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Notes / Access Codes / Special Instructions" />
+
+                <EditText
+                    android:id="@+id/txtNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:lines="3"
+                    android:inputType="textMultiLine"
+                    android:hint="Notes / Access Codes / Special Instructions" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lltWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center">
+
+                <org.actransit.restroomfinder.Infrastructure.TextViewIcon
+                    android:id="@+id/tviIsHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fontType="FontAwesome"
+                    android:text=""
+                    android:textSize="22dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#FF8822"
+                    android:layout_gravity="left|center_vertical" />
+                <TextView
+                    android:id="@+id/lblIsHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This restroom has some pending changes..." />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/emptySpace"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:minHeight="80dp"
+                android:orientation="vertical"
+                android:layout_marginTop="80dp"
+                android:layout_gravity="center">
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar"-->
+<!--        style="@style/Widget.AppCompat.ProgressBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/loading_spinner"-->
+<!--        style="@style/Widget.AppCompat.ProgressBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center"-->
+<!--        />-->
+<!--    <ProgressBar-->
+<!--        android:id="@+id/prgLoading"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        style="?android:attr/progressBarStyle"-->
+<!--        android:layout_centerInParent="true"/>-->
+
+<!--    <ProgressBar android:layout_width="match_parent" android:layout_height="wrap_content"-->
+<!--        android:id="@+id/progressBar"-->
+<!--        style="?android:attr/progressBarStyle"-->
+<!--        android:maxWidth="20dp"-->
+<!--        android:maxHeight="20dp"-->
+<!--        android:layout_gravity = "center" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

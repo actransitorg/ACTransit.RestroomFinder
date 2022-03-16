@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "CustomTableViewCell.layoutSubviews():CustomTableViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "traitCollection.userInterfaceStyle ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in AddRestroomViewController.setVariables(restroom:):AddRestroomViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.actionSheetClick(_:action:):MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "restroom.isHistory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

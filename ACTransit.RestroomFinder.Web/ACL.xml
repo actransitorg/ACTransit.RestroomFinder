@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ACL>
+  <tokens>
+    <token name="Admin">
+      <users>
+        <user allow="1" silence="1">user_er</user>
+      </users>
+      <groups>
+        <group allow="1" silence="1">APP Admin Group</group>
+      </groups>
+    </token>
+    <token name="RestroomCreator">
+      <groups>
+        <group allow="1" silence="1">APP RestroomFinder Editor</group>
+      </groups>
+      <users>
+        <user allow="1" silence="1">user_nt</user>
+      </users>      
+    </token>
+    <token name="RestroomEditor">
+      <groups>
+        <group allow="1" silence="1">APP RestroomFinder Editor</group>
+      </groups>
+      <users>
+        <user allow="1" silence="1">user_nt</user>
+      </users>
+    </token>
+    <token name="ContactCreator">
+      <groups>
+        <group allow="1" silence="1">APP RestroomFinder Editor</group>
+      </groups>
+      <users>
+        <user allow="1" silence="1">user_nt</user>
+        <user allow="1" silence="1">user_is</user>
+      </users>
+    </token>
+    <token name="ContactEditor">
+      <groups>
+        <group allow="1" silence="1">APP RestroomFinder Editor</group>
+      </groups>
+      <users>
+        <user allow="1" silence="1">user_nt</user>
+        <user allow="1" silence="1">user_is</user>
+      </users>
+    </token>
+    <token name="RestroomReportCreator">
+      <users>
+        <user allow="1" silence="1">user_is</user>
+        <user allow="1" silence="1">user_ey</user>
+        <user allow="1" silence="1">user_ar</user>
+        <user allow="1" silence="1">user_nt</user>
+      </users>
+    </token>    
+    <token name="FeedbackEditor">
+      <groups>
+        <group allow="1" silence="1">APP Admin Group</group>
+      </groups>
+      <users>
+        <user allow="1" silence="1">user_nt</user>
+        <user allow="1" silence="1">user_AR</user>
+      </users>
+      <jobTitles>
+        <jobTitle allow="1">Director of Maintenance</jobTitle>        
+        <jobTitle allow="1">Senior Maintenance Supervisor</jobTitle>        
+        <jobTitle allow="1">Maintenance Supervisor</jobTitle>
+        <jobTitle allow="1">Maintenance Superintendent</jobTitle>
+        <jobTitle allow="1">Maintenance Technical Supervsr</jobTitle>
+        <jobTitle allow="1">Assistant Dir of Maintenance</jobTitle>
+        <jobTitle allow="1">Director of Maintenance</jobTitle>
+      </jobTitles>
+    </token>
+    <token name="ApplicationAccessEditor">
+      <groups>
+        <group allow="1" silence="1">APP Admin Group</group>
+      </groups>
+    </token>
+  </tokens>
+</ACL>

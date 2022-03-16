@@ -1,0 +1,552 @@
+﻿@using ACTransit.RestroomFinder.Web.Models
+@using ACTransit.RestroomFinder.Web.Infrastructure
+
+@model RestroomViewModel
+
+<style>
+    .table-header {
+        font-size: 15pt;
+    }
+
+    .division {
+        font-size: 20pt;
+    }
+
+    .headers th {
+        border: 1px solid white !important;
+        white-space: nowrap;
+        background-color: rgb(68,114, 196);
+        color: white;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+</style>
+
+@{
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanFilter = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenRestroomReportCreator);
+}
+<div>
+    <fieldset>
+        <button class="btn hidden-print" id="print-all">Print All </button>
+        @foreach (var division in Model.RestroomsByDivision)
+        {
+            <button class="btn btn-info hidden-print" id=@division.Division>Print @division.Division </button>
+        }
+
+        @if (userCanFilter)
+        {
+            <input type="checkbox" name="oshaselect" id="oshaselect">
+            <label for="oshaselect">Show OSHA Non-Compliance</label>
+
+            <input type="checkbox" name="inactiverestrooms" id="inactiverestrooms">
+            <label for="inactiverestrooms">Out of Service</label>
+        }
+    </fieldset>
+</div>
+
+<br />
+<br />
+
+<div class="row" id="all-active-restrooms">
+
+    <div class="col-md-12">
+        @foreach (var restroomsByDivision in Model.RestroomsByDivision)
+        {
+            var restroomsByRoutes = restroomsByDivision.RestroomsByRoutes;
+            var division = restroomsByDivision.Division.Replace("D", "Division ");
+
+        <div class="@($@"{restroomsByDivision.Division}")" style="page-break-after: always;">
+            @*{(restroomsByDivision.RestroomsByRoutes.Any(route => route.Restrooms.Count(r => r.IsToiletAvailable) < 4 || route.Restrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha")}*@
+            <table class="table print-table" id="div-@restroomsByDivision.Division">
+                <thead>
+                    <tr class="noExl">
+                        <th><img src='~/Content/Images/act_logo_small.png' alt="logo" /></th>
+                        <th colspan="8" style="text-align: center; font-weight: bold; color: #1f497d">
+                            <input type="text" name="table-header" class="table-header" style="width: 100%; text-align: center;"> <br />
+                            <span class="division">@division </span>
+                            <span style="float: right; font-weight: normal;">Version @restroomsByDivision.CurrentVersion</span>
+                        </th>
+                    </tr>
+                    <tr class="headers">
+                        <th class="restroom-name">@Html.DisplayName("Restroom Name")</th>
+                        <th class="address">@Html.DisplayName("Address")</th>
+                        <th class="city">@Html.DisplayName("City")</th>
+                        <th class="toilet">@Html.DisplayName("Toilet")</th>
+                        <th class="water">@Html.DisplayName("Water")</th>
+                        <th class="route">@Html.DisplayName("Route")</th>
+                        <th class="hours-available">@Html.DisplayName("Hours Available")</th>
+                        <th class="note">@Html.DisplayName("Note")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in restroomsByRoutes)
+                    {
+                        var restrooms = item.Restrooms;
+                        var activeRestrooms = restrooms.Where(r => r.StatusListId != 3).ToList(); // restrooms.Where(r => r.PendingReview).ToList();
+
+                        var restroomclass = (activeRestrooms.Count(r => r.IsToiletAvailable) < 4 || activeRestrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha";
+                        restroomclass += restrooms.Count(r => r.StatusListId != 3) > 0 ? " yesinactiverestrooms" : " noinactiverestrooms";
+
+                        <tr class="@restroomclass" style="page-break-inside: auto">
+                            <td class="route-info">
+                                Route @Html.DisplayFor(modelItem => item.Route)
+                            </td>
+                            <td colspan="7" class="destination">
+                                @Html.DisplayFor(modelItem => item.DestinationName)
+                            </td>
+                        </tr>
+
+                        foreach (var restroom in restrooms.OrderBy(r => r.RestroomName))
+                        {
+                            restroomclass = (activeRestrooms.Count(r => r.IsToiletAvailable) < 4 || activeRestrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha";
+                            restroomclass += restroom.StatusListId != 3 ? " active" : " inactive";
+
+                            <tr class="@restroomclass">
+                                <td class="restroom-name">
+                                    @Html.DisplayFor(modelItem => restroom.RestroomName)
+                                </td>
+                                <td class="address">
+                                    @Html.DisplayFor(modelItem => restroom.Address)
+                                </td>
+                                <td class="city">
+                                    @Html.DisplayFor(modelItem => restroom.City)
+                                </td>
+                                @{
+                                    var restroomAvailable = RestroomViewModel.GetIsToiletAvailableName(restroom.IsToiletAvailable).Substring(0, 1);
+                                    @Html.Raw($"<td class='toilet {(restroomAvailable == "N" ? "no-toilet" : string.Empty)}'>{restroomAvailable}</td>")
+                                    ;
+                                }
+                                @if (restroom.DrinkingWater.ToLower().Trim() == "n")
+                                {
+                                    <td class="water no-water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                <td class="route">
+                                    @Html.DisplayFor(modelItem => item.Route)
+                                </td>
+                                <td class="hours-available">
+                                    @Html.Raw($"{(!string.IsNullOrEmpty(restroom.WeekdayHours) ? "Weekdays " + restroom.WeekdayHours.Replace(";", "<br style='mso-data-placement:same-cell;' />") : string.Empty)}{(!string.IsNullOrEmpty(restroom.SaturdayHours) ? "<br style='mso-data-placement:same-cell;' />Saturdays " + restroom.SaturdayHours : string.Empty)}{(!string.IsNullOrEmpty(restroom.SundayHours) ? "<br style='mso-data-placement:same-cell;' /> Sundays " + restroom.SundayHours : string.Empty)}")
+                                </td>
+                                <td class="note">
+                                    @Html.DisplayFor(modelItem => restroom.Note)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+
+</div>
+
+<div class="row" style="display: none;" id="all-inactive-restrooms">
+    <div class="col-md-12">
+        @{ var approvedRestrooms = Model.ApprovedRestrooms.ToList(); }
+
+        <div>
+            <table class="table print-table" id="inactive-restrooms">
+                <thead>
+                    <tr class="headers">
+                        <th class="restroom-name">@Html.DisplayName("Restroom Name")</th>
+                        <th class="restroom-type">@Html.DisplayName("ID No")</th>
+                        <th class="restroom-type">@Html.DisplayName("Type")</th>
+                        <th class="address">@Html.DisplayName("Address")</th>
+                        <th class="city">@Html.DisplayName("City")</th>
+                        <th class="toilet">@Html.DisplayName("Toilet")</th>
+                        <th class="water">@Html.DisplayName("Water")</th>
+                        <th class="route">@Html.DisplayName("Route")</th>
+                        <th class="hours-available">@Html.DisplayName("Hours Available")</th>
+                        <th class="note">@Html.DisplayName("Note")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var restroom in approvedRestrooms)
+                    {
+                        if (restroom.StatusListId == 3) //Inactive restrooms
+                        {
+                            <tr>
+                                <td class="restroom-name">
+                                    @Html.DisplayFor(modelItem => restroom.RestroomName)
+                                </td>
+                                <td class="id-no">
+                                    @Html.DisplayFor(modelItem => restroom.LabelId)
+                                </td>
+                                <td class="restroom-type">
+                                    @Html.DisplayFor(modelItem => restroom.RestroomType)
+                                </td>
+                                <td class="address">
+                                    @Html.DisplayFor(modelItem => restroom.Address)
+                                </td>
+                                <td class="city">
+                                    @Html.DisplayFor(modelItem => restroom.City)
+                                </td>
+                                @{
+                                    var restroomAvailable = RestroomViewModel.GetIsToiletAvailableName(restroom.IsToiletAvailable).Substring(0, 1);
+                                    @Html.Raw($"<td class='toilet {(restroomAvailable == "N" ? "no-toilet" : string.Empty)}'>{restroomAvailable}</td>")
+                                    ;
+                                }
+                                @if (restroom.DrinkingWater.ToLower() == "n")
+                                {
+                                    <td class="water no-water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                <td class="route">
+                                    @Html.DisplayFor(modelItem => restroom.ACTRoute)
+                                </td>
+                                <td class="hours-available">
+                                    @Html.Raw($"{(!string.IsNullOrEmpty(restroom.WeekdayHours) ? "Weekdays " + restroom.WeekdayHours.Replace(";", "<br style='mso-data-placement:same-cell;' />") : string.Empty)}{(!string.IsNullOrEmpty(restroom.SaturdayHours) ? "<br style='mso-data-placement:same-cell;' />Saturdays " + restroom.SaturdayHours : string.Empty)}{(!string.IsNullOrEmpty(restroom.SundayHours) ? "<br style='mso-data-placement:same-cell;' /> Sundays " + restroom.SundayHours : string.Empty)}")
+                                </td>
+                                <td class="note">
+                                    @Html.DisplayFor(modelItem => restroom.Note)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        @{
+            var oshaNonComplianceRestroomList = Model.RestroomsByRoute.ToList();             
+        }
+        
+
+        <div @*class="@($@"{(oshaNonComplianceRestroomList.Any(route => route.Restrooms.Count(r => r.IsToiletAvailable) < 4 || route.Restrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha": "yesosha")}")"*@ style="page-break-after: always;">
+            <table class="table print-table" id="osha-non-compliance-restrooms">
+                <thead>
+                    <tr class="headers">
+                        <th class="restroom-name">@Html.DisplayName("Restroom Name")</th>
+                        <th class="restroom-type">@Html.DisplayName("Type")</th>
+                        <th class="address">@Html.DisplayName("Address")</th>
+                        <th class="city">@Html.DisplayName("City")</th>
+                        <th class="toilet">@Html.DisplayName("Toilet")</th>
+                        <th class="water">@Html.DisplayName("Water")</th>
+                        <th class="route">@Html.DisplayName("Route")</th>
+                        <th class="hours-available">@Html.DisplayName("Hours Available")</th>
+                        <th class="note">@Html.DisplayName("Note")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in oshaNonComplianceRestroomList)
+                    {
+                        var restrooms = item.Restrooms; //item.Restrooms.Where(r=>r.PendingReview).ToList();
+                        var activeRestrooms = restrooms.Where(r => r.StatusListId != 3).ToList(); // restrooms.Where(r => r.PendingReview).ToList();
+                        var restroomclass = (activeRestrooms.Count(r => r.IsToiletAvailable) < 4 || activeRestrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha";
+                        if (restroomclass == "noosha")
+                        {
+                            restroomclass += restrooms.Count(r => r.StatusListId != 3) > 0 ? " yesinactiverestrooms" : " noinactiverestrooms";
+                            <tr class="@restroomclass" style="page-break-inside: auto">
+                                <td class="route-info">
+                                    Route @Html.DisplayFor(modelItem => item.Route)
+                                </td>
+                                <td class="r-type">
+                                    @Html.DisplayFor(modelItem => item.DestinationName).ToString().Substring(0, 2)
+                                </td>
+                                <td colspan="7" class="destination">
+                                    @Html.DisplayFor(modelItem => item.DestinationName).ToString().Substring(3)
+                                </td>
+                            </tr>
+                            foreach (var restroom in restrooms.OrderBy(r => r.RestroomName))
+                            {
+                                if (restroom.StatusListId != 3) // not inactive restrooms
+                                {
+                                    <tr class="@restroomclass">
+                                        <td class="restroom-name">
+                                            @Html.DisplayFor(modelItem => restroom.RestroomName)
+                                        </td>
+                                        <td class="restroom-type">
+                                            @Html.DisplayFor(modelItem => restroom.RestroomType)
+                                        </td>
+                                        <td class="address">
+                                            @Html.DisplayFor(modelItem => restroom.Address)
+                                        </td>
+                                        <td class="city">
+                                            @Html.DisplayFor(modelItem => restroom.City)
+                                        </td>
+                                        @{
+                                            var restroomAvailable = RestroomViewModel.GetIsToiletAvailableName(restroom.IsToiletAvailable).Substring(0, 1);
+                                            @Html.Raw($"<td class='toilet {(restroomAvailable == "N" ? "no-toilet" : string.Empty)}'>{restroomAvailable}</td>")
+                                            ;
+                                        }
+                                        <td class="water">
+                                            @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                        </td>
+
+                                        <td class="route">
+                                            @Html.DisplayFor(modelItem => item.Route)
+                                        </td>
+                                        <td class="hours-available">
+                                            @Html.Raw($"{(!string.IsNullOrEmpty(restroom.WeekdayHours) ? "Weekdays " + restroom.WeekdayHours.Replace(";", "<br style='mso-data-placement:same-cell;' />") : string.Empty)}{(!string.IsNullOrEmpty(restroom.SaturdayHours) ? "<br style='mso-data-placement:same-cell;' />Saturdays " + restroom.SaturdayHours : string.Empty)}{(!string.IsNullOrEmpty(restroom.SundayHours) ? "<br style='mso-data-placement:same-cell;' /> Sundays " + restroom.SundayHours : string.Empty)}")
+                                        </td>
+                                        <td class="note">
+                                            @Html.DisplayFor(modelItem => restroom.Note)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        @{ var restroomList = Model.RestroomsByRoute.ToList(); }
+
+        <div class="@($@"{(restroomList.Any(route => route.Restrooms.Count(r => r.IsToiletAvailable) < 4 || route.Restrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha": "yesosha")}")" style="page-break-after: always;">
+            <table class="table print-table" id="all-restrooms">
+                <thead>
+                    <tr class="headers">
+                        <th class="restroom-name">@Html.DisplayName("Restroom Name")</th>
+                        <th class="restroom-type">@Html.DisplayName("Type")</th>
+                        <th class="address">@Html.DisplayName("Address")</th>
+                        <th class="city">@Html.DisplayName("City")</th>
+                        <th class="toilet">@Html.DisplayName("Toilet")</th>
+                        <th class="water">@Html.DisplayName("Water")</th>
+                        <th class="route">@Html.DisplayName("Route")</th>
+                        <th class="hours-available">@Html.DisplayName("Hours Available")</th>
+                        <th class="note">@Html.DisplayName("Note")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in restroomList)
+                    {
+                        var restrooms = item.Restrooms; // item.Restrooms.Where(r => r.PendingReview).ToList();
+                        var restroomclass = (restrooms.Count(r => r.IsToiletAvailable) < 4 || restrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha";
+                        restroomclass += restrooms.Count(r => r.StatusListId == 3) > 0 ? " yesinactiverestrooms" : " noinactiverestrooms";
+                        <tr class="@restroomclass" style="page-break-inside:auto">
+                            <td class="route-info">
+                                Route @Html.DisplayFor(modelItem => item.Route)
+                            </td>
+                            <td class="r-type">
+                                @Html.DisplayFor(modelItem => item.DestinationName).ToString().Substring(0, 2)
+                            </td>
+                            <td colspan="7" class="destination">
+                                @Html.DisplayFor(modelItem => item.DestinationName).ToString().Substring(3)
+                            </td>
+                        </tr>
+                        foreach (var restroom in restrooms.OrderBy(r => r.RestroomName))
+                        {
+                            restroomclass = (restrooms.Count(r => r.IsToiletAvailable) < 4 || restrooms.Count(r => r.DrinkingWater.ToLower() == "y") < 4) ? "noosha" : "yesosha";
+                            restroomclass += restroom.StatusListId != 3 ? " active" : " inactive";
+
+                            <tr class="@restroomclass">
+                                <td class="restroom-name">
+                                    @Html.DisplayFor(modelItem => restroom.RestroomName)
+                                </td>
+                                <td class="restroom-type">
+                                    @Html.DisplayFor(modelItem => restroom.RestroomType)
+                                </td>
+                                <td class="address">
+                                    @Html.DisplayFor(modelItem => restroom.Address)
+                                </td>
+                                <td class="city">
+                                    @Html.DisplayFor(modelItem => restroom.City)
+                                </td>
+                                @{
+                                    var restroomAvailable = RestroomViewModel.GetIsToiletAvailableName(restroom.IsToiletAvailable).Substring(0, 1);
+                                    @Html.Raw($"<td class='toilet {(restroomAvailable == "N" ? "no-toilet" : string.Empty)}'>{restroomAvailable}</td>");
+                                }
+                                @if (restroom.DrinkingWater.ToLower() == "n")
+                                {
+                                    <td class="water no-water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="water">
+                                        @Html.DisplayFor(modelItem => restroom.DrinkingWater)
+                                    </td>
+                                }
+                                <td class="route">
+                                    @Html.DisplayFor(modelItem => item.Route)
+                                </td>
+                                <td class="hours-available">
+                                    @Html.Raw($"{(!string.IsNullOrEmpty(restroom.WeekdayHours) ? "Weekdays " + restroom.WeekdayHours.Replace(";", "<br style='mso-data-placement:same-cell;' />") : string.Empty)}{(!string.IsNullOrEmpty(restroom.SaturdayHours) ? "<br style='mso-data-placement:same-cell;' />Saturdays " + restroom.SaturdayHours : string.Empty)}{(!string.IsNullOrEmpty(restroom.SundayHours) ? "<br style='mso-data-placement:same-cell;' /> Sundays " + restroom.SundayHours : string.Empty)}")
+                                </td>
+                                <td class="note">
+                                    @Html.DisplayFor(modelItem => restroom.Note)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@section Scripts{
+    <script src="~/Scripts/site.js"></script>
+    <link href="~/Content/print.css" rel="stylesheet" type="text/css" id="print" media="print" />
+    <script>
+        var contentDir = '@(ViewBag.Url)Content';
+        var scriptsDir = '@(ViewBag.Url)Scripts';
+
+        $(document).ready(function() {
+            $('.table-header').val('AC Transit Restroom List - Effective ');
+            $('.active').show();
+            $('.inactive').hide();
+
+            $('#oshaselect').change(function() {
+                if (!this.checked) {
+                    $('.yesosha').show();
+                    $('.inactive').hide();
+                } else {
+                    $('.yesosha').hide();
+                    $('.inactive').hide();
+                }
+            });
+
+            $('#inactiverestrooms').change(function() {
+                if (this.checked) {
+                    $('#all-active-restrooms').hide();
+                    $('#all-inactive-restrooms').show();
+                    $('.inactive').show();
+                    $('.active').hide();
+                    $('.yesinactiverestrooms').show();
+                    $('.noinactiverestrooms').hide();
+                } else {
+                    $('#all-inactive-restrooms').hide();
+                    $('#all-active-restrooms').show();
+                    $('.noinactiverestrooms').show();
+                    $('.inactive').hide();
+                    $('.active').show();
+                }
+            });
+        });
+
+        $(".btn-info").click(function(e) {
+            var id = e.target.id;
+
+            $('input', "." + id).each(function() {
+                $("<span />", { text: this.value, "class": "table-header" }).insertAfter(this);
+                $(this).hide();
+            });
+
+            var excludeList = ($("#oshaselect").prop('checked') === true) ? ".noExl, .yesosha," : ".noExl,";
+            excludeList += ($("#inactiverestrooms").prop('checked') === true) ? " .active, .noinactiverestrooms"
+                : " .inactive";
+
+            $('#div-' + id).table2excel({
+                exclude: excludeList,
+                name: "WorkSheet",
+                filename: "Division-" + id,
+                fileext: ".xls",
+                preserveColors: true
+            });
+
+            //PrintForm("." + id, $('.table-header').val(), contentDir, scriptsDir);
+        });
+
+        $("#inactiverestrooms").change(function() {
+            if (this.checked) {
+                @foreach (var division in Model.RestroomsByDivision)
+                {
+                    <text>
+                        $('#@division.Division').prop("disabled", true);
+                    </text>
+                }
+                $('#oshaselect').prop("disabled", true);
+            } else {
+                @foreach (var division in Model.RestroomsByDivision)
+                {
+                    <text>
+                        $('#@division.Division').prop("disabled", false);
+                    </text>
+                }
+                $('#oshaselect').prop("disabled", false);
+            }
+        });
+
+        $("#oshaselect").change(function() {
+            if (this.checked) {
+                @foreach (var division in Model.RestroomsByDivision)
+                {
+                    <text>
+                        $('#@division.Division').prop("disabled", true);
+                    </text>
+                }
+                $('#inactiverestrooms').prop("disabled", true);
+            } else {
+                @foreach (var division in Model.RestroomsByDivision)
+                {
+                    <text>
+                        $('#@division.Division').prop("disabled", false);
+                    </text>
+                }
+                $('#inactiverestrooms').prop("disabled", false);
+            }
+        });
+
+        $("#print-all").click(function(e) {
+            var excludeList = ($("#oshaselect").prop('checked') === true) ? ".noExl, .yesosha," : ".noExl,";
+            excludeList += ($("#inactiverestrooms").prop('checked') === true) ? " .active, .noinactiverestrooms"
+                : " .inactive";
+
+
+            if ($("#inactiverestrooms").prop('checked') === true) {
+                $('#inactive-restrooms').table2excel({
+                    exclude: excludeList,
+                    name: "WorkSheet-All",
+                    filename: "All Inactive Restrooms",
+                    fileext: ".xls",
+                    preserveColors: true
+                });
+            } else if ($("#oshaselect").prop('checked') === true) {
+                $('#osha-non-compliance-restrooms').table2excel({
+                    //exclude: excludeList,
+                    name: "WorkSheet-All",
+                    filename: "All OSHA Non-Compliance Restrooms",
+                    fileext: ".xls",
+                    preserveColors: true
+                });
+            } else {
+                $('#all-restrooms').table2excel({
+                    exclude: excludeList,
+                    name: "WorkSheet-All",
+                    filename: "All Restrooms",
+                    fileext: ".xls",
+                    preserveColors: true
+                });
+            }
+        });
+
+        $('.table-header').change(function() {
+            $('.table-header').val($(this).val());
+        });
+
+    </script>
+    <script type="text/javascript" src='~/Scripts/print.js'></script>
+}

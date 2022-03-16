@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        multiDexEnabled true
+        applicationId "org.actransit.restroomfindermdm2"
+        minSdkVersion 26 //21
+        //applicationId "org.actransit.restroomfinder"
+//        minSdkVersion 21
+
+
+        ////minSdkVersion 21
+        ////targetSdkVersion 28
+        ////versionCode 27
+        ////versionName '2.27'
+
+        targetSdkVersion 29
+        versionCode 32
+        versionName '2.32'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+    }
+    flavorDimensions "mode"
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "Restroom_mdm-${variant.name}-${variant.versionName}-${new Date().format('yyyyMMddHHmmss')}-${defaultConfig.minSdkVersion.mApiLevel}.apk"
+            //outputFileName = "Restroom-${variant.name}-${variant.versionName}-${new Date().format('yyyyMMddHHmmss')}-${defaultConfig.minSdkVersion.mApiLevel}.apk"
+//            project.ext { appName = 'Restroom' }
+//            def formattedDate = new Date().format('yyyyMMddHHmmss')
+//            def newName = output.outputFile.name
+//            newName = newName.replace("app-", "$project.ext.appName-") //"MyAppName" -> I set my app variables in the root project
+//            newName = newName.replace("-release", "-release-${variant.versionName}-" + formattedDate)
+//            //noinspection GroovyAssignabilityCheck
+//            output.outputFile = new File(output.outputFile.parent, newName)
+        }
+    }
+    productFlavors {
+        flavorDev {
+            //applicationIdSuffix ".dev"
+            dimension "mode"
+        }
+
+        flavorDemo {
+            //applicationIdSuffix ".demo"
+            dimension "mode"
+        }
+        flavorTest {
+            //applicationIdSuffix ".Test"
+            dimension "mode"
+        }
+
+        flavorProd {
+            dimension "mode"
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-v4:29.0.0'
+    implementation 'com.android.support:support-media-compat:29.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.play:core:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat-resources:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation project(path: ':Android-Json-Mapper')
+    //implementation project(path: ':Android-Json-Mapper')
+}

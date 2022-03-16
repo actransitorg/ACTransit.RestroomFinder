@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transitapitoken">your.transit-api.key</string>
+    <string name="baseurl">https://api.actransit.org/</string>
+    <string name="flavorname">-Release</string>
+
+</resources>

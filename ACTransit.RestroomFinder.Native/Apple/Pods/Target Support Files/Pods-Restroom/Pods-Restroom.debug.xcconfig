@@ -1,0 +1,10 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Google" "${PODS_ROOT}/Headers/Public/GoogleAnalytics" $(inherited) ${PODS_ROOT}/Google/Headers
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Google/Libraries" "${PODS_ROOT}/GoogleAnalytics/Libraries" "${PODS_ROOT}/GoogleInterchangeUtilities/Libraries" "${PODS_ROOT}/GoogleNetworkingUtilities/Libraries" "${PODS_ROOT}/GoogleSymbolUtilities/Libraries" "${PODS_ROOT}/GoogleUtilities/Libraries"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"GGLAnalytics" -l"GGLCore" -l"GSDK_Overload_external" -l"GTMSessionFetcher_core_external" -l"GTMSessionFetcher_full_external" -l"GTMStackTrace_external" -l"GTM_AddressBook_external" -l"GTM_DebugUtils_external" -l"GTM_GTMURLBuilder_external" -l"GTM_KVO_external" -l"GTM_NSData+zlib" -l"GTM_NSDictionary+URLArguments_external" -l"GTM_NSScannerJSON_external" -l"GTM_NSStringHTML_external" -l"GTM_NSStringXML_external" -l"GTM_Regex_external" -l"GTM_RoundedRectPath_external" -l"GTM_StringEncoding_external" -l"GTM_SystemVersion_external" -l"GTM_UIFont+LineHeight_external" -l"GTM_core_external" -l"GTM_iPhone_external" -l"GoogleAnalytics" -l"ProtocolBuffers_external" -l"sqlite3" -l"stdc++" -l"z" -framework "AddressBook" -framework "AssetsLibrary" -framework "CoreData" -framework "CoreFoundation" -framework "CoreGraphics" -framework "CoreLocation" -framework "CoreMotion" -framework "MessageUI" -framework "Security" -framework "SystemConfiguration"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

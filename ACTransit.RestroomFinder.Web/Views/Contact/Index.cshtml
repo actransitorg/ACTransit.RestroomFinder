@@ -1,0 +1,290 @@
+﻿@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+
+@model ContactViewModel
+
+@using X.PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<style>
+    th {
+        white-space: nowrap;
+        word-wrap: break-word;
+    }
+
+    select {
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+
+    input[type=text] {
+        box-sizing: border-box;
+        border-radius: 4px;
+        @*background-color: white;
+        background-image: url(@Url.Content("~/Content/Images/searchicon.png"));
+        background-position: 1px 0px;
+        background-repeat: no-repeat;
+        padding-left: 25px;*@
+/*        width: 139px;*/
+    }
+
+    #search-panel-contact .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e113";
+        float: left;
+        color: black;
+        margin-right: 4px;
+        font-size: large;
+    }
+
+    #search-panel-contact .accordion-toggle.collapsed:after {
+        content: "\e114";
+    }
+
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align:left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+
+            td:nth-of-type(1):before {
+                content: "ServiceProvider";
+            }
+            td:nth-of-type(2):before {
+                content: "Name";
+            }
+            td:nth-of-type(3):before {
+                content: "Title";
+            }
+            td:nth-of-type(4):before {
+                content: "Email";
+            }
+            td:nth-of-type(5):before {
+                content: "Phone";
+            }
+            td:nth-of-type(6):before {
+                content: "Address";
+            }
+            td:nth-of-type(7):before {
+                content: "Notes";
+            }
+    }
+</style>
+
+@{
+    ViewBag.Title = "View and Search Contact Information";
+
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEdit = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactEditor);
+    var userCanCreate = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactCreator);
+}
+
+<h2>View and Search Contact Information</h2>
+
+<br />
+
+<div id="HeaderOptions">
+    <div class="row">
+        <div id="SearchPanelGroup" class="panel-group col-md-12">
+            <div class="panel panel-default">
+                <div id="search-panel-contact" class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#SearchPanel" style="text-decoration: none;">Search Options</a>
+                    </h4>
+                    <div id="AddContactGroup" style="float:right; display:inline-block; position:relative; top:-25px;">
+                        @{if (userCanCreate)
+                            {
+                                <input type="button" value="Add Contact" class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "Contact")'" />
+                            }
+                        }
+                    </div>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse">
+                    <div>
+                        <br />
+                    </div>
+                    @using (Html.BeginForm("Index", "Contact", FormMethod.Post, new { id = "SearchForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <p>
+                            &nbsp;Service Provider:&nbsp;@Html.TextBox("SearchServiceProvider", ViewBag.SearchServiceProvider as string)
+                            &nbsp;Contact Name:&nbsp;@Html.TextBox("SearchContactName", ViewBag.SearchContactName as string)
+                            @Html.Hidden("Page", ViewBag.Page as int?)
+                            @Html.Hidden("SortField", ViewBag.SortField as string)
+                            @Html.Hidden("SortDirection", ViewBag.SortDirection as string)
+                            &nbsp;<input type="submit" value="Search" class="btn btn-primary" onclick="$('#Page').val('');" />
+                            &nbsp;<input type="submit" value="Reset Search" class="btn btn-primary" onclick="resetForm($('#SearchForm'), 'ContactName');" />
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <table class="contacttable" style="height: 500px;">
+            <thead>
+                <tr>
+                    <th style="width:200px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="ServiceProvider" class="sortable">Service Provider</a>
+                    </th>
+                    <th style="width:200px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="ContactName" class="sortable">Contact Name</a>
+                    </th>
+                    <th style="width:150px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="Title" class="sortable">Title</a>
+                    </th>
+                    <th style="width:200px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="Email" class="sortable">Email</a>
+                    </th>
+                    <th style="width:150px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="Phone" class="sortable">Phone</a>
+                    </th>
+                    <th style="width:250px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="Address" class="sortable">Address</a>
+                    </th>
+                    <th style="width:100px;">
+                        Has Restroom?
+                    </th>
+                    <th style="width:250px;">
+                        <div class="glyphicon glyphicon-sort"></div>
+                        <a href="#" data-sortfield="Notes" class="sortable">Notes</a>
+                    </th>
+                    <th style="width: 100px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Contacts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceProvider)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.Raw($"<span style='color:{(item.HasRestroom ? "darkorange" : "black")};'>{(item.HasRestroom ? "Yes" : "No")}</span>")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td style="white-space: nowrap;">
+                            @{
+                                @Html.ActionLink(" ", "Details", new { id = item.ContactId }, new { @class = "glyphicon glyphicon-info-sign", @title = "Details", @style = "text-decoration:none" })
+                                ;
+
+                                if (userCanEdit)
+                                {
+                                    @Html.Raw("&nbsp;")
+
+                                    @Html.ActionLink(" ", "Edit", new { id = item.ContactId }, new { @class = "glyphicon glyphicon-edit", @title = "Edit", @style = "text-decoration:none" })
+                                }
+
+                                if (userCanEdit)
+                                {
+                                    @Html.Raw("&nbsp;")
+                                    if (!item.HasRestroom)
+                                    {
+                                        @Html.ActionLink(" ", "Delete", new { id = item.ContactId }, new { @class = "glyphicon glyphicon-trash", @title = "Delete", @style = "text-decoration:none" })
+                                    }
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="text-center">Page @(Model.Contacts.PageCount < Model.Contacts.PageNumber ? 0 : Model.Contacts.PageNumber) of @Model.Contacts.PageCount</div>
+
+<br />
+
+<div class="text-center">@Html.PagedListPager(Model.Contacts, page => Url.Action("Index", new { ViewBag.SearchContactName, ViewBag.SearchServiceProvider, ViewBag.SortField, ViewBag.SortDirection, page }))</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/magicsuggest")
+    <script src="~/Scripts/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            initPage({ hasSortTable: true, hasSearchPanels: true });
+            setRestroomTableStyle($(".contacttable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function () {
+                setRestroomTableStyle($(".contacttable"));
+            });
+
+            const panels = $.cookie();
+            for (let panel in panels) {
+                if (panels.hasOwnProperty(panel)) {
+                    if ($("#" + panel).hasClass('panel-collapse'))
+                        $("#" + panel).collapse("show");
+                }
+            };
+        });
+
+    </script>
+}

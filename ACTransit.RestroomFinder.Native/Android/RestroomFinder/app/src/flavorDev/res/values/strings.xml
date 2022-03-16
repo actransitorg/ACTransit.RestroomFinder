@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBWDKO8VutWovZTjaKBmDzl4Q4rh7O9-y4</string>-->
+    <string name="transitapitoken">your.transit-api.key</string>
+    <string name="baseurl">https://devapi.actransit.org/</string>
+
+    <string name="flavorname">!Dev!</string>
+</resources>

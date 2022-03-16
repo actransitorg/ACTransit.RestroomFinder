@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+<!--    <declare-styleable name="TextViewIcon">-->
+<!--        <attr name="fontType" format="enum">-->
+<!--            <enum name="AntDesign" 				value="0"/>-->
+<!--            <enum name="Entypo" 				value="1"/>-->
+<!--            <enum name="EvilIcons" 				value="2"/>-->
+<!--            <enum name="Feather" 				value="3"/>-->
+<!--            <enum name="FontAwesome" 			value="4"/>-->
+<!--            <enum name="FontAwesome5_Brands" 	value="5"/>-->
+<!--            <enum name="FontAwesome5_Regular" 	value="6"/>-->
+<!--            <enum name="FontAwesome5_Solid" 	value="7"/>-->
+<!--            <enum name="Foundation" 			value="8"/>-->
+<!--            <enum name="Ionicons" 				value="9"/>-->
+<!--            <enum name="MaterialIcons" 			value="10"/>-->
+<!--            <enum name="MaterialCommunityIcons" value="11"/>-->
+<!--            <enum name="SimpleLineIcons" 		value="12"/>-->
+<!--            <enum name="Octicons" 				value="13"/>-->
+<!--            <enum name="Zocial" 				value="14"/>-->
+<!--        </attr>-->
+<!--    </declare-styleable>-->
+    <declare-styleable name="IconProps">
+        <attr name="fontType" format="enum">
+            <enum name="AntDesign" 				value="0"/>
+            <enum name="Entypo" 				value="1"/>
+            <enum name="EvilIcons" 				value="2"/>
+            <enum name="Feather" 				value="3"/>
+            <enum name="FontAwesome" 			value="4"/>
+            <enum name="FontAwesome5_Brands" 	value="5"/>
+            <enum name="FontAwesome5_Regular" 	value="6"/>
+            <enum name="FontAwesome5_Solid" 	value="7"/>
+            <enum name="Foundation" 			value="8"/>
+            <enum name="Ionicons" 				value="9"/>
+            <enum name="MaterialIcons" 			value="10"/>
+            <enum name="MaterialCommunityIcons" value="11"/>
+            <enum name="SimpleLineIcons" 		value="12"/>
+            <enum name="Octicons" 				value="13"/>
+            <enum name="Zocial" 				value="14"/>
+        </attr>
+    </declare-styleable>
+</resources>

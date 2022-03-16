@@ -1,0 +1,444 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ACTransit.RestroomFinder.API</name>
+    </assembly>
+    <members>
+        <member name="T:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.Get(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Gets feedback for a given restroom
+            </summary>
+            <param name="restroomId">Restroom Id</param>
+            <param name="startPage">Start page where the search should begin at</param>
+            <param name="numRecords">Max number of records to be returned from the search</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.GetLastWeek(System.Int32)">
+            <summary>
+            Gets one week worth of feedback for a given restroom
+            </summary>
+            <param name="restroomId">Restroom Id</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.GetLastMonth(System.Int32)">
+            <summary>
+            Gets one month worth of feedback for a given restroom
+            </summary>
+            <param name="restroomId">Restroom Id</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.PutFeedback(System.Int16,ACTransit.RestroomFinder.API.Models.Feedback)">
+            <summary>
+            Updates feedback for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <param name="feedback">Feedback object</param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.DeleteFeedback(System.Int16)">
+            <summary>
+            Deletes all feedback available for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.PostFeedback(ACTransit.RestroomFinder.API.Models.Feedback)">
+            <summary>
+            Creates feedback for a given restroom
+            </summary>
+            <param name="feedback">Feedback object</param>
+            <returns>New feedback object created</returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackV2Controller.FeedbackExists(System.Int32)">
+            <summary>
+            Verifies if a given feedback Id already exists
+            </summary>
+            <param name="feedbackId">Feedback object co</param>
+            <returns>true if it exists or false otherwise</returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.Get(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Gets feedback for a given restroom
+            </summary>
+            <param name="restStopID">Restroom Id</param>
+            <param name="startPage">Start page where the search should begin at</param>
+            <param name="numRecords">Max number of records to be returned from the search</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.GetLastWeek(System.Int32)">
+            <summary>
+            Gets one week worth of feedback for a given restroom
+            </summary>
+            <param name="restStopId">Restroom Id</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.GetLastMonth(System.Int32)">
+            <summary>
+            Gets one month worth of feedback for a given restroom
+            </summary>
+            <param name="restStopId">Restroom Id</param>
+            <returns>Collection of feedback objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.PutFeedback(System.Int16,ACTransit.RestroomFinder.API.Models.Feedback)">
+            <summary>
+            Updates feedback for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <param name="feedback">Feedback object</param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.DeleteFeedback(System.Int16)">
+            <summary>
+            Deletes all feedback available for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.PostFeedback(ACTransit.RestroomFinder.API.Models.Feedback)">
+            <summary>
+            Creates feedback for a given restroom
+            </summary>
+            <param name="feedback">Feedback object</param>
+            <returns>New feedback object created</returns>
+            
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.FeedbackController.FeedbackExists(System.Int32)">
+            <summary>
+            Verifies if a given feedback Id already exists
+            </summary>
+            <param name="feedbackId">Feedback object co</param>
+            <returns>true if it exists or false otherwise</returns>
+            
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Controllers.AuthenticationController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.AuthenticationController.SendSecurityCode(ACTransit.RestroomFinder.API.Models.AuthenticationViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="authModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.AuthenticationController.ValidateSecurityCode(ACTransit.RestroomFinder.API.Models.AuthenticationViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="authModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Controllers.OperatorV2Controller">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.OperatorV2Controller.PostOperatorInfo(ACTransit.RestroomFinder.API.Models.OperatorInfoViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="operatorInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Controllers.RestroomsV2Controller">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.RestroomsV2Controller.GetRestroom(System.Int32)">
+            <summary>
+            Returns information for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <returns>Restroom object</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.RestroomsV2Controller.GetRestrooms(System.String,System.String,System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Int32})">
+            <summary>
+            Returns a list of restrooms that are near a given location
+            </summary>
+            <param name="routeAlpha">Bus route</param>
+            <param name="direction">Bus direction (currently not used)</param>
+            <param name="lat">Latitude of current location</param>
+            <param name="longt">Longitude of current location</param>
+            <param name="distance">Search radius in meters</param>
+            <returns>Collection of Restroom objects</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.RestroomsController.GetRestroom(System.Int16)">
+            <summary>
+            Returns information for a given restroom
+            </summary>
+            <param name="id">Restroom Id</param>
+            <returns>Restroom object</returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.RestroomsController.GetRestrooms(System.String,System.String,System.Single,System.Single,System.Nullable{System.Int32})">
+            <summary>
+            Returns a list of restrooms that are near a given location
+            </summary>
+            <param name="routeAlpha">Bus route</param>
+            <param name="direction">Bus direction (currently not used)</param>
+            <param name="lat">Latitude of current location</param>
+            <param name="longt">Longitude of current location</param>
+            <param name="distance">Search radius in meters</param>
+            <returns>Collection of Restroom objects</returns>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Controllers.VersionController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Controllers.VersionController.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Controllers.AndroidFile.ApiLevel">
+            <summary>
+            if 0, it means it is valid for all api levels.
+            </summary>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Handlers.FeedbackHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.FeedbackHandler.GetFeedbacksAsync(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.DateTime})">
+            <summary>
+            
+            </summary>
+            <param name="restroomId"></param>
+            <param name="startPage"></param>
+            <param name="numRecords"></param>
+            <param name="earliestDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.FeedbackHandler.SaveFeedbackAsync(ACTransit.RestroomFinder.API.Models.Feedback)">
+            <summary>
+            
+            </summary>
+            <param name="feedback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.FeedbackHandler.DeleteFeedbackAsync(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.FeedbackHandler.FeedbackExists(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="feedbackId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Handlers.AuthenticationHandler">
+            <summary>
+            Handles Login and validations.
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.AuthenticationHandler.SendSecurityCode(ACTransit.RestroomFinder.API.Models.AuthenticationViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="authModel"></param>
+            <returns></returns>
+            <exception cref="T:ACTransit.RestroomFinder.API.Infrastructure.FriendlyException"></exception>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Handlers.DisclaimerHandler">
+            <summary>
+            Handles Login and validations.
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.DisclaimerHandler.DisclaimerResponse(ACTransit.RestroomFinder.API.Models.DisclaimerViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <exception cref="T:ACTransit.RestroomFinder.API.Infrastructure.FriendlyException"></exception>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.DisclaimerHandler.IsValidSessionAsync(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="badge"></param>
+            <param name="deviceGuid"></param>
+            <param name="deviceSessionId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Handlers.OperatorHandler">
+            <summary>
+            Handles Login and validations.
+            </summary>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.OperatorHandler.GetOperatorInfoAsync(ACTransit.RestroomFinder.API.Models.OperatorInfoViewModel)">
+            <summary>
+            
+            </summary>
+            <param name="operatorInfo"></param>
+            <returns></returns>
+            <exception cref="T:ACTransit.RestroomFinder.API.Infrastructure.FriendlyException"></exception>
+        </member>
+        <member name="M:ACTransit.RestroomFinder.API.Handlers.OperatorHandler.IsValidSessionAsync(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="badge"></param>
+            <param name="deviceGuid"></param>
+            <param name="deviceSessionId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Infrastructure.Config.IpThrottlingWhiteList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ACTransit.RestroomFinder.API.Infrastructure.FriendlyExceptionType.PsMismatch">
+            <summary>
+            PeopleSoft data mismatch
+            </summary>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Models.BaseViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.DeviceGuid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.DeviceName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.DeviceModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.DeviceOS">
+            <summary>
+            
+            </summary>        
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.SystemName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.SystemVersion">
+            <summary>
+            
+            </summary>        
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.LocalizedModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.BatteryLevel">
+            <summary>
+            
+            </summary>        
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.BatteryState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentLatitude">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentLongtitude">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentAltitude">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentSpeed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentHorizontalAccuracy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.BaseViewModel.CurrentVerticalAccuracy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ACTransit.RestroomFinder.API.Models.UserViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.UserId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.Badge">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.SessionId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.Active">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.Deleted">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACTransit.RestroomFinder.API.Models.UserViewModel.LastLogon">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SqlServerTypes.Utilities">
+            <summary>
+            Utility methods related to CLR Types for SQL Server 
+            </summary>
+        </member>
+        <member name="M:SqlServerTypes.Utilities.LoadNativeAssemblies(System.String)">
+            <summary>
+            Loads the required native assemblies for the current architecture (x86 or x64)
+            </summary>
+            <param name="rootApplicationPath">
+            Root path of the current application. Use Server.MapPath(".") for ASP.NET applications
+            and AppDomain.CurrentDomain.BaseDirectory for desktop applications.
+            </param>
+        </member>
+    </members>
+</doc>

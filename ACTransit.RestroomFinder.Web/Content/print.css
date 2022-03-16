@@ -1,0 +1,121 @@
+﻿
+@media print {
+    @page {
+        size: 215.9mm 130mm;
+        margin-bottom: 0;
+        /*margin: 0px auto;*/
+        margin-left: 20mm;
+        margin-right: 5mm;
+        margin-top: 0;
+    }
+    /*@page :right {
+        margin-left: 2cm;
+        margin-right: 0.5cm;
+    }
+
+    @page :left {
+        margin-left: 0.5cm;
+        margin-right: 2cm;
+    }*/
+
+    @page :first {
+        margin-top: 0;
+    } 
+    
+    body {
+        font: 9pt "Tahoma";
+    }
+
+    .headers th {
+        border: 1px solid white !important;
+        white-space: nowrap;
+        background-color: #4f81bd;
+        color: white;
+    }
+
+    .table-header {
+        font-size: 12pt;
+        padding: 0;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 8px;
+        vertical-align: middle;
+    }
+
+    td {
+        border: 1px solid black;
+    }
+
+    .route-info {
+        background-color: black;
+        color: white;
+        border-left-style: none;
+        font-weight: bold;
+        padding-left: 0 !important;
+    }
+
+    .destination {
+        border-right-style: none;
+    }
+
+    .division {
+        font-size: 15pt;
+    }
+    
+    .hidden-print, header, footer, hr {
+        display: none;
+    }
+
+    .headers th {
+        white-space: nowrap;
+        background-color: #4f81bd !important;
+        font: 10pt "Tahoma";
+        font-weight: bold;
+        color: white !important;
+    }
+
+   
+    tr .route-info {
+        background-color: black !important;
+        color: white !important;
+        border-left-style: none;
+        font-weight: bold;
+    }
+    
+    .restroom-name {
+        border-left-style: none;
+        text-align: left;
+    }
+
+    .id-no {
+        border-left-style: none;
+        text-align: left;
+    }
+
+    .restroom-type {
+        text-align: left;
+    }
+    
+    tr .no-water {
+        background-color: grey !important;
+        color: white !important;
+        font-weight: bold;
+    }
+    
+    .hours-available {
+        text-align: center;
+        max-width: 250px;
+    }
+
+    .note {
+        text-align: left;
+        border-right-style: none;
+    }
+}
+
+

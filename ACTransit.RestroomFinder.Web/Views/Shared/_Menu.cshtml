@@ -1,0 +1,72 @@
+﻿@using System.Configuration;
+@using ACTransit.RestroomFinder.Web.Infrastructure
+
+<div class="navbar navbar-darkgradient" style="margin-bottom:0; z-index: 1000;">
+    <div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="Menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href='#' class="dropdown-toggle" data-toggle="dropdown">Restrooms<b class="caret"></b></a> @* removed  data-toggle="dropdown" to be clickable!*@
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("View and Search Restrooms", "Index", "Restroom")</li>
+                        @if (TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin) || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenRestroomCreator))
+                        {
+                            <li>@Html.ActionLink("Add a New Restroom", "Create", "Restroom")</li>
+                        }
+                    </ul>
+                </li>
+                @if (TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin) || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenApplicationAccessEditor))
+                {
+                    <li class="dropdown">
+                        <a href='#' class="dropdown-toggle" data-toggle="dropdown">Users and Devices<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Manage Users", "index", "User")</li>
+                            <li>@Html.ActionLink("Manage Users And Devices", "Index", "UserDevice")</li>
+                            <li>@Html.ActionLink("Manage Devices", "Index", "Device")</li>
+                        </ul>
+                    </li>
+                }
+                <li class="dropdown">
+                    <a href='#' class="dropdown-toggle" data-toggle="dropdown">Restroom Contacts<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("View and Search Contact", "Index", "Contact")</li>
+                        @if (TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin) || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactCreator))
+                        {
+                            <li>@Html.ActionLink("Add a New Contact", "Create", "Contact")</li>
+                        }
+                    </ul>
+                </li>
+
+                @*<li class="dropdown">
+                        <a href='#' class="dropdown-toggle" data-toggle="dropdown">Contacts and Vendors<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Manage Contact Information", "index", "Contact")</li>
+                        </ul>
+                    </li>*@
+                @*<li class="dropdown">
+                        <a href='#' class="dropdown-toggle" data-toggle="dropdown">Notifications<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Manage Notifications", "index", "Notification")</li>
+                        </ul>
+                    </li>*@
+                <li class="dropdown">
+                    <a href='#' class="dropdown-toggle" data-toggle="dropdown">Restroom Reports<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@(ConfigurationManager.AppSettings["Report.RestroomList.Location"] ?? string.Empty)" target="_blank">Restroom Report</a></li>
+                        <li><a href="@(ConfigurationManager.AppSettings["Report.RestroomFeedback.Location"] ?? string.Empty)" target="_blank">Feedback Report</a></li>
+                        <li>@Html.ActionLink("Print Report", "Print", "Restroom")</li>
+                        <li>@Html.ActionLink("Restroom Contact Report", "RestroomContactReport", "Restroom")</li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>

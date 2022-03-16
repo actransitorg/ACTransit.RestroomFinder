@@ -1,0 +1,1962 @@
+﻿@using ACTransit.RestroomFinder.Domain.Enums
+@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Common
+
+@model RestroomViewModel
+
+@section Head {
+    @Styles.Render("~/Content/magicsuggestcss")
+}
+
+<style>
+    .version-table {
+        overflow: scroll;
+        vertical-align: top;
+        min-height: 200px;
+    }
+
+        .version-table thead {
+            word-wrap: normal;
+            white-space: nowrap;
+        }
+
+            .version-table thead tr {
+                height: 20px;
+            }
+
+                .version-table thead tr td {
+                    word-break: keep-all;
+                }
+
+        .version-table table tr td p {
+            margin-bottom: 0;
+        }
+
+    td div {
+        height: auto;
+        overflow: visible;
+    }
+
+    .ms-sel-ctn input[type="text"] {
+        border: 0 !important;
+    }
+
+    td input[type=text]:disabled {
+        cursor: text;
+    }
+
+
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+    }
+
+
+    .sticky {
+        position: sticky;
+        position: -webkit-sticky;
+        position: -moz-sticky;
+        position: -ms-sticky;
+        position: -o-sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .ms-sel-add {
+        color: #6ace4f;
+        font-weight: bolder;
+    }
+
+    .ms-sel-remove {
+        color: #ff6a00;
+        font-weight: bolder;
+    }
+
+    #search-panel-contact .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e113";
+        float: left;
+        color: black;
+        margin-right: 4px;
+        font-size: large;
+    }
+
+    #search-panel-contact .accordion-toggle.collapsed:after {
+        content: "\e114";
+    }
+
+    td .glyphicon {
+        font-size: 16pt;
+    }
+</style>
+
+@{
+    if (Model.ReviewRestrooms.Count() == 0)
+    {
+        if (Model.CurrentRestroom.StatusListId == (int)RestroomEnums.RestroomApprovalStatus.Pending)
+        {
+            ViewBag.Title = "Review New Restroom";
+        }
+        else
+        {
+            ViewBag.Title = "Edit Restroom";
+        }
+    }
+    else
+    {
+        ViewBag.Title = "Review and Edit Restroom Changes";
+    }
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEditContact = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactEditor);
+
+    var cleanedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.CleanedContactId);
+    var repairedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.RepairedContactId);
+    var suppliedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SuppliedContactId);
+    var securityGatesContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SecurityGatesContactId);
+    var securityLocksContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SecurityLocksContactId);
+}
+
+<div class="row">
+    <h2 class="col-md-2">@ViewBag.Title</h2>
+
+    @if (Model.ReviewRestrooms.Count() > 0)
+    {
+        <div class="col-md-3" style="margin-top:30px; font-weight:bold;">
+            <div style="float: left;">
+                <span style="background-color: #D3F8BC;">&nbsp;&nbsp;&nbsp;</span>&nbsp;New
+            </div>
+            <div style="float: left; margin-left: 10px;">
+                <span style="background-color: #F9F9A4;">&nbsp;&nbsp;&nbsp;</span>&nbsp;Updated
+            </div>
+            <div style="float: left; margin-left: 10px; margin-bottom: 10px;">
+                <span style="background-color: #F1BBA7;">&nbsp;&nbsp;&nbsp;</span>&nbsp;Deleted
+            </div>
+        </div>
+    }
+    @if (Model.ReviewRestrooms.Count() == 0)
+    {
+    <div class="col-md-2" style="margin-top:30px;">
+        <button type="button" class="btn btn-primary btnEdit">Save</button>
+    </div>
+    }
+
+    <div class="col-md-1" style="margin-top:30px;">
+        @Html.ActionLink("Back to List", "Index", new
+        {
+            searchName = Session["SearchName"],
+            searchAddress = Session["SearchAddress"],
+            searchCity = Session["SearchCity"],
+            searchRouteSelection = Session["SearchRoutes"],
+            sorField = Session["SortField"],
+            sortDirection = Session["SortDirection"],
+            page = Session["page"],
+            statusId = Session["StatusId"],
+            showPublic = Session["ShowPublic"],
+            showToilet = Session["ShowToilet"],
+            showPendingReview = Session["ShowPendingReview"]
+        })
+    </div>
+
+</div>
+
+@using (Html.BeginForm("Edit", "Restroom", FormMethod.Post, new { id = "editRestroomForm" }))
+{
+
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CurrentRestroom.RestroomId)
+    @Html.HiddenFor(model => model.CurrentRestroom.State)
+    @Html.HiddenFor(model => model.CurrentRestroom.Country)
+    @Html.HiddenFor(model => model.CurrentRestroom.LatDec)
+    @Html.HiddenFor(model => model.CurrentRestroom.LongDec)
+    @Html.HiddenFor(model => Model.CurrentRestroom.ContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.CleanedContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.RepairedContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.SuppliedContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.SecurityGatesContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.SecurityLocksContactId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.ToiletGenderId)
+    @Html.HiddenFor(model => Model.CurrentRestroom.AddressChanged)
+
+    if (Model.ReviewRestrooms.Count() == 0)
+    {
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.RestroomName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.RestroomName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Restroom Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CurrentRestroom.RestroomType, RestroomViewModel.RestroomTypes, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.RestroomType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("ID No", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.LabelId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.LabelId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CurrentRestroom.StatusListId, RestroomViewModel.Statuses, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.StatusListId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Has Toilet", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CurrentRestroom.IsToiletAvailable, RestroomViewModel.ToiletOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.IsToiletAvailable, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Toilet Gender", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @foreach (var gender in Model.ToiletGenders)
+                    {
+                        <span style="padding-right: 5px;">
+                            @Html.CheckBoxFor(model => gender.Selected, new { id = gender.Value, @class = "toiletGender" })
+                            @Html.DisplayFor(model => gender.Text)
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Visibility", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CurrentRestroom.IsPublic, RestroomViewModel.Scopes, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.IsPublic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div style="vertical-align: middle;">
+                                <b>Location</b>&nbsp;
+                                <a type="button" id="ShowMap" class="btn" style="padding-left:0px; margin-top: -20px; float:right;" href="#MapContainer" data-toggle="modal">
+                                    <img src="~/Content/Images/location-icon-48px.png" style="padding: 0; margin: 0; height: 40px; width: 40px;" title="Search On Map" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.CurrentRestroom.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address..." } })
+                                    @Html.ValidationMessageFor(model => model.CurrentRestroom.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("City", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.CurrentRestroom.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City..." } })
+                                    @Html.ValidationMessageFor(model => model.CurrentRestroom.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Zip", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.CurrentRestroom.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code..." } })
+                                    @Html.ValidationMessageFor(model => model.CurrentRestroom.Zip, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Restroom Contact", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @Html.Label("Service Provider (Owner)", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_ServiceProvider", "", new { @class = "form-control" })
+                                </div>
+                                @{if (userCanEditContact)
+                                    {
+                                        <div class="col-md-1" style="margin-top:1px;">
+                                            <button type="button" class="btn btn-primary btn-sm" id="edit-contact" disabled="disabled">Edit</button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Contact Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Name", "", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Title", "", new { disabled = "disabled", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Email", "", new { disabled = "disabled", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Phone", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Phone", "", new { disabled = "disabled", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Address", "", new { disabled = "disabled", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-6">
+                                    @Html.TextBox("CurrentContact_Notes", "", new { disabled = "disabled", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Duties", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-inline form-group" style="display:flex;">
+                                <div class="col-md-2">
+                                    <div style="padding-top: 4px;">
+                                        <span>Clean</span>
+                                        @Html.CheckBox("CleanedContact", Model.CurrentRestroom.CleanedContactId != null && Model.CurrentRestroom.CleanedContactId != 0, "")
+                                    </div>
+                                </div>
+                                <span style="padding-top: 4px;">Service Provider</span>
+                                <div class="col-md-4">
+                                    @Html.TextBox("CurrentRestroom_CleanedContact", "", new { @class = "form-control", style = "width: 100%" })
+                                </div>
+                                <div class="col-md-2">
+                                    @{if (userCanEditContact)
+                                        {
+                                            <div class="col-md-1" style="margin-top:1px;">
+                                                <button type="button" class="btn btn-primary btn-sm" id="edit-clean-contact" disabled="disabled">Edit</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-inline form-group" style="display:flex;">
+                                <div class="col-md-2">
+                                    <div style="padding-top: 4px;">
+                                        <span>Repair</span>
+                                        @Html.CheckBox("RepairedContact", Model.CurrentRestroom.RepairedContactId != null && Model.CurrentRestroom.RepairedContactId != 0, "")
+                                    </div>
+                                </div>
+                                <span style="padding-top: 4px;">Service Provider</span>
+                                <div class="col-md-4">
+                                    @Html.TextBox("CurrentRestroom_RepairedContact", "", new { @class = "form-control", style = "width: 100%" })
+                                </div>
+                                <div class="col-md-2">
+                                    @{if (userCanEditContact)
+                                        {
+                                            <div class="col-md-1" style="margin-top:1px;">
+                                                <button type="button" class="btn btn-primary btn-sm" id="edit-repair-contact" disabled="disabled">Edit</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-inline form-group" style="display:flex;">
+                                <div class="col-md-2">
+                                    <div style="padding-top: 4px;">
+                                        <span>Supply</span>
+                                        @Html.CheckBox("SuppliedContact", Model.CurrentRestroom.SuppliedContactId != null && Model.CurrentRestroom.SuppliedContactId != 0, "")
+                                    </div>
+                                </div>
+                                <span style="padding-top: 4px;">Service Provider</span>
+                                <div class="col-md-4">
+                                    @Html.TextBox("CurrentRestroom_SuppliedContact", "", new { @class = "form-control", style = "width: 100%" })
+                                </div>
+                                <div class="col-md-2">
+                                    @{if (userCanEditContact)
+                                        {
+                                            <div class="col-md-1" style="margin-top:1px;">
+                                                <button type="button" class="btn btn-primary btn-sm" id="edit-supply-contact" disabled="disabled">Edit</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-inline form-group" style="display:flex;">
+                                <div class="col-md-2">
+                                    <div style="padding-top: 4px;">
+                                        <span>Security/Gates</span>
+                                        @Html.CheckBox("SecurityGatesContact", Model.CurrentRestroom.SecurityGatesContactId != null && Model.CurrentRestroom.SecurityGatesContactId != 0, "")
+                                    </div>
+                                </div>
+                                <span style="padding-top: 4px;">Service Provider</span>
+                                <div class="col-md-4">
+                                    @Html.TextBox("CurrentRestroom_SecurityGatesContact", "", new { @class = "form-control", style = "width: 100%" })
+                                </div>
+                                <div class="col-md-2">
+                                    @{if (userCanEditContact)
+                                        {
+                                            <div class="col-md-1" style="margin-top:1px;">
+                                                <button type="button" class="btn btn-primary btn-sm" id="edit-securitygates-contact" disabled="disabled">Edit</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-inline form-group" style="display:flex;">
+                                <div class="col-md-2">
+                                    <div style="padding-top: 4px;">
+                                        <span>Security/Locks</span>
+                                        @Html.CheckBox("SecurityLocksContact", Model.CurrentRestroom.SecurityLocksContactId != null && Model.CurrentRestroom.SecurityLocksContactId != 0, "")
+                                    </div>
+                                </div>
+                                <span style="padding-top: 4px;">Service Provider</span>
+                                <div class="col-md-4">
+                                    @Html.TextBox("CurrentRestroom_SecurityLocksContact", "", new { @class = "form-control", style = "width: 100%" })
+                                </div>
+                                <div class="col-md-2">
+                                    @{if (userCanEditContact)
+                                        {
+                                            <div class="col-md-1" style="margin-top:1px;">
+                                                <button type="button" class="btn btn-primary btn-sm" id="edit-securitylocks-contact" disabled="disabled">Edit</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Has Drinking Water", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CurrentRestroom.DrinkingWater, RestroomViewModel.DrinkingWaterOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.DrinkingWater, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Routes", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5" style="padding-right: 0px; margin-right: 0px;">
+                    @Html.TextBoxFor(model => model.CurrentRestroom.FormattedSortedRoutes, new { htmlAttributes = new { @class = "form-control" }, })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.FormattedSortedRoutes, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-1" style="margin-top:1px;">
+                    <button type="button" class="btn btn-primary btn-sm" id="routeSuggestions">Suggestions</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Weekday Hours", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.WeekdayHours, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.WeekdayHours, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Saturday Hours", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.SaturdayHours, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.SaturdayHours, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Sunday Hours", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.SundayHours, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.SundayHours, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Notes/ Access Codes/ Special Instructions", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.CurrentRestroom.Note, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CurrentRestroom.Note, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Created By", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.CurrentRestroom.AddUserName, new { disabled = "disabled", @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Created At", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.CurrentRestroom.AddDateTime, new { disabled = "disabled", @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Updated By", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.CurrentRestroom.UpdUserName, new { disabled = "disabled", @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Updated At", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.CurrentRestroom.UpdDateTime, new { disabled = "disabled", @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-primary btnEdit">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        var newValue = string.Empty;
+        var oldValue = string.Empty;
+
+        <div>
+            <div class="version-table" style="width:99%; height:740px;">
+                <table class="table list grey-column text-nowrap">
+                    <thead class="table-bordered">
+                        <tr>
+                            <th class="sticky" style="text-align:center; width:5%;">Version Date</th>
+                            <th class="sticky" style="text-align:center; width:50%;">Last Approved</th>
+                            @foreach (var versionDateTime in Model.ReviewRestrooms)
+                            {
+                                <th class="sticky" style="text-align:center; width:50%">
+                                    @versionDateTime.SysStartTime.Value.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt")
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Updated By")
+                            </td>
+                            <td style="vertical-align: middle; text-align:center;">
+                                <div>
+                                    <button type="button" class="btn btn-primary btnEdit" style="width: 100%;">Save</button>
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (Model.ReviewRestrooms.ElementAt(vi).UpdUserName != null)
+                                {
+                                    <td>
+                                        @Html.Label(Model.ReviewRestrooms.ElementAt(vi).UpdUserName, new { style = "width:100%; text-align:center;" })
+                                    </td>
+                                }
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Name")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.RestroomName, new { htmlAttributes = new { @class = "form-control", style = "min-width: 250px;" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.RestroomName, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).RestroomName;
+                                    oldValue = Model.CurrentRestroom.RestroomName;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).RestroomName;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).RestroomName;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.RestroomName{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).RestroomName, new { @class = "form-control", disabled = "disabled", style = $"min-width: 250px;background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Restroom Type")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.CurrentRestroom.RestroomType, RestroomViewModel.RestroomTypes, new { @class = "form-control" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).RestroomType;
+                                    oldValue = Model.CurrentRestroom.RestroomType;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).RestroomType;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).RestroomType;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.RestroomType{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).RestroomType, new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("ID No")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.LabelId, new { htmlAttributes = new { @class = "form-control", placeholder = "ID No..." } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.LabelId, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).LabelId;
+                                    oldValue = Model.CurrentRestroom.LabelId;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).LabelId;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).LabelId;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.LabelId{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).LabelId, new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Status")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.CurrentRestroom.StatusListId, RestroomViewModel.Statuses, new { @class = "form-control" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).StatusListId.ToString();
+                                    oldValue = Model.CurrentRestroom.StatusListId.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).StatusListId.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).StatusListId.ToString();
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.StatusListId{vi.ToString()}", @RestroomViewModel.GetStatusName(Model.ReviewRestrooms.ElementAt(vi).StatusListId), new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Has Toilet")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.CurrentRestroom.IsToiletAvailable, RestroomViewModel.ToiletOptions, new { @class = "form-control" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).IsToiletAvailable.ToString();
+                                    oldValue = Model.CurrentRestroom.IsToiletAvailable.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).IsToiletAvailable.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).IsToiletAvailable.ToString();
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.IsToiletAvailable{vi.ToString()}", RestroomViewModel.GetIsToiletAvailableName(Model.ReviewRestrooms.ElementAt(vi).IsToiletAvailable), new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Toilet Gender")
+                            </td>
+                            <td>
+                                <div style="width: 25px !important;">
+                                    @foreach (var gender in Model.ToiletGenders)
+                                    {
+                                        @Html.CheckBoxFor(model => gender.Selected, new { id = gender.Value, @class = "toiletGender" })
+                                        @Html.DisplayFor(model => gender.Text)
+                                    }
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId.ToString();
+                                    oldValue = Model.CurrentRestroom.ToiletGenderId.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).ToiletGenderId.ToString();
+                                }
+                                <td>
+                                    <div style="background-color: @RestroomViewModel.GetChangeColorCode(newValue, oldValue)">
+                                        <div style="width: 25px !important;">
+                                            @if (Model.ReviewRestrooms.ElementAt(vi)?.ToiletGenderId != null && Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId != 0)
+                                            {
+                                                foreach (var gender in Model.ToiletGenders)
+                                                {
+                                                    if ((Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId & (int)RestroomEnums.ToiletGender.Men) == Convert.ToInt32(gender.Value))
+                                                    {
+                                                        @Html.CheckBox("toilet-gender", true, new { id = "review_" + vi + gender.Value, disabled = "disabled" })
+                                                        @gender.Text
+                                                    }
+                                                    else if ((Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId & (int)RestroomEnums.ToiletGender.Women) == Convert.ToInt32(gender.Value))
+                                                    {
+                                                        @Html.CheckBox("toilet-gender", true, new { id = "review_" + vi + gender.Value, disabled = "disabled" })
+                                                        @gender.Text
+                                                    }
+                                                    else if ((Model.ReviewRestrooms.ElementAt(vi).ToiletGenderId & (int)RestroomEnums.ToiletGender.GenderNeutral) == Convert.ToInt32(gender.Value))
+                                                    {
+                                                        @Html.CheckBox("toilet-gender", true, new { id = "review_" + vi + gender.Value, disabled = "disabled" })
+                                                        @gender.Text
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.CheckBox("toilet-gender", false, new { id = "review_" + vi + gender.Value, disabled = "disabled" })
+                                                        @gender.Text
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foreach (var gender in Model.ToiletGenders)
+                                                {
+                                                    @Html.CheckBox("toilet-gender", false, new { id = "review_" + vi + gender.Value, disabled = "disabled" })
+                                                    @gender.Text
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Visibility")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.CurrentRestroom.IsPublic, RestroomViewModel.Scopes, new { @class = "form-control" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).IsPublic.ToString();
+                                    oldValue = Model.CurrentRestroom.IsPublic.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).IsPublic.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).IsPublic.ToString();
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.IsPublic{vi.ToString()}", RestroomViewModel.GetVisibilityName(Model.ReviewRestrooms.ElementAt(vi).IsPublic), new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+
+                        @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                        {
+                            if ((bool)Model.ReviewRestrooms.ElementAt(vi).AddressChanged)
+                            {
+                                <tr>
+                                    <td style="vertical-align: middle; white-space: nowrap;">
+                                        @Html.Label("Address Changed Note")
+                                    </td>
+                                    <td>
+                                        <div style="background-color: #F9F9A4;">The address has been changed in client. Make sure the latitude and longitude represents the correct address.</div>
+                                    </td>
+
+                                </tr>
+                                break;
+                            }
+                        }
+
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Address")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address...", style = "width:80%; float:left;" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.Address, "", new { @class = "text-danger" })
+                                <a type="button" id="ShowMap" class="btn" style="padding-left:0px; margin-top: -10px; float:right;" href="#MapContainer" data-toggle="modal">
+                                    <img src="~/Content/Images/location-icon-48px.png" style="padding: 0; margin: 0; height: 35px; width: 35px;" title="Search On Map" />
+                                </a>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Address;
+                                    oldValue = Model.CurrentRestroom.Address;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Address;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).Address;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.Address{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).Address, new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("City")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City..." } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.City, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).City;
+                                    oldValue = Model.CurrentRestroom.City;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).City;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).City;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.City{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).City, new { @class = "form-control", disabled = "disabled", style = $"background-color:{ RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Zip")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code..." } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.Zip, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Zip.ToString();
+                                    oldValue = Model.CurrentRestroom.Zip.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Zip.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).Zip.ToString();
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.Zip{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).Zip, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Has Drinking Water")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(model => model.CurrentRestroom.DrinkingWater, RestroomViewModel.DrinkingWaterOptions, new { @class = "form-control" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).DrinkingWater;
+                                    oldValue = Model.CurrentRestroom.DrinkingWater;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).DrinkingWater;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).DrinkingWater;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.DrinkingWater{vi.ToString()}", RestroomViewModel.GetDrinkingWaterOptionName(Model.ReviewRestrooms.ElementAt(vi).DrinkingWater), new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Routes")
+                            </td>
+                            <td>
+                                <div>
+                                    @Html.TextBoxFor(model => model.CurrentRestroom.FormattedSortedRoutes, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div style="text-align:center; margin-top:2px;">
+                                    &nbsp;<button type="button" class="btn btn-primary" id="routeSuggestions">Suggestions</button>
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SortedRoutes;
+                                    oldValue = Model.CurrentRestroom.SortedRoutes;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SortedRoutes;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).SortedRoutes;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.Routes{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).SortedRoutes, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Weekday Hours")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.WeekdayHours, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.WeekdayHours, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).WeekdayHours;
+                                    oldValue = Model.CurrentRestroom.WeekdayHours;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).WeekdayHours;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).WeekdayHours;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.WeekdayHours{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).WeekdayHours, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Saturday Hours", htmlAttributes: new { @class = "" })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.SaturdayHours, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.SaturdayHours, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SaturdayHours;
+                                    oldValue = Model.CurrentRestroom.SaturdayHours;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SaturdayHours;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).SaturdayHours;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.SaturdayHours{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).SaturdayHours, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Sunday Hours")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.SundayHours, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.SundayHours, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SundayHours;
+                                    oldValue = Model.CurrentRestroom.SundayHours;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).SundayHours;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).SundayHours;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.SundayHours{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).SundayHours, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Notes/ Access Codes/ Special Instructions")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.Note, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.Note, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Note;
+                                    oldValue = Model.CurrentRestroom.Note;
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).Note;
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).Note;
+                                }
+
+                                <td>
+                                    @Html.TextBox($"ReviewRestroom.Note{vi.ToString()}", Model.ReviewRestrooms.ElementAt(vi).Note, new { @class = "form-control", disabled = "disabled", style = $"background-color:{RestroomViewModel.GetChangeColorCode(newValue, oldValue)}" })
+                                </td>
+                            }
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Restroom Contact")
+                            </td>
+                            <td>
+                                <div>
+                                    <div>
+                                        @Html.Label("Service Provider (Owner)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_ServiceProvider", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Contact Name", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Name", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Title", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Title", "", new { @class = "form-control", disabled = "disabled" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Email", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Email", "", new { @class = "form-control", disabled = "disabled" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Phone", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Phone", "", new { @class = "form-control", disabled = "disabled" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Address", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Address", "", new { @class = "form-control", disabled = "disabled" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Notes", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentContact_Notes", "", new { @class = "form-control", disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ContactId.ToString();
+                                    oldValue = Model.CurrentRestroom.ContactId.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ContactId.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).ContactId.ToString();
+                                }
+
+                                <td>
+                                    @if (Model.ReviewRestrooms.ElementAt(vi).ContactId != 0)
+                                    {
+                                        <div>
+                                            <div>
+                                                @Html.Label("Service Provider (Owner)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_ServiceProvider_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Contact Name", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Name_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Title", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Title_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Email", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Email_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Phone", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Phone_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Address", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Address_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Notes", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentContact_Notes_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Duties")
+                            </td>
+                            <td>
+                                <div>
+                                    <div>
+                                        @Html.Label("Service Provider (Clean)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentRestroom_CleanedContact", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Service Provider (Repair)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentRestroom_RepairedContact", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Service Provider (Supply)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentRestroom_SuppliedContact", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Service Provider (Security/Gates)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentRestroom_SecurityGatesContact", "", new { @class = "form-control" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Service Provider (Security/Locks)", htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div>
+                                        @Html.TextBox("CurrentRestroom_SecurityLocksContact", "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                if (vi == 0)
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ContactId.ToString();
+                                    oldValue = Model.CurrentRestroom.ContactId.ToString();
+                                }
+                                else
+                                {
+                                    newValue = Model.ReviewRestrooms.ElementAt(vi).ContactId.ToString();
+                                    oldValue = Model.ReviewRestrooms.ElementAt(vi - 1).ContactId.ToString();
+                                }
+
+                                <td>
+                                    @if (Model.ReviewRestrooms.ElementAt(vi).ContactId != 0)
+                                    {
+                                        <div>
+                                            <div>
+                                                @Html.Label("Service Provider (Clean)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentRestroom_CleanedContact_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Service Provider (Repair)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentRestroom_RepairedContact_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Service Provider (Supply)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentRestroom_SuppliedContact_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Service Provider (Security/Gates)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentRestroom_SecurityGatesContact_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                            <div>
+                                                @Html.Label("Service Provider (Security/Locks)", htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div>
+                                                @Html.TextBox("CurrentRestroom_SecurityLocksContact_" + vi, "", new { @class = "form-control", disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            }
+
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Updated By")
+                            </td>
+                            <td>
+                                @if (Model.CurrentRestroom.UpdUserName != null)
+                                {
+                                    @Html.Label(Model.CurrentRestroom.UpdUserName, new { style = "width:100%; text-align:center;" })
+                                }
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                <td>
+                                    @if (Model.ReviewRestrooms.ElementAt(vi).UpdUserName != null)
+                                    {
+                                        @Html.Label(Model.ReviewRestrooms.ElementAt(vi).UpdUserName, new { style = "width:100%; text-align:center;" })
+                                    }
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; white-space: nowrap;">
+                                @Html.Label("Comment")
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.CurrentRestroom.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentRestroom.Comment, "", new { @class = "text-danger" })
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                <td>&nbsp;</td>
+                            }
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td style="vertical-align: middle; text-align:center;">
+                                <div>
+                                    <button type="button" class="btn btn-primary btnEdit" style="width: 100%;">Save</button>
+                                </div>
+                            </td>
+                            @for (var vi = 0; vi < Model.ReviewRestrooms.Count(); vi++)
+                            {
+                                <td>&nbsp;</td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+
+<div class="modal fade" id="MapContainer" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Select the desired location on the map</h4>
+            </div>
+            <div id="restroom-map-canvas" class="google-map modal-body" style="height:500px;"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="UseCurrentLocation">Use Current Location</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="CloseWindow">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RouteWaitDialog" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reading Route Information</h4>
+            </div>
+            <div class="modal-body" style="height:100px;">
+                <div id="suggestions_searching">
+                    <img src="~/Content/Images/ajax-loader.gif" style="border:0;" />&nbsp;&nbsp;Retrieving route suggestions...
+                </div>
+                <div id="no_suggestions_found" style="display:none; text-align:center;">
+                    <div>
+                        No route suggestions found for this location
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="CloseModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/magicsuggest")
+    @Scripts.Render("~/bundles/mapviewer")
+
+    <script src="~/Scripts/site.js"></script>
+
+    <script>
+
+        var isAddressChange = false;
+        var routeSuggest = null;
+        var contactSuggestByServiceProvider = null;
+        var contactSuggestByName = null;
+        var routeSuggestions = [];
+        var cleanedContactSuggest = null;
+        var repairedContactSuggest = null;
+        var suppliedContactSuggest = null;
+        var securityGatesContactSuggest = null;
+        var securityLocksContactSuggest = null;
+
+        $(document).ready(function () {
+            var currentRouteSelection =
+                @(string.IsNullOrEmpty(Model.CurrentRestroom.FormattedSortedRoutes) ? Html.Raw("[]") : Html.Raw(Model.CurrentRestroom.FormattedSortedRoutes));
+
+            var restroomContacts = @Html.Raw(Json.Encode(Model.RestroomContacts));
+            var currentContactSelection = @Html.Raw(Json.Encode(Model.CurrentContact));
+
+            var reviewRestrooms = @Html.Raw(Json.Encode(@Model.RestroomContacts.ToList()));
+
+            //Hack so it enables text selection with IE on disabled fields
+            $('#CurrentRestroom_RestroomName').focus();
+            $('#CurrentRestroom_RestroomName').blur();
+
+            setRestroomTableStyle($(".contacttable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function() {
+                setRestroomTableStyle($(".contacttable"));
+            });
+
+            if (!("url" in window) && ("webkitURL" in window)) {
+                window.URL = window.webkitURL;
+            }
+
+            @for (var i = 0; i< Model.ReviewRestrooms.Count(); i++ )
+            {
+                var reviewRestroom = Model.ReviewRestrooms.ElementAt(i);
+                if (reviewRestroom.ContactId != 0)
+                {
+                    var restroomContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.ContactId);
+                    if (restroomContact != null)
+                    {
+                        <text>
+                            $('#CurrentContact_ServiceProvider_@i').val('@restroomContact.ServiceProvider');
+                            $('#CurrentContact_Name_@i').val('@restroomContact.Name');
+                            $('#CurrentContact_Title_@i').val('@restroomContact.Title');
+                            $('#CurrentContact_Email_@i').val('@restroomContact.Email');
+                            $('#CurrentContact_Phone_@i').val('@restroomContact.Phone');
+                            $('#CurrentContact_Address_@i').val('@restroomContact.Address');
+                        </text>
+                    }
+                    var restroomCleanedContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.CleanedContactId);
+                    if (restroomCleanedContact != null)
+                    {
+                        <text>
+                            $('#CurrentRestroom_CleanedContact_@i').val('@restroomCleanedContact.ServiceProvider');
+                        </text>
+
+                    }
+                    var restroomRepairedContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.RepairedContactId);
+                    if (restroomRepairedContact != null)
+                    {
+                        <text>
+                            $('#CurrentRestroom_RepairedContact_@i').val('@restroomRepairedContact.ServiceProvider');
+                        </text>
+                    }
+                    var restroomSuppliedContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.SuppliedContactId);
+                    if (restroomSuppliedContact != null)
+                    {
+                        <text>
+                            $('#CurrentRestroom_SuppliedContact_@i').val('@restroomSuppliedContact.ServiceProvider');
+                        </text>
+                    }
+                    var restroomSecurityGatesContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.SecurityGatesContactId);
+                    if (restroomSecurityGatesContact != null)
+                    {
+                        <text>
+                            $('#CurrentRestroom_SecurityGatesContact_@i').val('@restroomSecurityGatesContact.ServiceProvider');
+                        </text>
+                    }
+                    var restroomSecurityLocksContact = Model.RestroomContacts.FirstOrDefault(r => r.ContactId == reviewRestroom.SecurityLocksContactId);
+                    if (restroomSecurityLocksContact != null)
+                    {
+                        <text>
+                            $('#CurrentRestroom_SecurityLocksContact_@i').val('@restroomSecurityLocksContact.ServiceProvider');
+                        </text>
+                    }
+                }
+            }
+
+            if ($("#CurrentRestroom_IsToiletAvailable").val() === 'False') {
+                $('input.toiletGender').prop('checked', false).change();
+                $('input.toiletGender').prop('disabled', true);
+                        }
+
+            $("#CurrentRestroom_IsToiletAvailable").change(function () {
+                            var val = this.value;
+                            if (val === 'False') {
+                    $('input.toiletGender').prop('checked', false).change();
+                    $('input.toiletGender').prop('disabled', true);
+                            } else if (val === 'True') {
+                    $('input.toiletGender').prop('disabled', false);
+                            }
+                        });
+
+            $('input.toiletGender').on('change', function () {
+                            var genderId = 0;
+                $('input.toiletGender:checked').each(function() {
+                                genderId = genderId | $(this).attr('id');
+                            });
+                $('#CurrentRestroom_ToiletGenderId').val(genderId);
+                        });
+
+                        var options = {
+                data: restroomContacts,
+                allowFreeEntries: false,
+                hideTrigger: true,
+                placeholder: 'Type here',
+                maxSelection: 1,
+                maxSuggestions: 5,
+                maxEntryLength: 10,
+                valueField: "ContactId",
+                displayField: "ServiceProvider"
+            };
+
+                    //Set MagicSuggest component
+                    cleanedContactSuggest = $("#CurrentRestroom_CleanedContact").magicSuggest(options);
+                    repairedContactSuggest = $("#CurrentRestroom_RepairedContact").magicSuggest(options);
+                    suppliedContactSuggest = $("#CurrentRestroom_SuppliedContact").magicSuggest(options);
+                    securityGatesContactSuggest = $("#CurrentRestroom_SecurityGatesContact").magicSuggest(options);
+                    securityLocksContactSuggest = $("#CurrentRestroom_SecurityLocksContact").magicSuggest(options);
+                    contactSuggestByServiceProvider = $("#CurrentContact_ServiceProvider").magicSuggest(options);
+                    contactSuggestByName = $("#CurrentContact_Name").magicSuggest(options, options.displayField = "Name");
+
+            if ($('#CurrentRestroom_ContactId').val() != 0) {
+                if (typeof contactSuggestByServiceProvider.setSelection != "undefined") contactSuggestByServiceProvider.setSelection(currentContactSelection);
+                if (typeof contactSuggestByName.setSelection != "undefined") contactSuggestByName.setSelection(currentContactSelection);
+                setRestroomContactInfo(currentContactSelection);
+                }
+
+            if ($('#CurrentRestroom_CleanedContactId').val() != 0 && typeof cleanedContactSuggest.setSelection != "undefined") {
+                cleanedContactSuggest.setSelection(@Html.Raw(Json.Encode(cleanedContact)));
+                editCleanContact();
+            }
+
+            if ($('#CurrentRestroom_RepairedContactId').val() != 0 && typeof repairedContactSuggest.setSelection != "undefined") {
+                repairedContactSuggest.setSelection(@Html.Raw(Json.Encode(repairedContact)));
+                editRepairContact();
+            }
+
+            if ($('#CurrentRestroom_SuppliedContactId').val() != 0 && typeof suppliedContactSuggest.setSelection != "undefined") {
+                suppliedContactSuggest.setSelection(@Html.Raw(Json.Encode(suppliedContact)));
+                editSupplyContact();
+            }
+
+            if ($('#CurrentRestroom_SecurityGatesContactId').val() != 0 && typeof securityGatesContactSuggest.setSelection != "undefined") {
+                securityGatesContactSuggest.setSelection(@Html.Raw(Json.Encode(securityGatesContact)));
+                editSecurityGatesContact();
+            }
+
+            if ($('#CurrentRestroom_SecurityLocksContactId').val() != 0 && typeof securityLocksContactSuggest.setSelection != "undefined") {
+                securityLocksContactSuggest.setSelection(@Html.Raw(Json.Encode(securityLocksContact)));
+                editSecurityLocksContact();
+            }
+
+            $(cleanedContactSuggest).on('selectionchange',
+                function() {
+                var serviceProvider = this.getSelection();
+                changeDutiesCheckbox(serviceProvider, '#CleanedContact', '#CurrentRestroom_CleanedContactId');
+            });
+
+            $(repairedContactSuggest).on('selectionchange',
+                function() {
+                var serviceProvider = this.getSelection();
+                changeDutiesCheckbox(serviceProvider, '#RepairedContact', '#CurrentRestroom_RepairedContactId');
+            });
+
+            $(suppliedContactSuggest).on('selectionchange',
+                function() {
+                var serviceProvider = this.getSelection();
+                changeDutiesCheckbox(serviceProvider, '#SuppliedContact', '#CurrentRestroom_SuppliedContactId');
+            });
+
+            $(securityGatesContactSuggest).on('selectionchange',
+                function () {
+                var serviceProvider = this.getSelection();
+                changeDutiesCheckbox(serviceProvider, '#SecurityGatesContact', '#CurrentRestroom_SecurityGatesContactId');
+            });
+
+            $(securityLocksContactSuggest).on('selectionchange',
+                function () {
+                var serviceProvider = this.getSelection();
+                changeDutiesCheckbox(serviceProvider, '#SecurityLocksContact', '#CurrentRestroom_SecurityLocksContactId');
+            });
+
+            function changeDutiesCheckbox(serviceProvider, checkboxId, contactId) {
+                if (serviceProvider.length > 0) {
+                    var contact = serviceProvider[0];
+                    $(contactId).val(contact['ContactId']);
+                    $(checkboxId).prop('checked', true);
+                    editCleanContact();
+                    editRepairContact();
+                    editSupplyContact();
+                    editSecurityGatesContact();
+                    editSecurityLocksContact();
+                } else {
+                    $(contactId).val(0);
+                    $(checkboxId).prop('checked', false);
+                }
+            }
+
+            $(contactSuggestByServiceProvider).on('selectionchange',
+                function() {
+                var serviceProvider = this.getSelection();
+                var contactName = contactSuggestByName.getSelection();
+
+                if (serviceProvider.length > 0) {
+                    var contact = serviceProvider[0];
+                    if (contactName.length === 0) {
+                        contactSuggestByName.setSelection(contact);
+                        setRestroomContactInfo(contact);
+                    }
+                } else if (contactName.length !== 0) {
+                    contactSuggestByName.clear();
+                    clearRestroomContactInfo();
+                }
+            });
+
+            $(contactSuggestByName).on('selectionchange',
+                function() {
+                var contactName = this.getSelection();
+                var serviceProvider = contactSuggestByServiceProvider.getSelection();
+                if (contactName.length > 0) {
+                    var contact = contactName[0];
+                    if (serviceProvider.length === 0) {
+                        contactSuggestByServiceProvider.setSelection(contact);
+                        setRestroomContactInfo(contact);
+                    }
+                } else if (serviceProvider.length !== 0) {
+                    contactSuggestByServiceProvider.clear();
+                    clearRestroomContactInfo();
+                }
+            });
+
+            function setRestroomContactInfo(contact) {
+                $('#CurrentRestroom_ContactId').val(contact['ContactId']);
+                $('#CurrentContact_Title').val(contact['Title']);
+                $('#CurrentContact_Email').val(contact['Email']);
+                $('#CurrentContact_Phone').val(contact['Phone']);
+                $('#CurrentContact_Address').val(contact['Address']);
+                $('#CurrentContact_Notes').val(contact['Notes']);
+                editContact();
+            }
+
+            function clearRestroomContactInfo() {
+                $('#CurrentRestroom_ContactId').val(0);
+                $('#CurrentContact_Title').val('');
+                $('#CurrentContact_Email').val('');
+                $('#CurrentContact_Phone').val('');
+                $('#CurrentContact_Address').val('');
+                $('#CurrentContact_Notes').val('');
+                editContact();
+            }
+
+            function editContact() {
+                $('#CurrentRestroom_ContactId').val() != 0
+                    ? $("#edit-contact").prop("disabled", false)
+                    : $("#edit-contact").prop("disabled", true);
+            }
+
+            $("#edit-contact").click(function() {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_ContactId').val());
+            });
+            function editCleanContact() {
+                $('#CurrentRestroom_CleanedContactId').val() != 0
+                    ? $("#edit-clean-contact").prop("disabled", false)
+                    : $("#edit-clean-contact").prop("disabled", true);
+            }
+
+            $("#edit-clean-contact").click(function () {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_CleanedContactId').val());
+            });
+            function editRepairContact() {
+                $('#CurrentRestroom_RepairedContactId').val() != 0
+                    ? $("#edit-repair-contact").prop("disabled", false)
+                    : $("#edit-repair-contact").prop("disabled", true);
+            }
+
+            $("#edit-repair-contact").click(function () {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_RepairedContactId').val());
+            });
+            function editSupplyContact() {
+                $('#CurrentRestroom_SuppliedContactId').val() != 0
+                    ? $("#edit-supply-contact").prop("disabled", false)
+                    : $("#edit-supply-contact").prop("disabled", true);
+            }
+
+            $("#edit-supply-contact").click(function () {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_SuppliedContactId').val());
+            });
+            function editSecurityGatesContact() {
+                $('#CurrentRestroom_SecurityGatesContactId').val() != 0
+                    ? $("#edit-securitygates-contact").prop("disabled", false)
+                    : $("#edit-securitygates-contact").prop("disabled", true);
+            }
+
+            $("#edit-securitygates-contact").click(function () {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_SecurityGatesContactId').val());
+            });
+            function editSecurityLocksContact() {
+                $('#CurrentRestroom_SecurityLocksContactId').val() != 0
+                    ? $("#edit-securitylocks-contact").prop("disabled", false)
+                    : $("#edit-securitylocks-contact").prop("disabled", true);
+            }
+
+            $("#edit-securitylocks-contact").click(function () {
+                window.open(window.homeUrl + 'contact/edit/' + $('#CurrentRestroom_SecurityLocksContactId').val());
+            });
+
+
+            $('#CleanedContact').click(function() {
+                if (!$(this).is(':checked')) {
+                    cleanedContactSuggest.clear();
+                }
+            });
+            $('#RepairedContact').click(function () {
+                if (!$(this).is(':checked')) {
+                    repairedContactSuggest.clear();
+                }
+            });
+            $('#SuppliedContact').click(function () {
+                if (!$(this).is(':checked')) {
+                    suppliedContactSuggest.clear();
+                }
+            });
+            $('#SecurityGatesContact').click(function () {
+                if (!$(this).is(':checked')) {
+                    securityGatesContactSuggest.clear();
+                }
+            });
+            $('#SecurityLocksContact').click(function () {
+                if (!$(this).is(':checked')) {
+                    securityLocksContactSuggest.clear();
+                }
+            });
+
+            //Set MagicSuggest component
+            routeSuggest = $("#CurrentRestroom_FormattedSortedRoutes").magicSuggest({
+            data: window.homeUrl + 'restroom/getallroutes',
+                maxSelection: null,
+                maxSuggestions: 10,
+                maxEntryLength: 5,
+                valueField: "Item1",
+                displayField: "Item2",
+                selectionRenderer: function(data) {
+                    if (routeSuggestions.length > 0) {
+                        if (routeSuggestions.indexOf(data.Item1) !== -1)
+                            if (currentRouteSelection.indexOf(data.Item1) !== -1)
+                                return data.Item1;
+                            else
+                                return '<span class="ms-sel-add" title="This route might be applicable for the current location">' +
+                                    data.Item1 +
+                                    "</span>";
+                        else
+                            return '<span class="ms-sel-remove" title="This route might not be applicable for the current location">' +
+                                data.Item1 +
+                                "</span>";
+                    } else
+                        return data.Item1;
+                }
+            });
+
+            //Set name to be used during post
+            routeSuggest.setName("CurrentRestroom.SelectedRoutes");
+
+            $('#MapContainer').on('show.bs.modal',
+                function(e) {
+                if ($('#CurrentRestroom_Address').val() && $('#CurrentRestroom_City').val()) {
+
+                    mapOptions.startAddress = {
+                    streetAddress: $('#CurrentRestroom_Address').val().concat(",")
+                        .concat($('#CurrentRestroom_City').val()).concat(",")
+                        .concat($('#CurrentRestroom_State').val()).concat(",")
+                        .concat($('#CurrentRestroom_Zip').val()),
+                            lat: $('#CurrentRestroom_LatDec').val(),
+                            lng: $('#CurrentRestroom_LongDec').val()
+                        };
+                } else {
+                    //Use GO location as default
+                    mapOptions.startAddress = {
+                    streetAddress: '1600 Franklin St, Oakland',
+                            lat: 37.80566760423034,
+                            lng: -122.26885564694368
+                        };
+                }
+                AcTransitMap.FindMe.start(mapOptions);
+            });
+
+            $('#UseCurrentLocation').click(function() {
+
+                $('#MapContainer').modal('hide');
+
+                //Parse raw address
+                var address = AcTransitMap.FindMe.info.getContent().split(',');
+                $('#CurrentRestroom_Address').val($.trim(address[0]));
+                $('#CurrentRestroom_City').val($.trim(address[1]));
+                $('#CurrentRestroom_State').val($.trim(address[2]).split(" ")[0]);
+                $('#CurrentRestroom_Zip').val($.trim(address[2]).split(" ")[1]);
+
+                //Parse coordinates
+                var pos = AcTransitMap.FindMe.marker.getPosition();
+                $('#CurrentRestroom_LatDec').val(pos.lat);
+                $('#CurrentRestroom_LongDec').val(pos.lng);
+
+                //Set route list based on the selected location
+                getRestroomRoutesByLocation(pos.lat, pos.lng)
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_Address").blur(function() {
+                validateAddress();
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_Address").keydown(function() {
+                isAddressChange = true;
+                $("#CurrentRestroom_City").val('');
+                $("#CurrentRestroom_Zip").val('');
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_City").blur(function() {
+                validateAddress();
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_City").keydown(function() {
+                isAddressChange = true;
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_Zip").blur(function() {
+                validateAddress();
+            });
+
+            //Retrieve address information for location if was edited or entered manually
+            $("#CurrentRestroom_Zip").keydown(function() {
+                isAddressChange = true;
+            });
+
+            //Any actions needed on submit?
+            $('.btnEdit').click(function() {
+                $('form#editRestroomForm').submit();
+            });
+
+            //Find route suggestions for the current selection on load
+            $('#routeSuggestions').click(function() {
+                if ($('#CurrentRestroom_LatDec').val() !== '' && $('#CurrentRestroom_LongDec').val() !== '')
+                    getRestroomRoutesByLocation($('#CurrentRestroom_LatDec').val(),
+                        $('#CurrentRestroom_LongDec').val());
+            });
+            /*$('#search-contacts').click(function() {
+                getRestroomContacts($('#SearchName').val(), $('#SearchServiceProvider').val(), 1);
+            });
+            $('#reset-search-contacts').click(function() {
+                $('#SearchName').val('');
+                $('#SearchServiceProvider').val('');
+                getRestroomContacts('', '', 1);
+            });*/
+
+        });
+
+        function validateAddress() {
+            if (isAddressChange &&
+                $("#CurrentRestroom_Address").val().length >= 6 &&
+                $("#CurrentRestroom_City").val().length >= 3) {
+                var thisAddress = $('#CurrentRestroom_Address').val().concat(",")
+                    .concat($('#CurrentRestroom_City').val()).concat(",").concat($('#CurrentRestroom_Zip').val());
+                reverseGeocode(thisAddress, onAddressGeocoded);
+            }
+        }
+
+        function onAddressGeocoded(address) {
+            //Toggle flag
+            isAddressChange = false;
+
+            if (address !== null) {
+                //Populate address information from geocoding
+                $('#CurrentRestroom_Address').val(address.Address);
+                $('#CurrentRestroom_City').val(address.City);
+                $('#CurrentRestroom_State').val(address.State);
+                $('#CurrentRestroom_Zip').val(address.Zip);
+                $('#CurrentRestroom_LatDec').val(address.Lat);
+                $('#CurrentRestroom_LongDec').val(address.Lng);
+
+                //Retrieve route suggestions if valid address
+                if (address.Lat !== null && address.Lng !== null)
+                    getRestroomRoutesByLocation(address.Lat, address.Lng);
+            }
+        }
+
+        function getRestroomRoutesByLocation(lat, long) {
+            $('#suggestions_searching').show();
+            $('#no_suggestions_found').hide();
+            $('#RouteWaitDialog').modal('show');
+            var currentRouteSelection =
+                @(string.IsNullOrEmpty(Model.CurrentRestroom.FormattedSortedRoutes) ? Html.Raw("[]") : Html.Raw(Model.CurrentRestroom.FormattedSortedRoutes));
+
+            $.get(window.homeUrl + 'restroom/getroutesbylocation',
+                    { latitude: lat, longitude: long },
+                    function(data) {
+                        console.log(data);
+                        if (data !== null && data.length > 0) {
+                            routeSuggest.clear();
+                            routeSuggestions = data;
+                            var suggestions = currentRouteSelection.slice();
+                            for (var i = 0; i < routeSuggestions.length; i++)
+                                suggestions.push(data[i]);
+                            routeSuggest.setValue(suggestions);
+                            $('#RouteWaitDialog').modal('hide');
+                        } else {
+                            $('#suggestions_searching').hide();
+                            $('#no_suggestions_found').show();
+                        }
+                    })
+                .fail(function() {
+                    $('#RouteWaitDialog').modal('hide');
+                    alert('There was an error retrieving route suggestions');
+                    console.log('There was an error retrieving route suggestions');
+                })
+        }
+
+        function getRestroomContacts(name, serviceProvider, page) {
+            $.get(window.homeUrl + 'restroom/getrestroomcontacts',
+                    { searchName: name, searchServiceProvider: serviceProvider, page: page },
+                    function(data) {
+                        console.log(data);
+                        if (typeof data !== "undefined" && data !== null && data.RestroomContacts !== null)
+                            $('#restroomcontacts').html(data);
+                    })
+                .fail(function() {
+                    console.log('There was an error retrieving Restroom Contacts information.');
+                });
+        }
+    </script>
+}

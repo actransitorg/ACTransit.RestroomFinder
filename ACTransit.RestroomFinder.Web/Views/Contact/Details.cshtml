@@ -1,0 +1,143 @@
+﻿@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Common
+
+@model ContactViewModel
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<style>
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+    }
+</style>
+
+@{
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEditContact = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactEditor);
+    var userCanEditFeedback = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenFeedbackEditor);
+
+    ViewBag.Title = "View Contact";
+}
+
+<h2>View Contact</h2>
+
+<div class="row">
+    <hr />
+    <div class="col-md-5">
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.Label("Service Provider:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.ServiceProvider)
+            </dd>
+
+            <dt>
+                @Html.Label("Contact Name:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Name)
+            </dd>
+            <dt>
+                @Html.Label("Title:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Title)
+            </dd>
+
+            <dt>
+                @Html.Label("Email:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Email)
+            </dd>
+
+            <dt>
+                @Html.Label("Phone:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Phone)
+            </dd>
+
+            <dt>
+                @Html.Label("Address:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Address)
+            </dd>
+
+            <dt>
+                @Html.Label("Notes:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentContact.Notes)
+            </dd>
+        </dl>
+
+        <p>
+            @{ if (userIsAdmin || userCanEditContact)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.CurrentContact.ContactId })
+                    @Html.Raw("&nbsp;|&nbsp;")
+                }
+                @Html.ActionLink("Back to List", "Index", new
+           {
+               searchContactName = Session["SearchContactName"],
+               searchServiceProvider = Session["SearchServiceProvider"],
+               sorField = Session["SortField"],
+               sortDirection = Session["SortDirection"],
+               page = Session["page"]
+           })
+            }
+        </p>
+
+    </div>
+
+</div>
+
+<hr>
+
+
+
+

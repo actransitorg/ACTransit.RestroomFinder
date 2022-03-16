@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@drawable/gradient_background1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true">
+
+        <TextView android:id="@+id/rowtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15dp"
+            android:layout_marginLeft="5dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <RatingBar
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:isIndicator="true"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:background="@drawable/text_info"
+                android:textColor="#FFFFFF"
+                android:text=""
+                android:visibility="gone"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/lblLabelId"
+                android:layout_gravity="left|center_vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Inspection Passed"
+                android:paddingRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/lblInspectionPass"
+                android:layout_gravity="left|center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0.0 mi"
+                android:id="@+id/lblDistance"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="left|center_vertical" />
+            <org.actransit.restroomfinder.Infrastructure.TextViewIcon
+                android:id="@+id/tvisToiletAvailable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fontType="MaterialCommunityIcons"
+                android:text="寧"
+                android:textColor="#222"
+                android:textSize="22dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="left|center_vertical" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imgWater"
+                android:background="@mipmap/faucet"
+                android:layout_marginLeft="2dp"
+                android:layout_gravity="left|center_vertical"/>
+            <org.actransit.restroomfinder.Infrastructure.TextViewIcon
+                android:id="@+id/tviIsHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fontType="FontAwesome"
+                android:text=""
+                android:textSize="22dp"
+                android:layout_marginLeft="2dp"
+                android:textColor="#FF8822"
+                android:layout_gravity="left|center_vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <org.actransit.restroomfinder.Infrastructure.ButtonIcon
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/imgRowFeedback"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/feedback"
+        android:background="#00FFFFFF"
+        android:text=""
+        android:textSize="24dp"
+        app:fontType="MaterialIcons"
+        android:layout_marginRight="5dp"
+        android:minWidth="50dp"
+        android:minHeight="50dp" />
+
+
+    <!--    <ImageButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/imgRowFeedback"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:src="@android:drawable/ic_menu_edit"-->
+<!--        android:contentDescription="@string/feedback"-->
+<!--        android:background="#00FFFFFF"-->
+<!--        android:layout_marginRight="5dp"-->
+<!--        android:minWidth="50dp"-->
+<!--        android:minHeight="50dp" />-->
+
+
+    <!-- More GUI components go here  -->
+
+</RelativeLayout>

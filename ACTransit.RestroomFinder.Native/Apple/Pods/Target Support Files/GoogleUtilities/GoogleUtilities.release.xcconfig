@@ -1,0 +1,11 @@
+CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/GoogleUtilities/Libraries"
+OTHER_LDFLAGS = $(inherited) -l"GTMStackTrace_external" -l"GTM_AddressBook_external" -l"GTM_DebugUtils_external" -l"GTM_GTMURLBuilder_external" -l"GTM_KVO_external" -l"GTM_NSData+zlib" -l"GTM_NSDictionary+URLArguments_external" -l"GTM_NSScannerJSON_external" -l"GTM_NSStringHTML_external" -l"GTM_NSStringXML_external" -l"GTM_Regex_external" -l"GTM_RoundedRectPath_external" -l"GTM_StringEncoding_external" -l"GTM_SystemVersion_external" -l"GTM_UIFont+LineHeight_external" -l"GTM_core_external" -l"GTM_iPhone_external" -l"z" -framework "AddressBook" -framework "CoreGraphics"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}
+PODS_TARGET_SRCROOT = ${PODS_ROOT}/GoogleUtilities
+PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
+SKIP_INSTALL = YES
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

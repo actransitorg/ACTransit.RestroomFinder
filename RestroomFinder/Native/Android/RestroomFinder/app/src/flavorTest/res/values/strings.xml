@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="transitapiurl">http://testapi.actransit.org/transit</string>
-    <string name="transitapitoken">your.transit-api.key</string>
-    <string name="baseurl">http://testapi.actransit.org/restroom-finder/api/</string>
-</resources>

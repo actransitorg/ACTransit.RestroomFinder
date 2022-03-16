@@ -1,0 +1,27 @@
+﻿@import "Base/_linear-gradient.scss";
+$BKColor:#808080;
+.modalBox{
+    display:block;position:absolute;width:100%;height:100%;z-index:1000;left:0;top:0;
+    &>div.first{top:0;left:0;width:100%;height:100%;background-color:$BKColor;
+        opacity:.20;
+        filter:alpha(opacity=20); ///*IE 8 and earlier*/
+        align-items:center;text-align:center;vertical-align:middle;z-index:1000
+    }
+    &>div.second{
+        position:absolute;
+        width:120px;
+        height:80px;
+        left:calc(100%/2 - 60px);
+        top:calc(100%/2 - 40px);
+        @include linear-gradient(180deg, hsl(0,5%,85%) hsl(0,5%,95%) hsl(0,5%,90%) hsl(0,5%,85%));
+        border-radius:10px
+    }
+    &>div.second>span{
+        position:relative;display:table-cell;vertical-align:middle;text-align:center;width:120px;height:80px;color:blue;
+    }
+
+}
+.modalBoxInactive{display:none}
+.modalBoxActive{display:block;position:fixed}
+/*.modal {top: 25%;}*/
+.modal-dialog.m-width {width: 960px;}

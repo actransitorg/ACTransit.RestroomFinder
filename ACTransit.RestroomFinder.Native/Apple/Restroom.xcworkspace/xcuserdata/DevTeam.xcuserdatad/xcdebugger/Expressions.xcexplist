@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "ServerAPI.(getRestStops(String, location : CLLocation, callBack : ([RestStopModel], NSError!) -&gt; ()) -&gt; ()).(closure #1):ServerAPI.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ServerAPI.getRestStops(String, location : CLLocation, callBack : ([RestStopModel], NSError!) -&gt; ()) -&gt; ():ServerAPI.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ServerAPI.(getVersion(([VersionModel], NSError!) -&gt; ()) -&gt; ()).(closure #1):ServerAPI.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ServerBaseAPI.(get&lt;A where ...&gt; (String) -&gt; AjaxPromise&lt;[A]&gt;).(closure #1):ServerBaseAPI.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "d as? NSDictionary">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

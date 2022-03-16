@@ -1,0 +1,175 @@
+﻿@using ACTransit.RestroomFinder.Domain.Enums
+@using ACTransit.RestroomFinder.Web.Models
+
+@model RestroomViewModel
+
+@{
+    ViewBag.Title = "Delete Restroom";
+}
+
+<h2>Delete Restroom</h2>
+
+<h3>Are you sure you want to delete this record?</h3>
+
+<div class="row">
+    <hr />
+    <div class="col-md-5">
+        <dl class="dl-horizontal">
+
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.RestroomName", Model.CurrentRestroom.RestroomName, new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Type Of Restroom
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.RestroomType", Model.CurrentRestroom.RestroomType, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                ID No
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.LabelId", Model.CurrentRestroom.LabelId, new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Has Toilet
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.IsToiletAvailable", RestroomViewModel.GetIsToiletAvailableName(Model.CurrentRestroom.IsToiletAvailable), new { @class = "form-control", disabled = "true" })
+            </dd>
+            <dt>
+                Toilet Gender
+            </dt>
+            <dd>
+                @if (Model.CurrentRestroom?.ToiletGenderId != null && Model.CurrentRestroom.ToiletGenderId != 0)
+                {
+                    List<string> genderList = new List<string>();
+                    foreach (var gender in Model.ToiletGenders)
+                    {
+                        if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.Men) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(gender.Text);
+                        }
+                        else if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.Women) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(gender.Text);
+                        }
+                        else if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.GenderNeutral) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(gender.Text);
+                        }
+                    }
+                    <text>@Html.TextBox("CurrentRestroom.Gender", string.Join(", ", genderList), new { @class = "form-control", disabled = "true" }) </text>
+                }
+                else
+                {
+                    <text>@Html.TextBox("CurrentRestroom.Gender", "", new { @class = "form-control", disabled = "true" }) </text>
+                }
+            </dd>
+            <dt>
+                Visibility
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.IsPublic", RestroomViewModel.GetVisibilityName(Model.CurrentRestroom.IsPublic), new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Address
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.Address", Model.CurrentRestroom.Address, new { @class = "form-control", disabled = "true" })
+                @Html.Hidden("Address", Model.CurrentRestroom.Address, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+
+            <dt>
+                City
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.City", Model.CurrentRestroom.City, new { @class = "form-control", disabled = "true" })
+                @Html.Hidden("City", Model.CurrentRestroom.City, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+
+            <dt>
+                Zip
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.Zip", Model.CurrentRestroom.Zip.ToString(), new { @class = "form-control", disabled = "true" })
+                @Html.Hidden("Zip", Model.CurrentRestroom.Zip, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+
+            <dt>
+                Has Driking Water
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.DrinkingWater", RestroomViewModel.GetDrinkingWaterOptionName(Model.CurrentRestroom.DrinkingWater), new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Routes
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.Routes", Model.CurrentRestroom.SortedRoutes, new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Weekday Hours
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.WeekdayHours", Model.CurrentRestroom.WeekdayHours ?? " ", new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Saturday Hours
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.SaturdayHours", Model.CurrentRestroom.SaturdayHours ?? " ", new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Sunday Hours
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.SundayHours", Model.CurrentRestroom.SundayHours ?? " ", new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            <dt>
+                Notes
+            </dt>
+            <dd>
+                @Html.TextBox("CurrentRestroom.Note", Model.CurrentRestroom.Note ?? " ", new { @class = "form-control", disabled = "true" })
+            </dd>
+
+            @Html.Hidden("State", Model.CurrentRestroom.State, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            @Html.Hidden("LongDec", Model.CurrentRestroom.LongDec, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 }, { "data-val-number", string.Empty } })
+            @Html.Hidden("LatDec", Model.CurrentRestroom.LatDec, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 }, { "data-val-number", string.Empty } })
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-primary" /> |
+                @Html.ActionLink("Back to List", "Index", new
+           {
+               searchName = Session["SearchName"],
+               searchAddress = Session["SearchAddress"],
+               searchCity = Session["SearchCity"],
+               searchRouteSelection = Session["SearchRoutes"],
+               sorField = Session["SortField"],
+               sortDirection = Session["SortDirection"],
+               page = Session["page"],
+               statusId = Session["StatusId"],
+               showPublic = Session["ShowPublic"],
+               showToilet = Session["ShowToilet"],
+               showPendingReview = Session["ShowPendingReview"]
+           })
+            </div>
+        }
+    </div>
+</div>

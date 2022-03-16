@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "Enter your project number",
+    "project_id": "Enter your project id"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id1": "1:757495164774:android:912a1678a83bf3a6",
+ 	"google_app_id":"restroom-finder-1358",
+        "android_client_info": {
+          "package_name": "url.company.your.RestroomFinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "Enter your current key"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "Enter your Google Analytics tracking id"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,253 @@
+﻿@model  ACTransit.RestroomFinder.Web.Models.RestroomViewModel
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@section Head {
+    @Styles.Render("~/Content/magicsuggestcss")
+}
+
+<style>
+    th {
+        white-space: nowrap;
+        word-wrap: break-word;
+    }
+
+    .headers th {
+        border: 1px solid white !important;
+        white-space: nowrap;
+        background-color: rgb(68,114, 196);
+        color: white;
+    }
+
+        .headers th a {
+            color: white;
+        }
+
+    select {
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+
+            td:nth-of-type(1):before {
+                content: "Restroom Name";
+            }
+
+            td:nth-of-type(2):before {
+                content: "Owned Service Provider";
+            }
+
+            td:nth-of-type(3):before {
+                content: "Cleaned Service Provider";
+            }
+
+            td:nth-of-type(4):before {
+                content: "Repaired Service Provider";
+            }
+
+            td:nth-of-type(5):before {
+                content: "Supplied Service Provider";
+            }
+
+            td:nth-of-type(6):before {
+                content: "Security Gates Service Provider";
+            }
+
+            td:nth-of-type(7):before {
+                content: "Security Locks Service Provider";
+            }
+    }
+</style>
+
+@{
+    ViewBag.Title = "Restroom Contact";
+}
+<div id="SearchPanel" class="panel-collapse collapse">
+    <div>
+        <br />
+    </div>
+    @using (Html.BeginForm("RestroomContactReport", "Restroom", FormMethod.Post, new { id = "SearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-inline" style="line-height:20px;">
+            @Html.Hidden("SortField", Session["SortField"] as string)
+            @Html.Hidden("SortDirection", Session["SortDirection"] as string)
+        </div>
+    }
+</div>
+
+<br />
+<div>
+    <fieldset>
+        <button class="btn btn-info hidden-print" id="print">Print </button>
+    </fieldset>
+</div>
+
+<br />
+
+<div class="row">
+    <br />
+    <div class="col-md-12">
+        @{
+            if (!Model.RestroomContactReport.Any())
+            {
+                <span style="font-weight: bold; margin-left: 20px;">No restroom contact found for the current search criteria.</span>
+            }
+            else
+            {
+                <table class="contacttable">
+                    <thead>
+                        <tr class="headers">
+                            <th style="min-width: 170px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="RestroomName" class="sortable">Restroom Name</a>
+                            </th>
+                            <th style="min-width: 170px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="LabelId" class="sortable">ID No</a>
+                            </th>
+                            <th style="min-width: 170px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="StatusName" class="sortable">Status</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="OwnedServiceProvider" class="sortable">Owned Service Provider</a>
+                            </th>
+                            <th style="min-width: 160px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="CleanedServiceProvider" class="sortable">Cleaned Service Provider</a>
+                            </th>
+                            <th style="width: 110px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="RepairedServiceProvider" class="sortable">Repaired Service Provider</a>
+                            </th>
+                            <th style="width: 65px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="SuppliedServiceProvider" class="sortable">Supplied Service Provider</a>
+                            </th>
+                            <th style="width: 50px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="SecurityGateServiceProvider" class="sortable">Security/Gates Service Provider</a>
+                            </th>
+                            <th style="width: 175px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="SecurityLocksServiceProvider" class="sortable">Security/Locks Service Provider</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RestroomContactReport)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RestroomName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LabelId)
+                                </td>
+                                <td>
+                                    @Html.Raw(item.Status == "Pending" ? "<span style='color:darkorange;'>Pending</span>" : item.Status == "Out of Service" ? "<span style='color:red;'>Out of Service</span>" : item.Status)
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.OwnedContactId })'>@Html.DisplayFor(modelItem => item.OwnedServiceProvider)</a>
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.CleanedContactId })'>@Html.DisplayFor(modelItem => item.CleanedServiceProvider)</a>
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.RepairedContactId })'>@Html.DisplayFor(modelItem => item.RepairedServiceProvider)</a>
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.SuppliedContactId })'>@Html.DisplayFor(modelItem => item.SuppliedServiceProvider)</a>
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.SecurityGateContactId })'>@Html.DisplayFor(modelItem => item.SecurityGateServiceProvider)</a>
+                                </td>
+                                <td>
+                                    <a href='@Url.Action("Edit", "Contact", new { id = item.SecurityLockContactId })'>@Html.DisplayFor(modelItem => item.SecurityLockServiceProvider)</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+        @Html.Hidden("SortField", Session["SortField"] as string)
+        @Html.Hidden("SortDirection", Session["SortDirection"] as string)
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/site.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            initPage({ hasSortTable: true, hasSearchPanels: true });
+
+            setRestroomTableStyle($(".contacttable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function () {
+                setRestroomTableStyle($(".contacttable"));
+            });
+
+            $("#print").click(function (e) {
+                $('.contacttable').table2excel({
+                    name: "WorkSheet-All",
+                    filename: "Restroom Contact List",
+                    fileext: ".xls",
+                    preserveColors: true
+                });
+
+            });
+        });
+
+        function decodeEntities(encodedString) {
+            var textArea = document.createElement('textarea');
+            textArea.innerHTML = encodedString;
+            return textArea.value;
+        }
+
+    </script>
+}

@@ -1,0 +1,484 @@
+﻿@using ACTransit.RestroomFinder.Domain.Enums
+@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Common
+
+@model  RestroomViewModel
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@section Head {
+    @Styles.Render("~/Content/magicsuggestcss")
+}
+
+<style>
+    th {
+        white-space: nowrap;
+        word-wrap: break-word;
+    }
+
+    select {
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+
+    input[type=text] {
+        box-sizing: border-box;
+        border-radius: 4px;
+        @*background-color: white;
+        background-image: url(@Url.Content("~/Content/Images/searchicon.png"));
+        background-position: 1px 0px;
+        background-repeat: no-repeat;
+        padding-left: 25px;*@
+/*        width: 139px;*/
+    }
+
+    #search-panel-restroom .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e113";
+        float: left;
+        color: black;
+        margin-right: 4px;
+        font-size: large;
+    }
+
+    #search-panel-restroom .accordion-toggle.collapsed:after {
+        content: "\e114";
+    }
+
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align:left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+
+            td:nth-of-type(1):before {
+                content: "Name";
+            }
+
+            td:nth-of-type(2):before {
+                content: "Type";
+            }
+
+        td:nth-of-type(3):before {
+            content: "ID No";
+        }
+
+            td:nth-of-type(4):before {
+                content: "Address";
+            }
+
+            td:nth-of-type(5):before {
+                content: "City";
+            }
+
+            td:nth-of-type(6):before {
+                content: "Driking Water";
+            }
+
+            td:nth-of-type(7):before {
+                content: "Toilet";
+            }
+        td:nth-of-type(8):before {
+            content: "Toilet Gender";
+        }
+
+            td:nth-of-type(9):before {
+                content: "Routes";
+            }
+
+            td:nth-of-type(10):before {
+                content: "Restroom Availability";
+            }
+
+            td:nth-of-type(11):before {
+                content: "Notes";
+            }
+
+            td:nth-of-type(12):before {
+                content: "Duties";
+            }
+
+            td:nth-of-type(13):before {
+                content: "Status";
+            }
+
+            td:nth-of-type(14):before {
+                content: "Visibility";
+            }
+
+            td:nth-of-type(15):before {
+                content: "Actions";
+            }
+    }
+</style>
+
+@{
+    ViewBag.Title = "Restroom History";
+
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEdit = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenRestroomEditor);
+    var userCanCreate = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenRestroomCreator);
+
+    var serializedSearchRoutes = string.Empty;
+    var routeSelection = Session["SearchRoutes"] as string;
+
+    if (!string.IsNullOrEmpty(routeSelection))
+    {
+        serializedSearchRoutes += "[";
+        foreach (var route in routeSelection.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            serializedSearchRoutes += $"'{route}',";
+        }
+        serializedSearchRoutes.TrimEnd(',');
+        serializedSearchRoutes += "]";
+    }
+    else
+    {
+        serializedSearchRoutes = "[]";
+    }
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Restroom History</h2>
+    </div>
+    <div class="col-md-1" style="margin-top:30px;">
+        @Html.ActionLink("Back to List", "Index", new
+        {
+            searchName = Session["SearchName"],
+            searchAddress = Session["SearchAddress"],
+            searchCity = Session["SearchCity"],
+            searchRouteSelection = Session["SearchRoutes"],
+            sorField = Session["SortField"],
+            sortDirection = Session["SortDirection"],
+            page = Session["page"],
+            statusId = Session["StatusId"],
+            showPublic = Session["ShowPublic"],
+            showToilet = Session["ShowToilet"],
+            showPendingReview = Session["ShowPendingReview"]
+        })
+    </div>
+</div>
+
+<div id="SearchPanel" class="panel-collapse collapse">
+    <div>
+        <br />
+    </div>
+    @using (Html.BeginForm("History", "Restroom", FormMethod.Post, new { id = "SearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-inline" style="line-height:20px;">
+            @Html.Hidden("RestroomId", Session["RestroomId"] as int?)
+            @Html.Hidden("SortField", Session["SortField"] as string)
+            @Html.Hidden("SortDirection", Session["SortDirection"] as string)
+        </div>
+    }
+</div>
+
+<div class="row">
+    <br />
+    <div class="col-md-12">
+        @{
+            if (Model.RestroomHistory.Count() == 0)
+            {
+                <span style="font-weight: bold; margin-left: 20px;">No restrooms found for the current search criteria.</span>
+            }
+            else
+            {
+                <table class="restroomHistorytable">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 170px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="RestroomName" class="sortable">Name</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="RestroomType" class="sortable">Type</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="LabelId" class="sortable">ID No</a>
+                            </th>
+                            <th style="width: 85px;">
+                                Status
+                            </th>
+                            <th style="min-width: 160px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="Address" class="sortable">Address</a>
+                            </th>
+                            <th style="width: 110px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="City" class="sortable">City</a>
+                            </th>
+                            <th style="width: 65px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="DrinkingWater" class="sortable">H20</a>
+                            </th>
+                            <th style="width: 50px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="IsToiletAvailable" class="sortable">Toilet</a>
+                            </th>
+                            <th style="min-width: 160px;">
+                                Toilet Gender
+                            </th>
+                            <th style="width: 175px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ACTRoute" class="sortable">Routes</a>
+                            </th>
+                            <th style="min-width: 160px;">
+                                Restroom Availability
+                            </th>
+                            <th style="min-width: 100px;">
+                                Notes/ Access Codes/ Special Instructions
+                            </th>
+                            <th style="width: 50px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="IsPublic" class="sortable">Visibility</a>
+                            </th>
+                            <th style="min-width: 50px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="UpdUserId" class="sortable">Updated By</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="UpdDateTime" class="sortable">Updated At</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="Comment" class="sortable">Comment</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ServiceProvider" class="sortable">Service Provider</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactName" class="sortable">Contact Name</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactTitle" class="sortable">Contact Title</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactPhone" class="sortable">Contact Phone</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactEmail" class="sortable">Contact Email</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactAddress" class="sortable">Contact Address</a>
+                            </th>
+                            <th style="width: 85px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="ContactNotes" class="sortable">Contact Notes</a>
+                            </th>
+                            <th style="width: 85px;">
+                                Service Provider (Clean)
+                            </th>
+                            <th style="width: 85px;">
+                                Service Provider (Repair)
+                            </th>
+                            <th style="width: 85px;">
+                                Service Provider (Supply)
+                            </th>
+                            <th style="width: 85px;">
+                                Service Provider (Security/Gates)
+                            </th>
+                            <th style="width: 85px;">
+                                Service Provider (Security/Locks)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RestroomHistory)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RestroomName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RestroomType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LabelId)
+                            </td>
+                            <td>
+                                @{ var statusName = @RestroomViewModel.GetStatusName(item.StatusListId); }
+                                @Html.Raw(statusName == "Pending" ? "<span style='color:darkorange;'>Pending</span>" : statusName == "Out of Service" ? "<span style='color:red;'>Out of Service</span>" : statusName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.City)
+                            </td>
+                            <td>
+                                @RestroomViewModel.GetDrinkingWaterOptionName(item.DrinkingWater)
+                            </td>
+                            <td>
+                                @RestroomViewModel.GetIsToiletAvailableName(item.IsToiletAvailable)
+                            </td>
+                            <td>
+                                @if (item?.ToiletGenderId != null && item.ToiletGenderId != 0)
+                                {
+                                    List<string> genderList = new List<string>();
+                                    foreach (var gender in Model.ToiletGenders)
+                                    {
+                                        if ((item.ToiletGenderId & (int)RestroomEnums.ToiletGender.Men) == Convert.ToInt32(gender.Value))
+                                        {
+                                            genderList.Add(@gender.Text);
+                                        }
+                                        else if ((item.ToiletGenderId & (int)RestroomEnums.ToiletGender.Women) == Convert.ToInt32(gender.Value))
+                                        {
+                                            genderList.Add(@gender.Text);
+                                        }
+                                        else if ((item.ToiletGenderId & (int)RestroomEnums.ToiletGender.GenderNeutral) == Convert.ToInt32(gender.Value))
+                                        {
+                                            genderList.Add(@gender.Text);
+                                        }
+                                    }
+                                    <text>@string.Join(",", genderList) </text>
+                                }
+                            </td>
+                            <td>
+                                @Html.Raw(string.IsNullOrEmpty(item.SortedRoutes) ? "&nbsp;" : item.SortedRoutes)
+                            </td>
+                            <td>
+                                @Html.Raw($"{(!string.IsNullOrEmpty(item.WeekdayHours) ? "Weekdays " + item.WeekdayHours.Replace(";", "<br style='mso-data-placement:same-cell;' />") : string.Empty)}{(!string.IsNullOrEmpty(item.SaturdayHours) ? "<br style='mso-data-placement:same-cell;' />Saturdays " + item.SaturdayHours : string.Empty)}{(!string.IsNullOrEmpty(item.SundayHours) ? "<br style='mso-data-placement:same-cell;' /> Sundays " + item.SundayHours : string.Empty)}")
+                            </td>
+                            <td>
+                                @Html.Raw(string.IsNullOrEmpty(item.Note) ? "&nbsp;" : item.Note)
+                            </td>
+                            <td>
+                                @RestroomViewModel.GetVisibilityName(item.IsPublic)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdUserId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Comment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServiceProvider)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactPhone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactNotes)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CleanedServiceProvider)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RepairedServiceProvider)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SuppliedServiceProvider)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SecurityGateServiceProvider)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SecurityLocksServiceProvider)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+        @Html.Hidden("SortField", Session["SortField"] as string)
+        @Html.Hidden("SortDirection", Session["SortDirection"] as string)
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/magicsuggest")
+
+    <script src="~/Scripts/site.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            initPage({ hasSortTable: true, hasSearchPanels: true });
+
+            const panels = $.cookie();
+            for (let panel in panels) {
+                if (panels.hasOwnProperty(panel)) {
+                    if ($("#" + panel).hasClass('panel-collapse'))
+                        $("#" + panel).collapse("show");
+                }
+            };
+
+            setRestroomTableStyle($(".restroomHistorytable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function () {
+                setRestroomTableStyle($(".restroomHistorytable"));
+            });
+        });
+
+        function decodeEntities(encodedString) {
+            var textArea = document.createElement('textarea');
+            textArea.innerHTML = encodedString;
+            return textArea.value;
+        }
+
+    </script>
+}

@@ -1,0 +1,142 @@
+﻿@using ACTransit.RestroomFinder.Web.Models
+
+@model ContactViewModel
+
+@section Head {
+    @Styles.Render("~/Content/magicsuggestcss")
+
+    <style>
+        .fa-spin-custom, .glyphicon-spin {
+            -webkit-animation: spin 1000ms infinite linear;
+            animation: spin 1000ms infinite linear;
+        }
+
+        .btn.btn-spinner {
+            background-color: rgb(104, 145, 162);
+            padding: 0px;
+            font-weight: 700;
+            font-size: 14px;
+            height: 36px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            border: none;
+            -o-transition: all 0.218s;
+            -moz-transition: all 0.218s;
+            -webkit-transition: all 0.218s;
+            transition: all 0.218s;
+        }
+    </style>
+}
+
+@{
+    ViewBag.Title = "Create Contact";
+}
+
+<h2>Create Contact</h2>
+
+@using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { id = "createContactForm" }))
+{
+    var currentContact = Model.CurrentContact;
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Service Provider", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.ServiceProvider, currentContact.ServiceProvider, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.ServiceProvider, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Contact Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Name, currentContact.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Title, currentContact.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Email, currentContact.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Phone", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Phone, currentContact.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Address, currentContact.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Notes", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.CurrentContact.Notes, currentContact.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => Model.CurrentContact.Notes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-primary" id="btnCreate">Create</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index", new
+{
+    searchContactName = Session["SearchContactName"],
+    searchServiceProvider = Session["SearchServiceProvider"]
+})
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/magicsuggest")
+    @Scripts.Render("~/bundles/mapviewer")
+
+    <script src="~/Scripts/site.js"></script>
+
+    <script>
+
+        var isAddressChange = false;
+        var routeSuggest = null;
+
+        $(document).ready(function () {
+
+            if (!("url" in window) && ("webkitURL" in window)) {
+                window.URL = window.webkitURL;
+            }
+
+            //Any actions needed on submit?
+            $('#btnCreate').click(function () {
+                $("form#createContactForm").submit();
+            });
+        });
+    </script>
+}

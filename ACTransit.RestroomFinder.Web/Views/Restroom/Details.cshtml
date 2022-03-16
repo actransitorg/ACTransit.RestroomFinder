@@ -1,0 +1,790 @@
+﻿@using ACTransit.RestroomFinder.Domain.Enums
+@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Common
+
+@model RestroomViewModel
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<style>
+    td .glyphicon {
+        font-size: 16pt;
+    }
+
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /*Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            margin: 0 0 1rem 0;
+        }
+
+            tr:nth-child(odd) {
+                background: #ccc;
+            }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: left !important;
+        }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+
+            td:nth-of-type(1):before {
+                content: "Rating";
+            }
+
+            td:nth-of-type(2):before {
+                content: "Needs Attention";
+            }
+
+            td:nth-of-type(3):before {
+                content: "Needs Repair";
+            }
+
+            td:nth-of-type(4):before {
+                content: "Needs Supply";
+            }
+
+            td:nth-of-type(5):before {
+                content: "Needs Cleaning";
+            }
+
+            td:nth-of-type(6):before {
+                content: "Feedback";
+            }
+
+            td:nth-of-type(7):before {
+                content: "Resolution";
+            }
+
+            td:nth-of-type(8):before {
+                content: "Date Created";
+            }
+
+            td:nth-of-type(9):before {
+                content: "Actions";
+            }
+    }
+</style>
+
+@{
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEditRestroom = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenRestroomEditor);
+    var userCanEditFeedback = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenFeedbackEditor);
+    var userCanEditContact = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenContactEditor);
+
+    var cleanedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.CleanedContactId);
+    var repairedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.RepairedContactId);
+    var suppliedContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SuppliedContactId);
+    var securityGatesContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SecurityGatesContactId);
+    var securityLocksContact = Model.RestroomContacts.FirstOrDefault(c => c.ContactId == Model.CurrentRestroom.SecurityLocksContactId);
+
+    ViewBag.Title = "View Restroom";
+}
+
+<h2>View Restroom</h2>
+
+<div class="row">
+    <hr />
+    <div class="col-md-5">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.Label("Name:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.RestroomName)
+            </dd>
+
+            <dt>
+                @Html.Label("Restroom Type:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.RestroomType)
+            </dd>
+
+            <dt>
+                @Html.Label("ID No:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.LabelId)
+            </dd>
+            <dt>
+                @Html.Label("Status:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @RestroomViewModel.GetStatusName(Model.CurrentRestroom.StatusListId)
+            </dd>
+            <dt>
+                @Html.Label("Has Toilet:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(RestroomViewModel.GetIsToiletAvailableName(Model.CurrentRestroom.IsToiletAvailable))
+            </dd>
+
+            <dt>
+                @Html.Label("Toilet Gender:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @if (Model.CurrentRestroom?.ToiletGenderId != null && Model.CurrentRestroom.ToiletGenderId != 0)
+                {
+                    List<string> genderList = new List<string>();
+                    foreach (var gender in Model.ToiletGenders)
+                    {
+                        if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.Men) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(@gender.Text);
+                        }
+                        else if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.Women) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(@gender.Text);
+                        }
+                        else if ((Model.CurrentRestroom.ToiletGenderId & (int)RestroomEnums.ToiletGender.GenderNeutral) == Convert.ToInt32(gender.Value))
+                        {
+                            genderList.Add(@gender.Text);
+                        }
+                    }
+                    <text>@string.Join(",", genderList) </text>
+                }
+            </dd>
+
+            <dt>
+                @Html.Label("Visibility:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(RestroomViewModel.GetVisibilityName(Model.CurrentRestroom.IsPublic))
+            </dd>
+
+            <dt>
+                @Html.Label("Address:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.Address)
+                @Html.Hidden("Address", Model.CurrentRestroom.Address, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+
+            <dt>
+                @Html.Label("City:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.City)
+                @Html.Hidden("City", Model.CurrentRestroom.City, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+
+            <dt>
+                @Html.Label("Zip:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.Zip.ToString())
+                @Html.Hidden("Zip", Model.CurrentRestroom.Zip, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            </dd>
+            <dt></dt>
+            <dd>&nbsp;</dd>
+            <dt>
+                @Html.Label("Restroom Contact:", new { @class = "col-md-12" })
+            </dt>
+            <dd></dd>
+
+            <div style="border:1px solid rgb(195, 195, 195); border-radius:4px;">
+                <dt>
+                    @Html.Label("Service Provider (Owner):", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.ServiceProvider)
+                </dd>
+                <dt>
+                    @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.Name)
+                </dd>
+                <dt>
+                    @Html.Label("Email:", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.Email)
+                </dd>
+                <dt>
+                    @Html.Label("Phone:", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.Phone)
+                </dd>
+                <dt>
+                    @Html.Label("Address:", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.Address)
+                </dd>
+                <dt>
+                    @Html.Label("Notes:", new { @class = "col-md-12" })
+                </dt>
+                <dd>
+                    @Html.Raw(Model.CurrentContact.Notes)
+                </dd>
+                <dt></dt>
+                <dd>
+                    @{if (userCanEditContact && Model.CurrentRestroom.ContactId != 0)
+                        {
+                            <div class="col-md-1" style="margin-top:1px; float: right;">
+                                @Html.ActionLink("Edit ", "Edit", "Contact", new { id = Model.CurrentContact.ContactId }, new { title = "Edit Contact", style = "text-decoration:none; float: right;", target = "_blank" })
+                            </div>
+                        }
+                    }
+                </dd>
+            </div>
+            <dt></dt>
+            <dd>&nbsp;</dd>
+            <dt>
+                @Html.Label("Duties:", new { @class = "col-md-12" })
+            </dt>
+            <dd></dd>
+            <div style="border:1px solid rgb(195, 195, 195); border-radius:4px;">
+                @if (cleanedContact != null)
+                {
+                    <dt>@Html.Label("Service Provider (Clean):", new { @class = "col-md-12" })</dt>
+                    <dd>
+                        <a data-target="#CleanedContact" data-toggle="modal" href="#CleanedContact">@Html.Raw(cleanedContact.ServiceProvider)</a>
+                    </dd>
+                }
+                @if (repairedContact != null)
+                {
+                    <dt>@Html.Label("Service Provider (Repair):", new { @class = "col-md-12" })</dt>
+                    <dd>
+                        <a data-target="#RepairedContact" data-toggle="modal" href="#RepairedContact">@Html.Raw(repairedContact.ServiceProvider)</a>
+                    </dd>
+                }
+                @if (suppliedContact != null)
+                {
+                    <dt>@Html.Label("Service Provider (Supply):", new { @class = "col-md-12" })</dt>
+                    <dd>
+                        <a data-target="#SuppliedContact" data-toggle="modal" href="#SuppliedContact">@Html.Raw(suppliedContact.ServiceProvider)</a>
+                    </dd>
+                }
+                @if (securityGatesContact != null)
+                {
+                    <dt>@Html.Label("Service Provider (Security/Gates):", new { @class = "col-md-12" })</dt>
+                    <dd>
+                        <a data-target="#SecurityGatesContact" data-toggle="modal" href="#SecurityGatesContact">@Html.Raw(securityGatesContact.ServiceProvider)</a>
+                    </dd>
+                }
+                @if (securityLocksContact != null)
+                {
+                    <dt>@Html.Label("Service Provider (Security/Locks):", new { @class = "col-md-12" })</dt>
+                    <dd>
+                        <a data-target="#SecurityLocksContact" data-toggle="modal" href="#SecurityLocksContact">@Html.Raw(securityLocksContact.ServiceProvider)</a>
+                    </dd>
+                }
+            </div>
+            <dt></dt>
+            <dd>&nbsp;</dd>
+            <dt>
+                @Html.Label("Has Drinking Water:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(RestroomViewModel.GetDrinkingWaterOptionName(Model.CurrentRestroom.DrinkingWater))
+            </dd>
+
+            <dt>
+                @Html.Label("Routes:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.SortedRoutes)
+            </dd>
+
+            <dt>
+                @Html.Label("Weekday Hours:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.WeekdayHours ?? " ")
+            </dd>
+
+            <dt>
+                @Html.Label("Saturday Hours:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.SaturdayHours ?? " ")
+            </dd>
+
+            <dt>
+                @Html.Label("Sunday Hours:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.SundayHours ?? " ")
+            </dd>
+
+            <dt>
+                @Html.Label("Notes/ Access Codes/ Special Instructions:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.Note ?? " ")
+            </dd>
+            <dt>
+                @Html.Label("Created By:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.AddUserName)
+            </dd>
+            <dt>
+                @Html.Label("Created At:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.AddDateTime)
+            </dd>
+            <dt>
+                @Html.Label("Updated By:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.UpdUserName)
+            </dd>
+            <dt>
+                @Html.Label("Updated At:", new { @class = "col-md-12" })
+            </dt>
+            <dd>
+                @Html.Raw(Model.CurrentRestroom.UpdDateTime)
+            </dd>
+            @Html.Hidden("State", Model.CurrentRestroom.State, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 } })
+            @Html.Hidden("LongDec", Model.CurrentRestroom.LongDec, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 }, { "data-val-number", string.Empty } })
+            @Html.Hidden("LatDec", Model.CurrentRestroom.LatDec, new Dictionary<string, object> { { "data-val", false }, { "data-val-length", string.Empty }, { "data-val-length-max", 0 }, { "data-val-number", string.Empty } })
+
+        </dl>
+
+        <p>
+            @{ if (userIsAdmin || userCanEditRestroom)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.CurrentRestroom.RestroomId })
+                    @Html.Raw("&nbsp;|&nbsp;")
+                }
+                @Html.ActionLink("Back to List", "Index", new
+           {
+               searchName = Session["SearchName"],
+               searchAddress = Session["SearchAddress"],
+               searchCity = Session["SearchCity"],
+               searchRouteSelection = Session["SearchRoutes"],
+               sorField = Session["SortField"],
+               sortDirection = Session["SortDirection"],
+               page = Session["page"],
+               statusId = Session["StatusId"],
+               showPublic = Session["ShowPublic"],
+               showToilet = Session["ShowToilet"],
+               showPendingReview = Session["ShowPendingReview"]
+           })
+            }
+        </p>
+
+    </div>
+    <div class="col-md-5">
+        <div>
+            <input type="button" id="mapToggle" value="Show Map" style="margin-bottom:10px;" />
+        </div>
+        <div style="border:1px dashed red; height:475px; display:none;" id="restroom-map-canvas" class="google-map"></div>
+    </div>
+</div>
+
+<hr>
+<h4>Restroom Feedback</h4>
+@{
+    var canEditFeedback = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenFeedbackEditor);
+}
+<div class="row">
+    <div class="col-md-9" style="margin-left: 4%;">
+        <div id="AddFeedback" style="float:right; display:inline-block; position:relative; top:-25px;">
+            @{if (canEditFeedback)
+                {
+                    <input type="button" value="Add Feedback" class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "Feedback", new {restroomId = Model.CurrentRestroom.RestroomId})'" />
+                }
+            }
+        </div>
+        @{
+            if (Model.RestroomFeedback.Count() == 0)
+            {
+                <span style="font-weight: bold; margin-left: 20px;"><br />There is no feedback currently available for this restroom.</span>
+            }
+            else
+            {
+                <table class="feedbacktable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Inspection Passed")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Needs Cleaning")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Needs Supplies")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Needs Repair")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Feedback")
+                            </th>
+                            <th style="width: 250px;">
+                                @Html.DisplayName("Reported Action")
+                            </th>
+                            <th style="width: 250px;">
+                                @Html.DisplayName("Resolution")
+                            </th>
+                            <th style="width: 160px;">
+                                <div class="glyphicon glyphicon-sort"></div>
+                                <a href="#" data-sortfield="AddDateTime" class="sortable">Date Created</a>
+                            </th>
+                            <th style="width: 70px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var feedback in Model.RestroomFeedback)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Raw(feedback.InspectionPassed.Value ? "Yes" : "<span style='color:red;font-weight:bold;'>No</span>")
+                                </td>
+                                <td>
+                                    @Html.Raw(feedback.NeedsCleaning.Value ? "<span style='color:red;font-weight:bold;'>Yes</span>" : "No")
+                                </td>
+                                <td>
+                                    @Html.Raw(feedback.NeedsSupply.Value ? "<span style='color:red;font-weight:bold;'>Yes</span>" : "No")
+                                </td>
+                                <td>
+                                    @Html.Raw(feedback.NeedsRepair.Value ? "<span style='color:red;font-weight:bold;'>Yes</span>" : "No")
+                                </td>
+                                <td>
+                                    @Html.Raw(string.IsNullOrEmpty(feedback.FeedbackText) ? "&nbsp;" : feedback.FeedbackText)
+                                </td>
+                                <td>
+                                    @Html.Raw(string.IsNullOrEmpty(feedback.ReportedAction) ? "&nbsp;" : feedback.ReportedAction)
+                                </td>
+                                <td>
+                                    @Html.Raw(string.IsNullOrEmpty(feedback.Resolution) ? "&nbsp;" : feedback.Resolution)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => feedback.AddDateTime)
+                                </td>
+                                <td style="text-align: center;">
+                                    @{if (userCanEditFeedback)
+                                        {
+                                            @Html.ActionLink(" ", "Edit", "Feedback", new { id = feedback.FeedbackId }, new { @class = "glyphicon glyphicon-edit", @title = "Edit Feedback", @style = "text-decoration:none" })
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    </div>
+</div>
+
+@if (Model.RestroomFeedback.Count() > 0)
+{
+    using (Html.BeginForm("Details", "Restroom", FormMethod.Get, new { id = "SearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Hidden("RestroomId", Model.CurrentRestroom.RestroomId)
+        @Html.Hidden("Page", ViewBag.Page as int?)
+        @Html.Hidden("SortField", ViewBag.SortField as string)
+        @Html.Hidden("SortDirection", ViewBag.SortDirection as string)
+    }
+
+    <div class="text-center">Page @(Model.RestroomFeedback.PageCount < Model.ApprovedRestrooms.PageNumber ? 0 : Model.RestroomFeedback.PageNumber) of @Model.RestroomFeedback.PageCount</div>
+    <div class="text-center">@Html.PagedListPager(Model.RestroomFeedback, page => Url.Action("Details", "Restroom", new { Model.CurrentRestroom.RestroomId, page, ViewBag.SortField, ViewBag.SortDirection }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5, DisplayEllipsesWhenNotShowingAllPageNumbers = false })</div>
+}
+
+<div class="modal fade" id="CleanedContact" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Information</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.Label("Service Provider:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(cleanedContact?.ServiceProvider)
+                    </dd>
+                    <dt>
+                        @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(cleanedContact?.Name)
+                    </dd>
+                    <dt>
+                        @Html.Label("Email:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(cleanedContact?.Email)
+                    </dd>
+                    <dt>
+                        @Html.Label("Phone:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(cleanedContact?.Phone)
+                    </dd>
+                    <dt>
+                        @Html.Label("Address:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(cleanedContact?.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RepairedContact" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.Label("Service Provider:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(repairedContact?.ServiceProvider)
+                    </dd>
+                    <dt>
+                        @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(repairedContact?.Name)
+                    </dd>
+                    <dt>
+                        @Html.Label("Email:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(repairedContact?.Email)
+                    </dd>
+                    <dt>
+                        @Html.Label("Phone:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(repairedContact?.Phone)
+                    </dd>
+                    <dt>
+                        @Html.Label("Address:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(repairedContact?.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SuppliedContact" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Information</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.Label("Service Provider:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(suppliedContact?.ServiceProvider)
+                    </dd>
+                    <dt>
+                        @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(suppliedContact?.Name)
+                    </dd>
+                    <dt>
+                        @Html.Label("Email:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(suppliedContact?.Email)
+                    </dd>
+                    <dt>
+                        @Html.Label("Phone:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(suppliedContact?.Phone)
+                    </dd>
+                    <dt>
+                        @Html.Label("Address:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(suppliedContact?.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SecurityGatesContact" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Information</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.Label("Service Provider:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityGatesContact?.ServiceProvider)
+                    </dd>
+                    <dt>
+                        @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityGatesContact?.Name)
+                    </dd>
+                    <dt>
+                        @Html.Label("Email:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityGatesContact?.Email)
+                    </dd>
+                    <dt>
+                        @Html.Label("Phone:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityGatesContact?.Phone)
+                    </dd>
+                    <dt>
+                        @Html.Label("Address:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityGatesContact?.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SecurityLocksContact" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Information</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.Label("Service Provider:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityLocksContact?.ServiceProvider)
+                    </dd>
+                    <dt>
+                        @Html.Label("Contact Name:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityLocksContact?.Name)
+                    </dd>
+                    <dt>
+                        @Html.Label("Email:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityLocksContact?.Email)
+                    </dd>
+                    <dt>
+                        @Html.Label("Phone:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityLocksContact?.Phone)
+                    </dd>
+                    <dt>
+                        @Html.Label("Address:", new { @class = "col-md-12" })
+                    </dt>
+                    <dd>
+                        @Html.Raw(securityLocksContact?.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/site.js"></script>
+    <script src="@Url.Content("~/Scripts/gmap.viewer.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            initPage({ hasSortTable: true, hasSearchPanels: false });
+
+            if (!("url" in window) && ("webkitURL" in window)) {
+                window.URL = window.webkitURL;
+            }
+
+            setRestroomTableStyle($(".feedbacktable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function () {
+                setRestroomTableStyle($(".feedbacktable"));
+            });
+
+            setRestroomTableStyle($(".contacttable"));
+
+            // Hack to make the responsive table work correctly with desired styling
+            $(window).resize(function () {
+                setRestroomTableStyle($(".contacttable"));
+            });
+
+
+            $('#mapToggle').click(function () {
+                var button = $(this);
+
+                if (button.val() === 'Show Map') {
+                    $('#restroom-map-canvas').show();
+                    mapOptions.startAddress = {
+                        streetAddress: $('#Address').val().concat(",").concat($('#City').val()).concat(",").concat($('#State').val()).concat(",").concat($('#Zip').val()),
+                        lat: $('#LatDec').val(),
+                        lng: $('#LongDec').val()
+                    }
+                    AcTransitMap.FindMe.start(mapOptions);
+                    button.val('Hide Map');
+                }
+                else {
+                    button.val('Show Map');
+                    $('#restroom-map-canvas').hide();
+                }
+            })
+        });
+    </script>
+}
+
+

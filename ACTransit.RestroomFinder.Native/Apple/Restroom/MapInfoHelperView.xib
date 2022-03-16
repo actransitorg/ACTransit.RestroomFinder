@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapInfoHelperView" customModule="RestroomFinderApp" customModuleProvider="target">
+            <connections>
+                <outlet property="btnAdd" destination="JRa-aj-uSF" id="WVz-PH-wtl"/>
+                <outlet property="btnMapType" destination="Skq-qe-6K9" id="4KP-il-lqO"/>
+                <outlet property="btnPoi" destination="Xla-0x-Bzz" id="bDE-Qg-Dnq"/>
+                <outlet property="btnSegment" destination="d4e-Y3-uXI" id="uEJ-5U-dvD"/>
+                <outlet property="btnTraffic" destination="5gQ-fL-NTc" id="kg1-7V-sqQ"/>
+                <outlet property="myView" destination="iN0-l3-epB" id="mH1-2u-K5J"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="192"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="d4e-Y3-uXI">
+                    <rect key="frame" x="8" y="8" width="584" height="32"/>
+                    <segments>
+                        <segment title="Map"/>
+                        <segment title="Hybrid"/>
+                        <segment title="Satellite"/>
+                    </segments>
+                    <connections>
+                        <action selector="btnSegmentValueChanged:" destination="-1" eventType="valueChanged" id="3dw-mK-KSu"/>
+                    </connections>
+                </segmentedControl>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Skq-qe-6K9">
+                    <rect key="frame" x="8" y="89" width="584" height="30"/>
+                    <state key="normal" title="3D Map"/>
+                    <connections>
+                        <action selector="btnMapTypeClicked:" destination="-1" eventType="touchUpInside" id="0gd-YG-xGq"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gQ-fL-NTc">
+                    <rect key="frame" x="8" y="56" width="584" height="30"/>
+                    <state key="normal" title="Hide Traffic"/>
+                    <connections>
+                        <action selector="btnTrafficClicked:" destination="-1" eventType="touchUpInside" id="CzR-KP-IY5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xla-0x-Bzz" userLabel="btnPOI">
+                    <rect key="frame" x="8" y="127" width="584" height="30"/>
+                    <state key="normal" title="Hide Point of Interests"/>
+                    <connections>
+                        <action selector="btnPoiClicked:" destination="-1" eventType="touchUpInside" id="XMu-G6-iTM"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRa-aj-uSF">
+                    <rect key="frame" x="8" y="165" width="584" height="30"/>
+                    <state key="normal" title="Suggest a new Restroom"/>
+                    <connections>
+                        <action selector="btnAddClicked:" destination="-1" eventType="touchUpInside" id="egd-W2-8qb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="5gQ-fL-NTc" firstAttribute="top" secondItem="d4e-Y3-uXI" secondAttribute="bottom" constant="17" id="Hi1-5Q-MwX"/>
+                <constraint firstItem="Xla-0x-Bzz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="OZF-7n-3or"/>
+                <constraint firstItem="5gQ-fL-NTc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Q45-0S-bwe"/>
+                <constraint firstItem="Xla-0x-Bzz" firstAttribute="top" secondItem="Skq-qe-6K9" secondAttribute="bottom" constant="8" id="TIn-vc-Xeo"/>
+                <constraint firstItem="JRa-aj-uSF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Tqt-6w-2SJ"/>
+                <constraint firstItem="d4e-Y3-uXI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="V25-ho-Vsn"/>
+                <constraint firstItem="JRa-aj-uSF" firstAttribute="top" secondItem="Xla-0x-Bzz" secondAttribute="bottom" constant="8" id="YBD-gu-67o"/>
+                <constraint firstAttribute="trailing" secondItem="Skq-qe-6K9" secondAttribute="trailing" constant="8" id="aFl-nf-tYc"/>
+                <constraint firstAttribute="trailing" secondItem="5gQ-fL-NTc" secondAttribute="trailing" constant="8" id="c5n-ga-CWK"/>
+                <constraint firstAttribute="trailing" secondItem="d4e-Y3-uXI" secondAttribute="trailing" constant="8" id="dpA-cz-IZp"/>
+                <constraint firstAttribute="trailing" secondItem="JRa-aj-uSF" secondAttribute="trailing" constant="8" id="egZ-Mn-gDG"/>
+                <constraint firstAttribute="trailing" secondItem="Xla-0x-Bzz" secondAttribute="trailing" constant="8" id="fB7-uG-mXx"/>
+                <constraint firstItem="Skq-qe-6K9" firstAttribute="top" secondItem="5gQ-fL-NTc" secondAttribute="bottom" constant="3" id="giq-qF-pNk"/>
+                <constraint firstItem="Skq-qe-6K9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ngs-aP-GAc"/>
+                <constraint firstItem="d4e-Y3-uXI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="sWb-tc-noh"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="584" y="39.580209895052477"/>
+        </view>
+    </objects>
+</document>

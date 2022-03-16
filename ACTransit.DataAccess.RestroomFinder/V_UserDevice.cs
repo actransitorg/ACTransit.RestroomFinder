@@ -1,0 +1,58 @@
+namespace ACTransit.DataAccess.RestroomFinder
+{
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("V_UserDevice")]
+    public partial class V_UserDevice
+    {
+        [Key]
+        [Column(Order = 1)]
+        public int UserId { get; set; }
+
+        [StringLength(6)]
+        public string Badge { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string MiddleName { get; set; }
+
+        public string Name { get; set; }
+
+        public string PreferredPhone { get; set; }
+
+        public string JobTitle { get; set; }
+
+        public bool UserActive { get; set; }
+
+        public string UserDescription { get; set; }
+
+        public DateTime? LastLogon { get; set; }
+
+        public bool UserDeviceActive { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public long DeviceId { get; set; }
+
+        public string DeviceGuid { get; set; }
+
+        public string DeviceModel { get; set; }
+
+        public string DeviceOS { get; set; }
+
+        public string DeviceSessionId { get; set; }
+
+        public DateTime? LastUsed { get; set; }
+
+        public string DeviceDescription { get; set; }
+
+        public bool DeviceActive { get; set; }
+
+
+
+    }
+}

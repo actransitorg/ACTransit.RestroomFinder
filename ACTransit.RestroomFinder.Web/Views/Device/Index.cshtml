@@ -1,0 +1,239 @@
+﻿@using ACTransit.RestroomFinder.Web.Infrastructure
+@using ACTransit.RestroomFinder.Web.Models
+
+@model X.PagedList.IPagedList<ACTransit.RestroomFinder.Domain.Dto.Device>
+
+@using X.PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<style>
+    th {
+        width: 350px;
+        white-space: nowrap;
+    }
+
+    .worktable {
+        height: 500px;
+        display: block;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    input[type=text] {
+        box-sizing: border-box;
+        border-radius: 4px;
+        background-color: white;
+        background-image: url('./content/images/searchicon.png');
+        background-position: 1px 0px;
+        background-repeat: no-repeat;
+        padding-left: 25px;
+        width: 150px;
+    }
+
+    select {
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+
+    #search-panel-device .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e113";
+        float: left;
+        color: black;
+        margin-right: 4px;
+        font-size: large;
+    }
+
+    #search-panel-device .accordion-toggle.collapsed:after {
+        content: "\e114";
+    }
+</style>
+
+@{
+    ViewBag.Title = "Manage Devices";
+
+    var userIsAdmin = TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenAdmin);
+    var userCanEdit = userIsAdmin || TokenAuthorizationHelper.HasAccess(TokenAuthorizationHelper.TokenApplicationAccessEditor);
+
+    string TrimTo(string str, int length, string followByif)
+    {
+        if (string.IsNullOrEmpty(str) || str.Length < length)
+        {
+            return str;
+        }
+
+        return str.Substring(0, length) + followByif;
+    }
+}
+
+<h2>Manage Devices</h2>
+
+<br />
+
+<div id="HeaderOptions">
+
+    <div id="SearchPanelGroup" class="panel-group col-md-10" style="padding: 0;">
+        <div class="panel panel-default" style="padding: 0;">
+            <div id="search-panel-device" class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" href="#SearchPanel" style="text-decoration: none;">Search Options</a>
+                </h4>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse">
+                <div>
+                    <br />
+                </div>
+                @using (Html.BeginForm("Index", "Device", FormMethod.Get, new { id = "SearchForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p>
+                        &nbsp;Device Guid:&nbsp;@Html.TextBox("Device Guid", ViewBag.SearchDevice as string)
+                        &nbsp;Model:&nbsp;@Html.TextBox("SearchModel", ViewBag.SearchModel as string)
+                        &nbsp;OS:&nbsp;@Html.TextBox("SearchOS", ViewBag.SearchOS as string)
+                        &nbsp;Status:&nbsp;@Html.DropDownList("ShowActive", new SelectList(RestroomViewModel.SearchStatuses, "Value", "Text"))
+                        @Html.Hidden("Page", ViewBag.Page as int?)
+                        @Html.Hidden("SortField", ViewBag.SortField as string)
+                        @Html.Hidden("SortDirection", ViewBag.SortDirection as string)
+                        &nbsp;<input type="submit" value="Search" class="btn btn-primary" onclick="$('#Page').val('');" />
+                        &nbsp;<input type="submit" value="Reset Search" class="btn btn-primary" onclick="resetForm($('#SearchForm'), 'LastUsed');" />
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <table class="table table-striped table-bordered worktable">
+            <tr>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="DeviceGuid" class="sortable">Device Guid</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="DeviceModel" class="sortable">Device Model</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="DeviceOS" class="sortable">Device OS</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="LastUsed" class="sortable">Last Used</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="DeviceSessionId" class="sortable">Device Session</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="AddDateTime" class="sortable">Created</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="Active" class="sortable">Active</a>
+                </th>
+                <th>
+                    <div class="glyphicon glyphicon-sort"></div>
+                    <a href="#" data-sortfield="Description" class="sortable">Description</a>
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeviceGuid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeviceModel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeviceOS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastUsed)
+                    </td>
+                    <td>@TrimTo(item.DeviceSessionId, 10, "...")</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @{
+
+                            if (userCanEdit)
+                            {
+
+                                using (Html.BeginForm("ActivateDevice", "Device", FormMethod.Post))
+                                {
+                                    @Html.Hidden("SearchBadge", ViewBag.SearchBadge as string)
+                                    @Html.Hidden("SearchModel", ViewBag.SearchModel as string)
+                                    @Html.Hidden("SearchOS", ViewBag.SearchOS as string)
+                                    @Html.Hidden("ShowActive", ViewBag.ShowActive as string)
+                                    @Html.Hidden("Page", ViewBag.Page as int?)
+                                    @Html.Hidden("SortField", ViewBag.SortField as string)
+                                    @Html.Hidden("SortDirection", ViewBag.SortDirection as string)
+                                    @Html.Hidden("DeviceId", item.DeviceId)
+                                    if (item.Active)
+                                    {
+                                        @Html.Hidden("activate", false)
+                                        <input type="submit" value="Disable" style="background:none; border-width:0; color:blue; text-decoration:underline;" />
+                                    }
+                                    else
+                                    {
+                                        @Html.Hidden("activate", true)
+                                        <input type="submit" value="Enable" style="background:none; border-width:0; color:blue; text-decoration:underline;" />
+                                    }
+
+                                }
+
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+</div>
+
+<div class="text-center">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+
+<br />
+
+<div class="text-center">@Html.PagedListPager(Model, page => Url.Action("Index", new { ViewBag.SearchName, ViewBag.SearchAddress, ViewBag.SearchCity, ViewBag.SortField, ViewBag.SortDirection, page, ViewBag.ShowActive }))</div>
+
+@section Scripts{
+    <script src="~/Scripts/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            initPage({ hasSortTable: true, hasSearchPanels: true });
+
+            const panels = $.cookie();
+            for (let panel in panels) {
+                if (panels.hasOwnProperty(panel)) {
+                    if ($("#" + panel).hasClass('panel-collapse'))
+                        $("#" + panel).collapse("show");
+                }
+            };
+        });
+
+    </script>
+}

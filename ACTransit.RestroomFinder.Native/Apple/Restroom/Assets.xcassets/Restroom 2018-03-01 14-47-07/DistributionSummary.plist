@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Restroom.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>5A5E0499E6D0CCFC86D43FA14D5D81729E0BEB7E</string>
+				<key>dateExpires</key>
+				<string>12/17/20</string>
+				<key>type</key>
+				<string>iOS Distribution</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>armv7</string>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>5A5E0499E6D0CCFC86D43FA14D5D81729E0BEB7E</string>
+						<key>dateExpires</key>
+						<string>12/17/20</string>
+						<key>type</key>
+						<string>iOS Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>SharedFramework.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>Y7EDXDN93M</string>
+						<key>name</key>
+						<string>AC Transit</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>Y7EDXDN93M.org.ACTransit.RestroomFinder</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>Y7EDXDN93M</string>
+				<key>get-task-allow</key>
+				<false/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>Y7EDXDN93M.org.ACTransit.RestroomFinderTest</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>Restroom.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>fbbc60df-9291-40cf-bdf2-f57c880f39d9</string>
+				<key>name</key>
+				<string>iOS Team Inhouse Provisioning Profile: org.ACTransit.RestroomFinder</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>Y7EDXDN93M</string>
+				<key>name</key>
+				<string>AC Transit</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

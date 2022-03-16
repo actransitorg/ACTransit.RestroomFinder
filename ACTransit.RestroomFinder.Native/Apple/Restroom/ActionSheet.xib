@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActionSheet" customModule="RestroomFinderApp" customModuleProvider="target">
+            <connections>
+                <outlet property="btnEdit" destination="5gQ-fL-NTc" id="Cnq-VZ-hZt"/>
+                <outlet property="btnFeedback" destination="Skq-qe-6K9" id="p2L-T2-QWr"/>
+                <outlet property="feedBackTopConst" destination="giq-qF-pNk" id="k9r-EP-bWH"/>
+                <outlet property="myView" destination="iN0-l3-epB" id="faf-il-4jq"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="192"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gQ-fL-NTc">
+                    <rect key="frame" x="8" y="8" width="584" height="30"/>
+                    <state key="normal" title="Edit"/>
+                    <connections>
+                        <action selector="btnEditClicked:" destination="-1" eventType="touchUpInside" id="aKe-wY-JiS"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Skq-qe-6K9">
+                    <rect key="frame" x="8" y="41" width="584" height="30"/>
+                    <state key="normal" title="Feedback"/>
+                    <connections>
+                        <action selector="btnFeedbackClicked:" destination="-1" eventType="touchUpInside" id="Wfo-c5-v2u"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="5gQ-fL-NTc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="PML-Tc-Qqc"/>
+                <constraint firstItem="5gQ-fL-NTc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Q45-0S-bwe"/>
+                <constraint firstAttribute="trailing" secondItem="Skq-qe-6K9" secondAttribute="trailing" constant="8" id="aFl-nf-tYc"/>
+                <constraint firstAttribute="trailing" secondItem="5gQ-fL-NTc" secondAttribute="trailing" constant="8" id="c5n-ga-CWK"/>
+                <constraint firstItem="Skq-qe-6K9" firstAttribute="top" secondItem="5gQ-fL-NTc" secondAttribute="bottom" constant="3" identifier="feedbackTopConst" id="giq-qF-pNk"/>
+                <constraint firstItem="Skq-qe-6K9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ngs-aP-GAc"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="584" y="39.580209895052477"/>
+        </view>
+    </objects>
+</document>
