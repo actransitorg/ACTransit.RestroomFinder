@@ -371,6 +371,10 @@ function Merge-GitHub
     git config --global push.default simple
     git config --global core.autocrlf false
     git config --global credential.helper wincred
+    git config --global http.version HTTP/1.1
+    git config --global core.compression 0
+    git config http.postBuffer 524288000
+    
     git config --list
     Write-Debug "*** Verify credentials (make sure Git is installed) ***"
     Pause
@@ -392,6 +396,7 @@ function Merge-GitHub
     $commitMessage = Read-Host -Prompt 'Commit message'
     git commit -m $commitMessage
     git push -u origin master    
+    git config --global http.version HTTP/2
 }
 
 Try
