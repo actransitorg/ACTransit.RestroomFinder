@@ -13,7 +13,7 @@ if (service.indexOf("localhost") >= 0) {
     service = "http" + (tlsMode ? "s" : "") + "://your.company.domain/path/to/restroom-finder/"; 
 }
 
-var HOME = { lat: 37.8054133, lng: -122.2707171, streetAddress: '1600 Franklin St, Oakland', zoom: 18, API_KEY: 'Your Google Map API key' }; // AC Transit General Office
+var HOME = { lat: 37.8054133, lng: -122.2707171, streetAddress: '1600 Franklin St, Oakland', zoom: 18, API_KEY: 'AIzaSyAv74iQts1eRKlBPpM81waljweAPcGcxm4' }; // AC Transit General Office
 jQuery.support.cors = true;
 var AcTransitMap = {};
 
