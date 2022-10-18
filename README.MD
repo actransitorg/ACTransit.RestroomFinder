@@ -151,6 +151,7 @@ ACTransit.RestroomFinder.Web\Web.config
 
 ACTransit.RestroomFinder.Web\Scripts\gmap.viewer.js
 - Update URL to Restroom Finder 
+- Update Google Maps API key
 
 ACTransit.RestroomFinder.Web\ACL.xml
 - Verify ACLs are correct for AD groups or AD user accounts or job titles.
